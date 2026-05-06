@@ -11,7 +11,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-
 body {
   font-family: Arial;
   margin: 0;
@@ -53,18 +52,11 @@ input {
   outline: none;
 }
 
-/* 🔥 Column Fix FINAL */
-#productTable th:nth-child(2),
-#productTable td:nth-child(2) { width: 160px; }
-
-#productTable th:nth-child(3),
-#productTable td:nth-child(3) { width: 50px; }
-
-#productTable th:nth-child(6),
-#productTable td:nth-child(6) { width: 80px; }
-
-#productTable th:nth-child(7),
-#productTable td:nth-child(7) { width: 50px; }
+/* column fix */
+#productTable th:nth-child(2){width:120px;}
+#productTable th:nth-child(3){width:60px;}
+#productTable th:nth-child(6){width:70px;}
+#productTable th:nth-child(7){width:50px;}
 
 .green-box {
   background: #8bc34a;
@@ -73,21 +65,15 @@ input {
   margin-top: 5px;
 }
 
-.flex {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
+.flex { display: flex; gap: 10px; margin-top: 10px; }
 .flex div { flex: 1; }
 
 .add-btn {
   background: #8bc34a;
-  padding: 6px;
+  padding: 8px;
   border-radius: 10px;
   border: none;
   margin-top: 10px;
-  font-size: 12px;
 }
 
 .total {
@@ -101,12 +87,9 @@ input {
   width: 100px;
   background: #8bc34a;
   border-radius: 8px;
-  text-align: center;
 }
 
-.officer {
-  margin-top: 20px;
-}
+.officer { margin-top: 20px; }
 
 .officer input {
   border: 1px solid #999;
@@ -115,42 +98,36 @@ input {
   margin-top: 5px;
 }
 
-/* Buttons */
 .bottom {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 8px;
+  margin-top: 15px;
 }
 
-.btn {
+.bottom button {
   flex: 1;
   padding: 8px;
-  border-radius: 20px;
+  border-radius: 15px;
   border: none;
-  font-size: 13px;
-  color: #fff;
-}
-
-.pdf-btn { background: #4CAF50; }
-.share-btn { background: #009688; }
-
-.clear-btn {
-  background: #f44336;
-  color:#fff;
   font-size: 12px;
-  padding: 6px;
 }
+
+.pdf-btn { background: #4CAF50; color:#fff;}
+.share-btn { background: #2196F3; color:#fff;}
+.clear-btn { background: #f44336; color:#fff;}
 
 .install-btn {
-  background: #2196f3;
-  color: #fff;
-  font-size: 11px;
-  padding: 5px 10px;
+  background:#000;
+  color:#fff;
+  font-size:10px;
+  padding:4px 8px;
+  border-radius:10px;
 }
 
-/* ❌ Hide in PDF */
-.no-print {}
-
+/* ❌ hide in PDF */
+.no-print{
+  display:block;
+}
 </style>
 </head>
 
@@ -158,16 +135,16 @@ input {
 
 <div id="formArea">
 
-<div class="no-print" style="text-align:right;">
-  <button class="install-btn" onclick="installApp()">📲 Install</button>
-</div>
-
 <div style="text-align:center;">
   <img src="mosco-logo.png" style="width:80px;">
 </div>
 
 <h2>Mosco Marketing limited</h2>
 <h3>Order Submission Format</h3>
+
+<div style="text-align:center;" class="no-print">
+  <button class="install-btn" onclick="installApp()">📲 Install</button>
+</div>
 
 <table>
 <tr>
@@ -192,12 +169,12 @@ input {
 </tr>
 
 <tr>
-<td colspan="2">Slab (Y/N)</td>
+<td colspan="2">Slab</td>
 <td colspan="2"><input id="slab"></td>
 </tr>
 
 <tr>
-<td colspan="2">S. Approval</td>
+<td colspan="2">Approval</td>
 <td colspan="2"><input id="approval"></td>
 </tr>
 </table>
@@ -217,7 +194,7 @@ input {
 <tr>
 <th>#</th>
 <th>Product</th>
-<th>P Size</th>
+<th>Size</th>
 <th>Qty</th>
 <th>Price</th>
 <th>Total</th>
@@ -226,7 +203,7 @@ input {
 
 <tr>
 <td>1</td>
-<td><input></td>
+<td><input class="product"></td>
 <td><input></td>
 <td><input oninput="calculate()"></td>
 <td><input oninput="calculate()"></td>
@@ -238,22 +215,19 @@ input {
 <button class="add-btn no-print" onclick="addRow()">+ Add Product</button>
 
 <div class="total">
-  Total Ctn = <input id="totalCarton" readonly>
-  Total V = <input id="totalValue" readonly>
+  Carton = <input id="totalCarton" readonly>
+  Value = <input id="totalValue" readonly>
 </div>
 
 <div class="officer">
-  Officer Name <input id="officer">
+  Officer <input id="officer">
   Mobile <input id="mobile">
   Territory <input id="territory">
 </div>
 
 <div class="bottom no-print">
-  <button class="btn pdf-btn" onclick="generatePDF()">PDF</button>
-  <button class="btn share-btn" onclick="share()">Share</button>
-</div>
-
-<div style="text-align:center;" class="no-print">
+  <button class="pdf-btn" onclick="generatePDF()">PDF</button>
+  <button class="share-btn" onclick="share()">Share</button>
   <button class="clear-btn" onclick="clearForm()">Clear</button>
 </div>
 
@@ -261,126 +235,135 @@ input {
 
 <script>
 
-// Add Row
-function addRow() {
-  let table = document.getElementById("productTable");
-  let row = table.insertRow();
-  let index = table.rows.length - 1;
+// 🔥 PRODUCT LIST
+const products = [ "Agritop 100gm","Agritop 50gm","Agrivit 200gm","Agrivit 100gm","Agrivit 50gm","Agrosave 20 Lit.","Agrosave 100ml","Agrosave 50ml","Amonot 100ml (Aqua)","Arika (Blue) 500gm","Arika (Blue) 100gm","Arika (Yellow) 500gm","Arika (Yellow) 100gm","Beater 400ml","Beater 100ml","Beater 50ml","Biozim 1 Lit.","Biozim 500ml","Biozim 100ml","Builder 500gm","Builder 100gm","Cyper 1 Lit.","Cyper 100ml","Dare 1 Lit.","Dare 100ml","Divine 1 Lit.","Divine 100ml","Feeder 400ml","Feeder 100ml","Fenobin 500ml","Fenobin 100ml","Firotin 400ml","Firotin 100ml","Halotouch 1 Lit.","Halotouch 100ml","Marine 1Lit","Marine 100ml","Massive 500gm","Massive 100gm","Medisate 1 Lit.","Medisate 100ml","Megazole 1 Lit.","Megazole 100ml","Mighter 400ml","Mighter 100ml","Mohor 100gm","Mohor 50gm","Monoful 1kg","Monozeb 1kg","Mosco Boron 500gm","Mostop 100ml","Namiral 400ml","Oxytop 100ml","Paramos 1 Lit.","Power Plus 1 Lit.","Radial 400ml","Rasim 500gm","Real 400ml","Remote 400ml","Repel 500gm","Ronza 10gm","Resort 400ml","Rylmos 500gm","Supervit 1kg","Tamitap 100gm","Temper 100gm","Technovit 500gm","Tiefen 400ml","Winner 1 Lit." ];
 
-  row.innerHTML = `
+// autocomplete
+function setupAutocomplete(input){
+  let list=document.createElement("div");
+  list.style.position="absolute";
+  list.style.background="#fff";
+  list.style.maxHeight="150px";
+  list.style.overflowY="auto";
+  list.style.zIndex="999";
+  input.parentNode.appendChild(list);
+
+  input.addEventListener("input",function(){
+    list.innerHTML="";
+    let val=this.value.toLowerCase();
+    products.filter(p=>p.toLowerCase().includes(val)).slice(0,20)
+    .forEach(p=>{
+      let item=document.createElement("div");
+      item.innerHTML=p;
+      item.style.padding="5px";
+      item.onclick=()=>{
+        input.value=p;
+        list.innerHTML="";
+      };
+      list.appendChild(item);
+    });
+  });
+}
+
+// init
+document.querySelectorAll(".product").forEach(setupAutocomplete);
+
+// add row
+function addRow(){
+  let table=document.getElementById("productTable");
+  let row=table.insertRow();
+  let index=table.rows.length-1;
+
+  row.innerHTML=`
   <td>${index}</td>
-  <td><input></td>
+  <td><input class="product"></td>
   <td><input></td>
   <td><input oninput="calculate()"></td>
   <td><input oninput="calculate()"></td>
   <td><input readonly></td>
-  <td><input></td>
-  `;
+  <td><input></td>`;
+
+  setupAutocomplete(row.querySelector(".product"));
 }
 
-// Calculate
-function calculate() {
-  let table = document.getElementById("productTable");
-  let totalCarton = 0;
-  let totalValue = 0;
+// calculate
+function calculate(){
+  let table=document.getElementById("productTable");
+  let totalCarton=0,totalValue=0;
 
-  for (let i = 1; i < table.rows.length; i++) {
-    let qty = table.rows[i].cells[3].children[0].value || 0;
-    let price = table.rows[i].cells[4].children[0].value || 0;
+  for(let i=1;i<table.rows.length;i++){
+    let qty=table.rows[i].cells[3].children[0].value||0;
+    let price=table.rows[i].cells[4].children[0].value||0;
+    let total=qty*price;
 
-    let total = qty * price;
-    table.rows[i].cells[5].children[0].value = total;
-
-    totalCarton += Number(qty);
-    totalValue += total;
+    table.rows[i].cells[5].children[0].value=total;
+    totalCarton+=Number(qty);
+    totalValue+=total;
   }
 
-  document.getElementById("totalCarton").value = totalCarton;
-  document.getElementById("totalValue").value = totalValue;
+  document.getElementById("totalCarton").value=totalCarton;
+  document.getElementById("totalValue").value=totalValue;
 }
 
-// 🔥 PDF WITHOUT BUTTONS
-async function generatePDF() {
+// PDF
+async function generatePDF(){
+  document.querySelectorAll(".no-print").forEach(e=>e.style.display="none");
+
   const { jsPDF } = window.jspdf;
+  let canvas=await html2canvas(document.getElementById("formArea"),{scale:2});
+  let img=canvas.toDataURL("image/png");
 
-  let buttons = document.querySelectorAll(".no-print");
-  buttons.forEach(el => el.style.display = "none");
+  let pdf=new jsPDF('p','mm','a4');
+  let h=canvas.height*210/canvas.width;
+  let y=0;
 
-  let canvas = await html2canvas(document.getElementById("formArea"), {scale:2});
-
-  buttons.forEach(el => el.style.display = "");
-
-  let imgData = canvas.toDataURL("image/png");
-
-  let pdf = new jsPDF('p','mm','a4');
-
-  let imgWidth = 210;
-  let pageHeight = 297;
-  let imgHeight = canvas.height * imgWidth / canvas.width;
-
-  let heightLeft = imgHeight;
-  let position = 0;
-
-  pdf.addImage(imgData,'PNG',0,position,imgWidth,imgHeight);
-  heightLeft -= pageHeight;
-
-  while(heightLeft > 0){
-    position = heightLeft - imgHeight;
-    pdf.addPage();
-    pdf.addImage(imgData,'PNG',0,position,imgWidth,imgHeight);
-    heightLeft -= pageHeight;
+  while(y<h){
+    pdf.addImage(img,'PNG',0,-y,210,h);
+    y+=297;
+    if(y<h) pdf.addPage();
   }
 
   pdf.save("order.pdf");
+
+  document.querySelectorAll(".no-print").forEach(e=>e.style.display="block");
 }
 
-// 🔥 SHARE WITHOUT BUTTONS
+// share
 async function share(){
   const { jsPDF } = window.jspdf;
+  let canvas=await html2canvas(document.getElementById("formArea"),{scale:2});
+  let img=canvas.toDataURL("image/png");
 
-  let buttons = document.querySelectorAll(".no-print");
-  buttons.forEach(el => el.style.display = "none");
+  let pdf=new jsPDF('p','mm','a4');
+  pdf.addImage(img,'PNG',0,0,210,canvas.height*210/canvas.width);
 
-  let canvas = await html2canvas(document.getElementById("formArea"), {scale:2});
+  let blob=pdf.output("blob");
+  let file=new File([blob],"order.pdf",{type:"application/pdf"});
 
-  buttons.forEach(el => el.style.display = "");
-
-  let imgData = canvas.toDataURL("image/png");
-
-  let pdf = new jsPDF('p','mm','a4');
-  let imgWidth = 210;
-  let imgHeight = canvas.height * imgWidth / canvas.width;
-
-  pdf.addImage(imgData,'PNG',0,0,imgWidth,imgHeight);
-
-  let blob = pdf.output("blob");
-  let file = new File([blob],"order.pdf",{type:"application/pdf"});
-
-  if(navigator.share && navigator.canShare({files:[file]})){
-    await navigator.share({files:[file],title:"Order PDF"});
-  } else {
-    alert("Use Chrome mobile");
+  if(navigator.share){
+    navigator.share({files:[file],title:"Order"});
+  }else{
+    alert("Use Chrome Mobile");
   }
 }
 
-// Clear
+// clear
 function clearForm(){
-  localStorage.clear();
-  location.reload();
+  if(confirm("Clear all?")){
+    localStorage.clear();
+    location.reload();
+  }
 }
 
-// Install
+// install
 let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
+window.addEventListener('beforeinstallprompt',(e)=>{
   e.preventDefault();
-  deferredPrompt = e;
+  deferredPrompt=e;
 });
-
 function installApp(){
   if(deferredPrompt){
     deferredPrompt.prompt();
-  } else {
-    alert("Install not available");
   }
 }
 
