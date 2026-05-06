@@ -11,6 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
+
 body {
   font-family: Arial;
   margin: 0;
@@ -52,12 +53,17 @@ input {
   outline: none;
 }
 
+/* 🔥 Column Fix */
+#productTable th:nth-child(3),
+#productTable td:nth-child(3) { width: 60px; } /* P Size small */
+
 #productTable th:nth-child(6),
-#productTable td:nth-child(6) { width: 90px; }
+#productTable td:nth-child(6) { width: 100px; } /* Total big */
 
 #productTable th:nth-child(7),
 #productTable td:nth-child(7) { width: 50px; }
 
+/* Boxes */
 .green-box {
   background: #8bc34a;
   border-radius: 20px;
@@ -65,15 +71,22 @@ input {
   margin-top: 5px;
 }
 
-.flex { display: flex; gap: 10px; margin-top: 10px; }
+.flex {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
 .flex div { flex: 1; }
 
+/* Buttons */
 .add-btn {
   background: #8bc34a;
   padding: 6px;
   border-radius: 10px;
   border: none;
   margin-top: 10px;
+  font-size: 12px;
 }
 
 .total {
@@ -84,12 +97,15 @@ input {
 }
 
 .total input {
-  width: 70px;
+  width: 100px;
   background: #8bc34a;
   border-radius: 8px;
+  text-align: center;
 }
 
-.officer { margin-top: 20px; }
+.officer {
+  margin-top: 20px;
+}
 
 .officer input {
   border: 1px solid #999;
@@ -98,46 +114,34 @@ input {
   margin-top: 5px;
 }
 
+/* Bottom Buttons */
 .bottom {
   display: flex;
   gap: 10px;
   margin-top: 20px;
 }
 
-.bottom button {
+.btn {
   flex: 1;
-  padding: 10px;
+  padding: 8px;
   border-radius: 20px;
   border: none;
+  font-size: 13px;
+  color: #fff;
 }
 
-/* 🔥 Small buttons */
-.clear-btn {
-  background: #f44336;
-  color:#fff;
-  padding: 6px;
-  font-size: 12px;
-}
-
-.install-btn {
-  font-size: 12px;
-  padding: 5px 10px;
-  border-radius: 15px;
-  border: none;
-  background: #2196f3;
-  color: white;
-}
+.pdf-btn { background: #4CAF50; }
+.share-btn { background: #009688; }
+.clear-btn { background: #f44336; font-size: 12px; padding: 6px; }
+.install-btn { background: #2196f3; font-size: 11px; padding: 5px 10px; }
 
 /* ❌ Hide in PDF */
-.no-print {
-  display: block;
-}
+.no-print {}
 
 @media print {
-  .no-print {
-    display: none !important;
-  }
+  .no-print { display: none !important; }
 }
+
 </style>
 </head>
 
@@ -145,7 +149,7 @@ input {
 
 <div id="formArea">
 
-<!-- 🔥 Small Install Top -->
+<!-- Install -->
 <div class="no-print" style="text-align:right;">
   <button class="install-btn" onclick="installApp()">📲 Install</button>
 </div>
@@ -192,11 +196,11 @@ input {
 
 <div class="flex">
   <div>
-    <div class="green-box">Mention Depot Name</div>
+    <div class="green-box">Depot</div>
     <input class="green-box">
   </div>
   <div>
-    <div class="green-box">Booking Transport Name</div>
+    <div class="green-box">Transport</div>
     <input class="green-box">
   </div>
 </div>
@@ -204,7 +208,7 @@ input {
 <table id="productTable">
 <tr>
 <th>#</th>
-<th>Product Name</th>
+<th>Product</th>
 <th>P Size</th>
 <th>Qty</th>
 <th>Price</th>
@@ -223,11 +227,10 @@ input {
 </tr>
 </table>
 
-<!-- ❌ no print -->
 <button class="add-btn no-print" onclick="addRow()">+ Add Product</button>
 
 <div class="total">
-  Total carton = <input id="totalCarton" readonly>
+  Total Ctn = <input id="totalCarton" readonly>
   Total V = <input id="totalValue" readonly>
 </div>
 
@@ -237,13 +240,11 @@ input {
   Territory <input id="territory">
 </div>
 
-<!-- ❌ no print -->
 <div class="bottom no-print">
-  <button onclick="generatePDF()">Generate PDF</button>
-  <button onclick="share()">Share</button>
+  <button class="btn pdf-btn" onclick="generatePDF()">📄 PDF</button>
+  <button class="btn share-btn" onclick="share()">📤 Share</button>
 </div>
 
-<!-- ❌ no print -->
 <div style="text-align:center;" class="no-print">
   <button class="clear-btn" onclick="clearForm()">Clear</button>
 </div>
@@ -359,7 +360,7 @@ function installApp(){
   if(deferredPrompt){
     deferredPrompt.prompt();
   } else {
-    alert("Install not ready");
+    alert("Install not available");
   }
 }
 
