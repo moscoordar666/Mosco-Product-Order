@@ -6,87 +6,61 @@
 
 <style>
 body {
-    font-family: Arial;
-    margin: 0;
-    padding: 10px;
-    background: #f5f5f5;
+  font-family: Arial;
+  margin: 0;
+  padding: 10px;
+  background: #f5f5f5;
 }
 
 .container {
-    max-width: 650px;
-    margin: auto;
-    background: #fff;
-    padding: 15px;
-    border-radius: 10px;
+  max-width: 500px;
+  margin: auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
 }
 
-/* title */
 h2, h3 {
-    text-align: center;
-    margin: 5px;
+  text-align: center;
 }
 
-/* table */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-td, th {
-    border: 1px solid #ccc;
-    padding: 6px;
-    font-size: 13px;
-}
-
-/* input */
 input {
-    width: 100%;
-    border: none;
-    outline: none;
-    font-size: 13px;
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font-size: 14px;
 }
 
-/* full width field */
-.full {
-    width: 100%;
+/* Product Row */
+.row {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
 }
 
-/* button */
+.product {
+  flex: 2;
+}
+
+.small {
+  flex: 1;
+}
+
+.bonus {
+  flex: 0.6;
+}
+
 button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background: black;
-    color: white;
-    border: none;
-    border-radius: 6px;
-}
-
-/* MOBILE FIX (without breaking table) */
-@media(max-width:600px){
-
-    body {
-        padding: 5px;
-    }
-
-    .container {
-        padding: 10px;
-    }
-
-    td, th {
-        font-size: 12px;
-        padding: 5px;
-    }
-
-    h2 {
-        font-size: 18px;
-    }
-
-    h3 {
-        font-size: 14px;
-    }
-
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  background: black;
+  color: white;
+  border-radius: 8px;
+  font-size: 16px;
 }
 </style>
 </head>
@@ -98,85 +72,74 @@ button {
 <h2>mosco Marketing limited</h2>
 <h3>Order Submission Format</h3>
 
-<table>
-<tr>
-<td>Order Date</td>
-<td><input></td>
-<td>Due Date</td>
-<td><input></td>
-</tr>
+<input placeholder="Order Date">
+<input placeholder="Due Date">
+<input placeholder="Distributor Name">
+<input placeholder="Address">
+<input placeholder="Season">
+<input placeholder="Order Type">
+<input placeholder="Slab (Y/N)">
+<input placeholder="S. Approval">
 
-<tr>
-<td>Distributor Name</td>
-<td colspan="3"><input class="full"></td>
-</tr>
+<hr>
 
-<tr>
-<td>Address</td>
-<td colspan="3"><input class="full"></td>
-</tr>
+<div id="products"></div>
 
-<tr>
-<td>Season</td>
-<td><input></td>
-<td>Order Type</td>
-<td><input></td>
-</tr>
+<button onclick="addProduct()">+ Add Product</button>
 
-<tr>
-<td>Slab (Y/N)</td>
-<td><input></td>
-<td>S. Approval</td>
-<td><input></td>
-</tr>
-</table>
+<h3>Total Carton: <span id="totalCarton">0</span></h3>
+<h3>Total Value: <span id="totalValue">0</span></h3>
 
-<table>
-<tr>
-<th>Product Name</th>
-<th>P Size</th>
-<th>Qty</th>
-<th>Car Price</th>
-<th>Total</th>
-<th>Bonus %</th>
-</tr>
-
-<tr>
-<td><input></td>
-<td><input></td>
-<td><input></td>
-<td><input></td>
-<td><input></td>
-<td><input></td>
-</tr>
-</table>
-
-<button>+ Add Product</button>
-
-<p>Total carton: <input style="width:100px;"></p>
-<p>Total V: <input style="width:150px;"></p>
-
-<table>
-<tr>
-<td>Officer Name</td>
-<td><input></td>
-</tr>
-
-<tr>
-<td>Mobile</td>
-<td><input></td>
-</tr>
-
-<tr>
-<td>Territory</td>
-<td><input></td>
-</tr>
-</table>
+<input placeholder="Officer Name">
+<input placeholder="Mobile">
+<input placeholder="Territory">
 
 <button>Generate PDF</button>
 <button>Share</button>
 
 </div>
+
+<script>
+
+function addProduct() {
+  let div = document.createElement("div");
+  div.className = "row";
+
+  div.innerHTML = `
+    <input class="product" placeholder="Product Name">
+    <input class="small qty" placeholder="Qty" type="number" oninput="calculate()">
+    <input class="small price" placeholder="Price" type="number" oninput="calculate()">
+    <input class="small value" placeholder="Value" readonly>
+    <input class="bonus" placeholder="Bonus">
+  `;
+
+  document.getElementById("products").appendChild(div);
+}
+
+function calculate() {
+  let qty = document.querySelectorAll(".qty");
+  let price = document.querySelectorAll(".price");
+  let value = document.querySelectorAll(".value");
+
+  let totalValue = 0;
+  let totalCarton = 0;
+
+  for (let i = 0; i < qty.length; i++) {
+    let q = Number(qty[i].value) || 0;
+    let p = Number(price[i].value) || 0;
+
+    let v = q * p;
+    value[i].value = v;
+
+    totalValue += v;
+    totalCarton += q;
+  }
+
+  document.getElementById("totalValue").innerText = totalValue;
+  document.getElementById("totalCarton").innerText = totalCarton;
+}
+
+</script>
 
 </body>
 </html>
