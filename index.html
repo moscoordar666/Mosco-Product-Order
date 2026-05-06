@@ -360,14 +360,37 @@ async function createPDFBlob(){
 }
 
 // download pdf
-async function generatePDF(){
-  const blob = await createPDFBlob();
-  const url = URL.createObjectURL(blob);
+async function generatePDF() {
+  const { jsPDF } = window.jspdf;
 
-  const a=document.createElement("a");
-  a.href=url;
-  a.download="order.pdf";
-  a.click();
+  let element = document.getElementById("formArea");
+
+  let canvas = await html2canvas(element, { scale: 2 });
+
+  let imgData = canvas.toDataURL("image/png");
+
+  let pdf = new jsPDF("p", "mm", "a4");
+
+  let imgWidth = 210;
+  let pageHeight = 297;
+
+  let imgHeight = canvas.height * imgWidth / canvas.width;
+
+  let heightLeft = imgHeight;
+
+  let position = 0;
+
+  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+  heightLeft -= pageHeight;
+
+  while (heightLeft > 0) {
+    position -= pageHeight;
+    pdf.addPage();
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+  }
+
+  pdf.save("order.pdf");
 }
 
 // share pdf
