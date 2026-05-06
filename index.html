@@ -4,8 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order App</title>
+
+<!-- Logo (tab icon) -->
 <link rel="icon" href="mosco-logo.png">
-  
+
+<!-- PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -122,10 +125,11 @@ input {
 
 <div id="formArea">
 
+<!-- Logo -->
 <div style="text-align:center;">
   <img src="mosco-logo.png" style="width:80px;">
 </div>
-  
+
 <h2>Mosco Marketing limited</h2>
 <h3>Order Submission Format</h3>
 
@@ -217,7 +221,7 @@ input {
 
 <script>
 
-// 🔥 SAVE + LOAD
+// Auto Save
 function saveData() {
   let inputs = document.querySelectorAll("input");
   let data = [];
@@ -225,6 +229,7 @@ function saveData() {
   localStorage.setItem("orderData", JSON.stringify(data));
 }
 
+// Load Data
 function loadData() {
   let data = JSON.parse(localStorage.getItem("orderData"));
   if (!data) return;
@@ -239,7 +244,7 @@ document.addEventListener("input", saveData);
 window.onload = loadData;
 
 
-// Add row
+// Add Row
 function addRow() {
   let table = document.getElementById("productTable");
   let row = table.insertRow();
@@ -285,9 +290,7 @@ async function generatePDF() {
   const { jsPDF } = window.jspdf;
   let pdf = new jsPDF("p", "mm", "a4");
 
-  let form = document.getElementById("formArea");
-  let canvas = await html2canvas(form, { scale: 2 });
-
+  let canvas = await html2canvas(document.getElementById("formArea"), { scale: 2 });
   let imgData = canvas.toDataURL("image/png");
 
   let imgWidth = 210;
@@ -303,8 +306,7 @@ async function generatePDF() {
   while (heightLeft > 0) {
     position = heightLeft - imgHeight;
     pdf.addPage();
-    pdf.text("Mosco Marketing limited", 10, 10);
-    pdf.addImage(imgData, 'PNG', 0, position + 10, imgWidth, imgHeight);
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
   }
 
