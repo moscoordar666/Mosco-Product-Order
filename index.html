@@ -1,56 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order App</title>
-
-<!-- PDF + Screenshot -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
 body {
-  font-family: Arial;
-  padding: 20px;
-  background: #fff;
+    font-family: Arial;
+    margin: 0;
+    padding: 10px;
+    background: #f2f2f2;
+}
+
+.container {
+    max-width: 480px;
+    margin: auto;
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
 }
 
 h2, h3 {
-  text-align: center;
+    text-align: center;
+    margin: 5px;
 }
 
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 13px;
 }
 
 td, th {
-  border: 1px solid black;
-  padding: 6px;
+    border: 1px solid #ccc;
+    padding: 6px;
 }
 
 input {
-  width: 100%;
-  border: none;
+    width: 100%;
+    border: none;
+    outline: none;
 }
 
 button {
-  padding: 10px 15px;
-  margin: 10px 5px;
-  cursor: pointer;
-}
-
-.center {
-  text-align: center;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 6px;
 }
 </style>
-
 </head>
 
 <body>
 
-<div id="formArea">
+<div class="container">
 
 <h2>mosco Marketing limited</h2>
 <h3>Order Submission Format</h3>
@@ -58,156 +65,62 @@ button {
 <table>
 <tr>
 <td>Order Date</td>
-<td><input id="orderDate"></td>
+<td><input></td>
 <td>Due Date</td>
-<td><input id="dueDate"></td>
+<td><input></td>
 </tr>
 
 <tr>
 <td>Distributor Name</td>
-<td><input id="name"></td>
+<td><input></td>
 <td>Season</td>
-<td><input id="season"></td>
+<td><input></td>
 </tr>
 
 <tr>
 <td>Address</td>
-<td><input id="address"></td>
+<td><input></td>
 <td>Order Type</td>
-<td><input id="type"></td>
-</tr>
-
-<tr>
-<td colspan="2">Slab (Y/N)</td>
-<td colspan="2"><input id="slab"></td>
-</tr>
-
-<tr>
-<td colspan="2">S. Approval</td>
-<td colspan="2"><input id="approval"></td>
+<td><input></td>
 </tr>
 </table>
 
-<br>
-
-<table id="productTable">
+<table>
 <tr>
-<th>Product Name</th>
-<th>P Size</th>
+<th>Product</th>
 <th>Qty</th>
-<th>car price</th>
-<th>Total Price</th>
-<th>Bonus %</th>
+<th>Price</th>
+<th>Total</th>
 </tr>
 
 <tr>
 <td><input></td>
 <td><input></td>
-<td><input oninput="calculate()"></td>
-<td><input oninput="calculate()"></td>
-<td><input readonly></td>
+<td><input></td>
 <td><input></td>
 </tr>
 </table>
 
-<button onclick="addRow()">+ Add Product</button>
+<button>Add Product</button>
 
-<br><br>
-
-Total carton = <input id="totalCarton" readonly style="width:100px;">
-Total V = <input id="totalValue" readonly style="width:150px;">
-
-<br><br>
+<p>Total carton: <input style="width:80px;"></p>
+<p>Total V: <input style="width:120px;"></p>
 
 <table>
 <tr>
 <td>Officer Name</td>
-<td><input id="officer"></td>
+<td><input></td>
 </tr>
 <tr>
 <td>Mobile</td>
-<td><input id="mobile"></td>
-</tr>
-<tr>
-<td>Territory</td>
-<td><input id="territory"></td>
+<td><input></td>
 </tr>
 </table>
 
+<button>Generate PDF</button>
+<button>Share</button>
+
 </div>
-
-<div class="center">
-<button onclick="generatePDF()">📄 Generate PDF</button>
-<button onclick="share()">📤 Share</button>
-</div>
-
-<script>
-
-// Add product row
-function addRow() {
-  let table = document.getElementById("productTable");
-  let row = table.insertRow();
-
-  row.innerHTML = `
-  <td><input></td>
-  <td><input></td>
-  <td><input oninput="calculate()"></td>
-  <td><input oninput="calculate()"></td>
-  <td><input readonly></td>
-  <td><input></td>
-  `;
-}
-
-// Calculate totals
-function calculate() {
-  let table = document.getElementById("productTable");
-  let totalCarton = 0;
-  let totalValue = 0;
-
-  for (let i = 1; i < table.rows.length; i++) {
-    let qty = table.rows[i].cells[2].children[0].value || 0;
-    let price = table.rows[i].cells[3].children[0].value || 0;
-
-    let total = qty * price;
-
-    table.rows[i].cells[4].children[0].value = total;
-
-    totalCarton += Number(qty);
-    totalValue += total;
-  }
-
-  document.getElementById("totalCarton").value = totalCarton;
-  document.getElementById("totalValue").value = totalValue;
-}
-
-// Generate PDF (FULL DESIGN)
-function generatePDF() {
-  let form = document.getElementById("formArea");
-
-  html2canvas(form).then(canvas => {
-    let imgData = canvas.toDataURL("image/png");
-
-    const { jsPDF } = window.jspdf;
-    let pdf = new jsPDF("p", "mm", "a4");
-
-    let imgWidth = 210;
-    let imgHeight = canvas.height * imgWidth / canvas.width;
-
-    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-
-    pdf.save("order.pdf");
-  });
-}
-
-// Share WhatsApp
-function share() {
-  let name = document.getElementById("name").value;
-  let text = "Order from " + name;
-
-  window.open("https://wa.me/?text=" + encodeURIComponent(text));
-}
-
-</script>
 
 </body>
 </html>
