@@ -1,92 +1,207 @@
-<div id="pdf-format" style="display:none; padding:20px; font-size:14px;">
-  <h2>mosco Marketing limited</h2>
-  <h4>Order Submission Format</h4>
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order App</title>
 
-  <p><b>Order Date:</b> <span id="pdfOrderDate"></span></p>
-  <p><b>Due Date:</b> <span id="pdfDueDate"></span></p>
-  <p><b>Distributor Name:</b> <span id="pdfDistributor"></span></p>
-  <p><b>Address:</b> <span id="pdfAddress"></span></p>
-  <p><b>Season:</b> <span id="pdfSeason"></span></p>
-  <p><b>Order Type:</b> <span id="pdfType"></span></p>
-  <p><b>Slab:</b> <span id="pdfSlab"></span></p>
-  <p><b>S. Approval:</b> <span id="pdfApproval"></span></p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <br>
+<style>
+body {
+    font-family: Arial;
+    background: #eee;
+    padding: 10px;
+}
 
-  <table border="1" width="100%" cellspacing="0" cellpadding="5">
-    <tr>
-      <th>Product</th>
-      <th>Size</th>
-      <th>Qty</th>
-      <th>Price</th>
-      <th>Total</th>
-    </tr>
-    <tbody id="pdfProducts"></tbody>
-  </table>
+.container {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: auto;
+}
 
-  <br>
+h2, h3 {
+    text-align: center;
+}
 
-  <p><b>Total Carton:</b> <span id="pdfTotalQty"></span></p>
-  <p><b>Total Value:</b> <span id="pdfTotalValue"></span></p>
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
 
-  <p><b>Officer Name:</b> <span id="pdfOfficer"></span></p>
-  <p><b>Mobile:</b> <span id="pdfMobile"></span></p>
-  <p><b>Territory:</b> <span id="pdfTerritory"></span></p>
+td, th {
+    border: 1px solid #999;
+    padding: 5px;
+    font-size: 12px;
+}
+
+input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 12px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>mosco Marketing limited</h2>
+<h3>Order Submission Format</h3>
+
+<table>
+<tr>
+<td><input id="date" placeholder="Order Date"></td>
+<td><input id="due" placeholder="Due Date"></td>
+</tr>
+
+<tr>
+<td colspan="2"><input id="distributor" placeholder="Distributor Name"></td>
+</tr>
+
+<tr>
+<td colspan="2"><input id="address" placeholder="Address"></td>
+</tr>
+
+<tr>
+<td><input id="season" placeholder="Season"></td>
+<td><input id="type" placeholder="Order Type"></td>
+</tr>
+
+<tr>
+<td><input id="slab" placeholder="Slab (Y/N)"></td>
+<td><input id="approval" placeholder="S. Approval"></td>
+</tr>
+</table>
+
+<table id="productTable">
+<tr>
+<th style="width:30%">Product</th>
+<th>P Size</th>
+<th>Qty</th>
+<th>Price</th>
+<th>Total</th>
+<th style="width:10%">Bonus</th>
+</tr>
+</table>
+
+<button onclick="addProduct()">+ Add Product</button>
+
+<h4>Total carton: <span id="totalQty">0</span></h4>
+<h4>Total V: <span id="totalValue">0</span></h4>
+
+<table>
+<tr><td><input id="officer" placeholder="Officer Name"></td></tr>
+<tr><td><input id="mobile" placeholder="Mobile"></td></tr>
+<tr><td><input id="territory" placeholder="Territory"></td></tr>
+</table>
+
+<button onclick="generatePDF()">Generate PDF</button>
+
 </div>
+
+<script>
+
+function addProduct() {
+    let table = document.getElementById("productTable");
+
+    let row = table.insertRow();
+
+    row.innerHTML = `
+    <td><input></td>
+    <td><input></td>
+    <td><input oninput="calc()"></td>
+    <td><input oninput="calc()"></td>
+    <td class="total">0</td>
+    <td><input></td>
+    `;
+}
+
+function calc() {
+    let table = document.getElementById("productTable");
+    let rows = table.rows;
+
+    let totalQty = 0;
+    let totalValue = 0;
+
+    for (let i = 1; i < rows.length; i++) {
+        let qty = rows[i].cells[2].children[0].value || 0;
+        let price = rows[i].cells[3].children[0].value || 0;
+
+        let total = qty * price;
+        rows[i].cells[4].innerText = total;
+
+        totalQty += parseInt(qty);
+        totalValue += total;
+    }
+
+    document.getElementById("totalQty").innerText = totalQty;
+    document.getElementById("totalValue").innerText = totalValue;
+}
 
 function generatePDF() {
 
-  // UI থেকে data নেওয়া
-  document.getElementById("pdfOrderDate").innerText = document.getElementById("orderDate").value;
-  document.getElementById("pdfDueDate").innerText = document.getElementById("dueDate").value;
-
-  document.getElementById("pdfDistributor").innerText = document.querySelectorAll("input")[2].value;
-  document.getElementById("pdfAddress").innerText = document.querySelectorAll("input")[3].value;
-  document.getElementById("pdfSeason").innerText = document.querySelectorAll("input")[4].value;
-  document.getElementById("pdfType").innerText = document.querySelectorAll("input")[5].value;
-  document.getElementById("pdfSlab").innerText = document.querySelectorAll("input")[6].value;
-  document.getElementById("pdfApproval").innerText = document.querySelectorAll("input")[7].value;
-
-  document.getElementById("pdfOfficer").innerText = document.querySelectorAll("input")[8].value;
-  document.getElementById("pdfMobile").innerText = document.querySelectorAll("input")[9].value;
-  document.getElementById("pdfTerritory").innerText = document.querySelectorAll("input")[10].value;
-
-  // product data
-  let table = document.getElementById("productTable");
-  let pdfProducts = document.getElementById("pdfProducts");
-  pdfProducts.innerHTML = "";
-
-  for (let i = 1; i < table.rows.length; i++) {
-    let cells = table.rows[i].cells;
-
-    let row = `
-      <tr>
-        <td>${cells[0].children[0].value}</td>
-        <td>${cells[1].children[0].value}</td>
-        <td>${cells[2].children[0].value}</td>
-        <td>${cells[3].children[0].value}</td>
-        <td>${cells[4].innerText}</td>
-      </tr>
-    `;
-    pdfProducts.innerHTML += row;
-  }
-
-  document.getElementById("pdfTotalQty").innerText = document.getElementById("totalQty").innerText;
-  document.getElementById("pdfTotalValue").innerText = document.getElementById("totalValue").innerText;
-
-  // PDF render
-  let pdfArea = document.getElementById("pdf-format");
-  pdfArea.style.display = "block";
-
-  html2canvas(pdfArea).then(canvas => {
-    const imgData = canvas.toDataURL("image/png");
-
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF();
+    let doc = new jsPDF();
 
-    pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
-    pdf.save("order.pdf");
+    let y = 10;
 
-    pdfArea.style.display = "none";
-  });
+    doc.text("Mosco Marketing Limited", 10, y);
+    y+=10;
+
+    doc.text("Order Submission", 10, y);
+    y+=10;
+
+    doc.text("Date: " + document.getElementById("date").value, 10, y); y+=7;
+    doc.text("Due: " + document.getElementById("due").value, 10, y); y+=7;
+    doc.text("Distributor: " + document.getElementById("distributor").value, 10, y); y+=7;
+    doc.text("Address: " + document.getElementById("address").value, 10, y); y+=7;
+    doc.text("Season: " + document.getElementById("season").value, 10, y); y+=7;
+    doc.text("Type: " + document.getElementById("type").value, 10, y); y+=7;
+    doc.text("Slab: " + document.getElementById("slab").value, 10, y); y+=7;
+    doc.text("Approval: " + document.getElementById("approval").value, 10, y); y+=10;
+
+    let table = document.getElementById("productTable");
+
+    for (let i = 1; i < table.rows.length; i++) {
+        let cells = table.rows[i].cells;
+
+        let text = 
+        cells[0].children[0].value + " | " +
+        cells[2].children[0].value + " x " +
+        cells[3].children[0].value + " = " +
+        cells[4].innerText;
+
+        doc.text(text, 10, y);
+        y+=7;
+    }
+
+    y+=5;
+    doc.text("Total Qty: " + document.getElementById("totalQty").innerText, 10, y); y+=7;
+    doc.text("Total Value: " + document.getElementById("totalValue").innerText, 10, y); y+=10;
+
+    doc.text("Officer: " + document.getElementById("officer").value, 10, y); y+=7;
+    doc.text("Mobile: " + document.getElementById("mobile").value, 10, y); y+=7;
+    doc.text("Territory: " + document.getElementById("territory").value, 10, y);
+
+    doc.save("order.pdf");
 }
+
+</script>
+
+</body>
+</html>
