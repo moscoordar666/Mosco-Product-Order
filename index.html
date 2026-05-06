@@ -11,147 +11,67 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-
-body {
-  font-family: Arial;
-  margin: 0;
-  background: #ddd;
-}
+body { font-family: Arial; margin:0; background:#ddd; }
 
 #formArea {
-  max-width: 420px;
-  margin: auto;
-  background: #eee;
-  padding: 15px;
-  border-radius: 30px;
-  border: 6px solid black;
+  max-width:420px; margin:auto; background:#eee;
+  padding:15px; border-radius:30px; border:6px solid black;
 }
 
-h2, h3 {
-  text-align: center;
-  margin: 5px 0;
+h2,h3 { text-align:center; margin:5px 0; }
+
+table { width:100%; border-collapse:collapse; margin-top:10px; }
+td,th { border:1px solid #444; padding:6px; font-size:13px; }
+th { background:#00cfd1; }
+
+input, select {
+  width:100%; border:none; background:transparent; outline:none;
 }
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-td, th {
-  border: 1px solid #444;
-  padding: 6px;
-  font-size: 13px;
-}
-
-th { background: #00cfd1; }
-
-input {
-  width: 100%;
-  border: none;
-  background: transparent;
-  outline: none;
-}
-
-/* column size */
-#productTable th:nth-child(2),
-#productTable td:nth-child(2) { width: 160px; }
-
-#productTable th:nth-child(3),
-#productTable td:nth-child(3) { width: 50px; }
-
-#productTable th:nth-child(6),
-#productTable td:nth-child(6) { width: 80px; }
-
-#productTable th:nth-child(7),
-#productTable td:nth-child(7) { width: 50px; }
 
 .green-box {
-  background: #8bc34a;
-  border-radius: 20px;
-  padding: 8px;
-  margin-top: 5px;
+  background:#8bc34a; border-radius:20px; padding:8px; margin-top:5px;
 }
 
-.flex {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.flex div { flex: 1; }
+.flex { display:flex; gap:10px; margin-top:10px; }
+.flex div { flex:1; }
 
 .add-btn {
-  background: #8bc34a;
-  padding: 6px;
-  border-radius: 10px;
-  border: none;
-  margin-top: 10px;
-  font-size: 12px;
+  background:#8bc34a; padding:6px; border-radius:10px;
+  border:none; margin-top:10px; font-size:12px;
 }
 
 .total {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
+  display:flex; justify-content:center; gap:10px; margin-top:10px;
 }
 
 .total input {
-  width: 100px;
-  background: #8bc34a;
-  border-radius: 8px;
-  text-align: center;
+  width:100px; background:#8bc34a; border-radius:8px; text-align:center;
 }
 
-.officer {
-  margin-top: 20px;
-}
-
+.officer { margin-top:20px; }
 .officer input {
-  border: 1px solid #999;
-  border-radius: 20px;
-  padding: 6px;
-  margin-top: 5px;
+  border:1px solid #999; border-radius:20px; padding:6px; margin-top:5px;
 }
 
-/* buttons */
-.bottom {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
+.bottom { display:flex; gap:10px; margin-top:20px; }
 
 .btn {
-  flex: 1;
-  padding: 8px;
-  border-radius: 20px;
-  border: none;
-  font-size: 13px;
-  color: #fff;
+  flex:1; padding:8px; border-radius:20px;
+  border:none; font-size:13px; color:#fff;
 }
 
-.pdf-btn { background: #4CAF50; }
-.share-btn { background: #009688; }
+.pdf-btn { background:#4CAF50; }
+.share-btn { background:#009688; }
 
 .clear-btn {
-  background: #f44336;
-  color:#fff;
-  font-size: 12px;
-  padding: 6px;
+  background:#f44336; color:#fff; font-size:12px; padding:6px;
 }
 
-/* 📲 SMALL INSTALL BUTTON */
+/* small install */
 .install-btn {
-  background: #2196f3;
-  color: #fff;
-  font-size: 10px;
-  padding: 3px 8px;
-  border-radius: 10px;
+  background:#2196f3; color:#fff;
+  font-size:10px; padding:3px 8px; border-radius:10px;
 }
-
-.no-print {}
-
 </style>
 </head>
 
@@ -159,12 +79,8 @@ input {
 
 <div id="formArea">
 
-<div class="no-print" style="text-align:right;">
-  <button class="install-btn" onclick="installApp()">Install</button>
-</div>
-
-<div style="text-align:center;">
-  <img src="mosco-logo.png" style="width:80px;">
+<div style="text-align:right;">
+<button class="install-btn" onclick="installApp()">Install</button>
 </div>
 
 <h2>Mosco Marketing limited</h2>
@@ -189,46 +105,50 @@ input {
 <td>Address</td>
 <td><input></td>
 <td style="background:#00cfd1;">Order Type</td>
-<td><input></td>
+<td>
+<select>
+<option>Cash</option>
+<option>Credit</option>
+</select>
+</td>
 </tr>
 
 <tr>
 <td colspan="2">Slab (Y/N)</td>
-<td colspan="2"><input></td>
+<td colspan="2">
+<select>
+<option>Yes</option>
+<option>No</option>
+</select>
+</td>
 </tr>
 
 <tr>
 <td colspan="2">S. Approval</td>
-<td colspan="2"><input></td>
+<td colspan="2">
+<select>
+<option>Yes</option>
+<option>No</option>
+</select>
+</td>
 </tr>
 </table>
-
-<div class="flex">
-  <div>
-    <div class="green-box">Depot</div>
-    <input class="green-box">
-  </div>
-  <div>
-    <div class="green-box">Transport</div>
-    <input class="green-box">
-  </div>
-</div>
 
 <table id="productTable">
 <tr>
 <th>#</th>
 <th>Product</th>
-<th>P Size</th>
 <th>Qty</th>
-<th>Price</th>
-<th>Total</th>
+<th>Per Ctn Price</th>
+<th>Total Price</th>
 <th>Bonus</th>
 </tr>
 
 <tr>
 <td>1</td>
-<td><input></td>
-<td><input></td>
+<td>
+<select class="productList"></select>
+</td>
 <td><input oninput="calculate()"></td>
 <td><input oninput="calculate()"></td>
 <td><input readonly></td>
@@ -236,115 +156,172 @@ input {
 </tr>
 </table>
 
-<button class="add-btn no-print" onclick="addRow()">+ Add Product</button>
+<button class="add-btn" onclick="addRow()">+ Add Product</button>
 
 <div class="total">
-  Total Ctn = <input id="totalCarton" readonly>
-  Total V = <input id="totalValue" readonly>
+Total Ctn = <input id="totalCarton" readonly>
+Total V = <input id="totalValue" readonly>
 </div>
 
-<div class="officer">
-  Officer Name <input>
-  Mobile <input>
-  Territory <input>
+<div class="bottom">
+<button class="btn pdf-btn" onclick="generatePDF()">PDF</button>
+<button class="btn share-btn" onclick="share()">Share</button>
 </div>
 
-<div class="bottom no-print">
-  <button class="btn pdf-btn" onclick="generatePDF()">PDF</button>
-  <button class="btn share-btn" onclick="share()">Share</button>
-</div>
-
-<div style="text-align:center;" class="no-print">
-  <button class="clear-btn" onclick="clearForm()">Clear</button>
+<div style="text-align:center;">
+<button class="clear-btn" onclick="location.reload()">Clear</button>
 </div>
 
 </div>
 
 <script>
 
-// Add Row
-function addRow() {
-  let table = document.getElementById("productTable");
-  let row = table.insertRow();
-  let index = table.rows.length - 1;
+// PRODUCT LIST
+const products = `Agritop 100gm
+Agritop 50gm
+Agrivit 200gm
+Agrivit 100gm
+Agrivit 50gm
+Agrosave 20 Lit.
+Agrosave 100ml
+Agrosave 50ml
+Amonot 100ml (Aqua)
+Arika (Blue) 500gm
+Arika (Blue) 100gm
+Arika (Yellow) 500gm
+Arika (Yellow) 100gm
+Beater 400ml
+Beater 100ml
+Beater 50ml
+Biozim 1 Lit.
+Biozim 5 Lit.
+Biozim 500ml
+Biozim 100ml
+Builder 500gm
+Builder 200gm
+Builder 100gm
+Bullet 50gm
+Cyper 1 Lit.
+Cyper 400ml
+Cyper 100ml
+Cyper 50ml
+Dare 1 Lit.
+Dare 500ml
+Dare 100ml
+Divine 1 Lit.
+Divine 100ml
+Emaben 100gm
+Fentop 100ml
+Firotin 400ml
+Firotin 100ml
+Folidon 100gm
+Halotouch 1 Lit.
+Halotouch 100ml
+Marine 1Lit
+Marine 100ml
+Massive 500gm
+Massive 100gm
+Medisate 1 Lit.
+Medisate 100ml
+Megazole 1 Lit.
+Megazole 100ml
+Monoful 1kg
+Mosco Boron 500gm
+Mosco Zinc Mono 1kg
+Mostop 100ml
+Namiral 100ml
+Paramos 1 Lit.
+Paramos 100ml
+Power Plus 1 Lit.
+Power Plus 100ml
+Radial 100ml
+Rasim 100gm
+Real 100ml
+Remote 100ml
+Repel 100gm
+Ronza 10gm
+Shokti 10gm
+Supervit 1kg
+Technovit 100gm
+Tiefen 100ml
+Winner 1 Lit.`.split("\n");
 
-  row.innerHTML = `
-  <td>${index}</td>
-  <td><input></td>
-  <td><input></td>
-  <td><input oninput="calculate()"></td>
-  <td><input oninput="calculate()"></td>
-  <td><input readonly></td>
-  <td><input></td>
-  `;
+// dropdown fill
+function fillDropdown(select) {
+  products.forEach(p=>{
+    let opt=document.createElement("option");
+    opt.textContent=p;
+    select.appendChild(opt);
+  });
 }
 
-// Calculate
-function calculate() {
-  let table = document.getElementById("productTable");
-  let totalCarton = 0;
-  let totalValue = 0;
+// init first row
+fillDropdown(document.querySelector(".productList"));
 
-  for (let i = 1; i < table.rows.length; i++) {
-    let qty = parseFloat(table.rows[i].cells[3].children[0].value) || 0;
-    let price = parseFloat(table.rows[i].cells[4].children[0].value) || 0;
+// add row
+function addRow(){
+ let table=document.getElementById("productTable");
+ let row=table.insertRow();
+ let i=table.rows.length-1;
 
-    let total = qty * price;
-
-    table.rows[i].cells[5].children[0].value = total.toFixed(2);
-
-    totalCarton += qty;
-    totalValue += total;
-  }
-
-  document.getElementById("totalCarton").value = totalCarton;
-  document.getElementById("totalValue").value = totalValue.toFixed(2);
+ row.innerHTML=`
+ <td>${i}</td>
+ <td><select class="productList"></select></td>
+ <td><input oninput="calculate()"></td>
+ <td><input oninput="calculate()"></td>
+ <td><input readonly></td>
+ <td><input></td>
+ `;
+ fillDropdown(row.querySelector("select"));
 }
 
-// PDF
-async function generatePDF() {
-  const { jsPDF } = window.jspdf;
-  const canvas = await html2canvas(document.getElementById("formArea"));
-  const img = canvas.toDataURL("image/png");
+// calculate
+function calculate(){
+ let table=document.getElementById("productTable");
+ let totalC=0,totalV=0;
 
-  const pdf = new jsPDF();
-  pdf.addImage(img, 'PNG', 0, 0, 210, 297);
-  pdf.save("order.pdf");
+ for(let i=1;i<table.rows.length;i++){
+  let qty=parseFloat(table.rows[i].cells[2].children[0].value)||0;
+  let price=parseFloat(table.rows[i].cells[3].children[0].value)||0;
+
+  let total=qty*price;
+  table.rows[i].cells[4].children[0].value=total.toFixed(2);
+
+  totalC+=qty;
+  totalV+=total;
+ }
+
+ document.getElementById("totalCarton").value=totalC;
+ document.getElementById("totalValue").value=totalV.toFixed(2);
 }
 
-// Share
-function share() {
-  if (navigator.share) {
-    navigator.share({
-      title: "Order",
-      text: "Order Form",
-      url: location.href
-    });
-  } else {
-    alert("Not supported");
-  }
+// pdf
+async function generatePDF(){
+ const { jsPDF } = window.jspdf;
+ const canvas = await html2canvas(document.getElementById("formArea"));
+ const img = canvas.toDataURL("image/png");
+
+ const pdf = new jsPDF();
+ pdf.addImage(img,'PNG',0,0,210,297);
+ pdf.save("order.pdf");
 }
 
-// Clear
-function clearForm() {
-  document.querySelectorAll("input").forEach(i => i.value = "");
-  location.reload();
+// share
+function share(){
+ if(navigator.share){
+  navigator.share({title:"Order",url:location.href});
+ } else alert("Not supported");
 }
 
-// Install
+// install
 let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
+window.addEventListener('beforeinstallprompt',(e)=>{
+ e.preventDefault();
+ deferredPrompt=e;
 });
-
-function installApp() {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-  } else {
-    alert("Install not available");
-  }
+function installApp(){
+ if(deferredPrompt) deferredPrompt.prompt();
+ else alert("Install not available");
 }
 
 </script>
