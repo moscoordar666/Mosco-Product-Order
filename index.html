@@ -1,58 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 <title>Order App</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 body {
-    font-family: Arial;
-    background: #eee;
-    padding: 10px;
+  font-family: Arial;
+  background:#eee;
+  padding:10px;
 }
 
-.container {
-    background: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    max-width: 500px;
-    margin: auto;
+.container{
+  background:#fff;
+  padding:15px;
+  border-radius:10px;
+  max-width:500px;
+  margin:auto;
 }
 
-h2, h3 {
-    text-align: center;
+h2,h3{
+  text-align:center;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+input{
+  width:100%;
+  border:none;
+  border-bottom:1px solid #999;
+  padding:8px;
+  margin:5px 0;
+  font-size:14px;
 }
 
-td, th {
-    border: 1px solid #999;
-    padding: 5px;
-    font-size: 12px;
+.row{
+  display:flex;
+  gap:10px;
 }
 
-input {
-    width: 100%;
-    border: none;
-    outline: none;
-    font-size: 12px;
+.row input{
+  flex:1;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    background: black;
-    color: white;
-    border: none;
-    border-radius: 8px;
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
 }
+
+th,td{
+  border:1px solid #999;
+  padding:5px;
+  text-align:center;
+  font-size:12px;
+}
+
+th{
+  background:#eee;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  background:black;
+  color:white;
+  font-size:16px;
+  border-radius:8px;
+}
+
+.small{
+  width:60px;
+}
+
 </style>
 </head>
 
@@ -63,30 +87,23 @@ button {
 <h2>mosco Marketing limited</h2>
 <h3>Order Submission Format</h3>
 
-<table>
-<tr>
-<td><input id="date" placeholder="Order Date"></td>
-<td><input id="due" placeholder="Due Date"></td>
-</tr>
+<div class="row">
+<input id="orderDate" placeholder="Order Date">
+<input id="dueDate" placeholder="Due Date">
+</div>
 
-<tr>
-<td colspan="2"><input id="distributor" placeholder="Distributor Name"></td>
-</tr>
+<input id="distributor" placeholder="Distributor Name">
+<input id="address" placeholder="Address">
 
-<tr>
-<td colspan="2"><input id="address" placeholder="Address"></td>
-</tr>
+<div class="row">
+<input id="season" placeholder="Season">
+<input id="orderType" placeholder="Order Type">
+</div>
 
-<tr>
-<td><input id="season" placeholder="Season"></td>
-<td><input id="type" placeholder="Order Type"></td>
-</tr>
-
-<tr>
-<td><input id="slab" placeholder="Slab (Y/N)"></td>
-<td><input id="approval" placeholder="S. Approval"></td>
-</tr>
-</table>
+<div class="row">
+<input id="slab" placeholder="Slab (Y/N)">
+<input id="approval" placeholder="S. Approval">
+</div>
 
 <table id="productTable">
 <tr>
@@ -97,108 +114,131 @@ button {
 <th>Total</th>
 <th style="width:10%">Bonus</th>
 </tr>
+
+<tr>
+<td><input></td>
+<td><input></td>
+<td><input oninput="calc()"></td>
+<td><input oninput="calc()"></td>
+<td>0</td>
+<td><input></td>
+</tr>
+
 </table>
 
-<button onclick="addProduct()">+ Add Product</button>
+<button onclick="addRow()">+ Add Product</button>
 
-<h4>Total carton: <span id="totalQty">0</span></h4>
-<h4>Total V: <span id="totalValue">0</span></h4>
+<p><b>Total carton:</b> <span id="totalCarton">0</span></p>
+<p><b>Total V:</b> <span id="totalValue">0</span></p>
 
-<table>
-<tr><td><input id="officer" placeholder="Officer Name"></td></tr>
-<tr><td><input id="mobile" placeholder="Mobile"></td></tr>
-<tr><td><input id="territory" placeholder="Territory"></td></tr>
-</table>
+<input id="officer" placeholder="Officer Name">
+<input id="mobile" placeholder="Mobile">
+<input id="territory" placeholder="Territory">
 
 <button onclick="generatePDF()">Generate PDF</button>
+<button onclick="sharePDF()">Share</button>
 
 </div>
 
 <script>
 
-function addProduct() {
-    let table = document.getElementById("productTable");
+// add product
+function addRow(){
+  let table = document.getElementById("productTable");
 
-    let row = table.insertRow();
+  let row = table.insertRow();
 
-    row.innerHTML = `
+  row.innerHTML = `
     <td><input></td>
     <td><input></td>
     <td><input oninput="calc()"></td>
     <td><input oninput="calc()"></td>
-    <td class="total">0</td>
+    <td>0</td>
     <td><input></td>
-    `;
+  `;
 }
 
-function calc() {
-    let table = document.getElementById("productTable");
-    let rows = table.rows;
+// calculate
+function calc(){
+  let table = document.getElementById("productTable");
+  let totalCarton = 0;
+  let totalValue = 0;
 
-    let totalQty = 0;
-    let totalValue = 0;
+  for(let i=1;i<table.rows.length;i++){
+    let cells = table.rows[i].cells;
 
-    for (let i = 1; i < rows.length; i++) {
-        let qty = rows[i].cells[2].children[0].value || 0;
-        let price = rows[i].cells[3].children[0].value || 0;
+    let qty = Number(cells[2].children[0].value) || 0;
+    let price = Number(cells[3].children[0].value) || 0;
 
-        let total = qty * price;
-        rows[i].cells[4].innerText = total;
+    let total = qty * price;
 
-        totalQty += parseInt(qty);
-        totalValue += total;
-    }
+    cells[4].innerText = total;
 
-    document.getElementById("totalQty").innerText = totalQty;
-    document.getElementById("totalValue").innerText = totalValue;
+    totalCarton += qty;
+    totalValue += total;
+  }
+
+  document.getElementById("totalCarton").innerText = totalCarton;
+  document.getElementById("totalValue").innerText = totalValue;
 }
 
-function generatePDF() {
+// PDF
+function generatePDF(){
 
-    const { jsPDF } = window.jspdf;
-    let doc = new jsPDF();
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
 
-    let y = 10;
+  let y = 10;
 
-    doc.text("Mosco Marketing Limited", 10, y);
-    y+=10;
+  function line(text){
+    pdf.text(text,10,y);
+    y+=6;
+  }
 
-    doc.text("Order Submission", 10, y);
-    y+=10;
+  line("mosco Marketing limited");
+  line("Order Submission Format");
 
-    doc.text("Date: " + document.getElementById("date").value, 10, y); y+=7;
-    doc.text("Due: " + document.getElementById("due").value, 10, y); y+=7;
-    doc.text("Distributor: " + document.getElementById("distributor").value, 10, y); y+=7;
-    doc.text("Address: " + document.getElementById("address").value, 10, y); y+=7;
-    doc.text("Season: " + document.getElementById("season").value, 10, y); y+=7;
-    doc.text("Type: " + document.getElementById("type").value, 10, y); y+=7;
-    doc.text("Slab: " + document.getElementById("slab").value, 10, y); y+=7;
-    doc.text("Approval: " + document.getElementById("approval").value, 10, y); y+=10;
+  line("Date: " + orderDate.value);
+  line("Due Date: " + dueDate.value);
+  line("Distributor: " + distributor.value);
+  line("Address: " + address.value);
+  line("Season: " + season.value);
+  line("Order Type: " + orderType.value);
+  line("Slab: " + slab.value);
+  line("Approval: " + approval.value);
 
-    let table = document.getElementById("productTable");
+  y+=5;
+  line("Products:");
 
-    for (let i = 1; i < table.rows.length; i++) {
-        let cells = table.rows[i].cells;
+  let table = document.getElementById("productTable");
 
-        let text = 
-        cells[0].children[0].value + " | " +
-        cells[2].children[0].value + " x " +
-        cells[3].children[0].value + " = " +
-        cells[4].innerText;
+  for(let i=1;i<table.rows.length;i++){
+    let c = table.rows[i].cells;
 
-        doc.text(text, 10, y);
-        y+=7;
-    }
+    let name = c[0].children[0].value;
+    let size = c[1].children[0].value;
+    let qty = c[2].children[0].value;
+    let price = c[3].children[0].value;
+    let total = c[4].innerText;
 
-    y+=5;
-    doc.text("Total Qty: " + document.getElementById("totalQty").innerText, 10, y); y+=7;
-    doc.text("Total Value: " + document.getElementById("totalValue").innerText, 10, y); y+=10;
+    line(name+" | "+qty+" x "+price+" = "+total);
+  }
 
-    doc.text("Officer: " + document.getElementById("officer").value, 10, y); y+=7;
-    doc.text("Mobile: " + document.getElementById("mobile").value, 10, y); y+=7;
-    doc.text("Territory: " + document.getElementById("territory").value, 10, y);
+  y+=5;
+  line("Total Carton: " + totalCarton.innerText);
+  line("Total Value: " + totalValue.innerText);
 
-    doc.save("order.pdf");
+  y+=5;
+  line("Officer: " + officer.value);
+  line("Mobile: " + mobile.value);
+  line("Territory: " + territory.value);
+
+  pdf.save("order.pdf");
+}
+
+// Share
+function sharePDF(){
+  alert("PDF generate করে তারপর share করো");
 }
 
 </script>
