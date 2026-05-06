@@ -53,17 +53,19 @@ input {
   outline: none;
 }
 
-/* 🔥 Column Fix */
+/* 🔥 Column Fix FINAL */
+#productTable th:nth-child(2),
+#productTable td:nth-child(2) { width: 160px; }
+
 #productTable th:nth-child(3),
-#productTable td:nth-child(3) { width: 60px; } /* P Size small */
+#productTable td:nth-child(3) { width: 50px; }
 
 #productTable th:nth-child(6),
-#productTable td:nth-child(6) { width: 100px; } /* Total big */
+#productTable td:nth-child(6) { width: 80px; }
 
 #productTable th:nth-child(7),
 #productTable td:nth-child(7) { width: 50px; }
 
-/* Boxes */
 .green-box {
   background: #8bc34a;
   border-radius: 20px;
@@ -79,7 +81,6 @@ input {
 
 .flex div { flex: 1; }
 
-/* Buttons */
 .add-btn {
   background: #8bc34a;
   padding: 6px;
@@ -114,7 +115,7 @@ input {
   margin-top: 5px;
 }
 
-/* Bottom Buttons */
+/* Buttons */
 .bottom {
   display: flex;
   gap: 10px;
@@ -132,15 +133,23 @@ input {
 
 .pdf-btn { background: #4CAF50; }
 .share-btn { background: #009688; }
-.clear-btn { background: #f44336; font-size: 12px; padding: 6px; }
-.install-btn { background: #2196f3; font-size: 11px; padding: 5px 10px; }
+
+.clear-btn {
+  background: #f44336;
+  color:#fff;
+  font-size: 12px;
+  padding: 6px;
+}
+
+.install-btn {
+  background: #2196f3;
+  color: #fff;
+  font-size: 11px;
+  padding: 5px 10px;
+}
 
 /* ❌ Hide in PDF */
 .no-print {}
-
-@media print {
-  .no-print { display: none !important; }
-}
 
 </style>
 </head>
@@ -149,7 +158,6 @@ input {
 
 <div id="formArea">
 
-<!-- Install -->
 <div class="no-print" style="text-align:right;">
   <button class="install-btn" onclick="installApp()">📲 Install</button>
 </div>
@@ -241,8 +249,8 @@ input {
 </div>
 
 <div class="bottom no-print">
-  <button class="btn pdf-btn" onclick="generatePDF()">📄 PDF</button>
-  <button class="btn share-btn" onclick="share()">📤 Share</button>
+  <button class="btn pdf-btn" onclick="generatePDF()">PDF</button>
+  <button class="btn share-btn" onclick="share()">Share</button>
 </div>
 
 <div style="text-align:center;" class="no-print">
@@ -291,11 +299,17 @@ function calculate() {
   document.getElementById("totalValue").value = totalValue;
 }
 
-// PDF
+// 🔥 PDF WITHOUT BUTTONS
 async function generatePDF() {
   const { jsPDF } = window.jspdf;
 
+  let buttons = document.querySelectorAll(".no-print");
+  buttons.forEach(el => el.style.display = "none");
+
   let canvas = await html2canvas(document.getElementById("formArea"), {scale:2});
+
+  buttons.forEach(el => el.style.display = "");
+
   let imgData = canvas.toDataURL("image/png");
 
   let pdf = new jsPDF('p','mm','a4');
@@ -320,11 +334,17 @@ async function generatePDF() {
   pdf.save("order.pdf");
 }
 
-// Share
+// 🔥 SHARE WITHOUT BUTTONS
 async function share(){
   const { jsPDF } = window.jspdf;
 
+  let buttons = document.querySelectorAll(".no-print");
+  buttons.forEach(el => el.style.display = "none");
+
   let canvas = await html2canvas(document.getElementById("formArea"), {scale:2});
+
+  buttons.forEach(el => el.style.display = "");
+
   let imgData = canvas.toDataURL("image/png");
 
   let pdf = new jsPDF('p','mm','a4');
