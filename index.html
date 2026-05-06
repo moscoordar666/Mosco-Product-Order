@@ -53,7 +53,7 @@ input {
   outline: none;
 }
 
-/* 🔥 Column Fix FINAL */
+/* column size */
 #productTable th:nth-child(2),
 #productTable td:nth-child(2) { width: 160px; }
 
@@ -115,7 +115,7 @@ input {
   margin-top: 5px;
 }
 
-/* Buttons */
+/* buttons */
 .bottom {
   display: flex;
   gap: 10px;
@@ -141,14 +141,15 @@ input {
   padding: 6px;
 }
 
+/* 📲 SMALL INSTALL BUTTON */
 .install-btn {
   background: #2196f3;
   color: #fff;
-  font-size: 11px;
-  padding: 5px 10px;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 10px;
 }
 
-/* ❌ Hide in PDF */
 .no-print {}
 
 </style>
@@ -159,7 +160,7 @@ input {
 <div id="formArea">
 
 <div class="no-print" style="text-align:right;">
-  <button class="install-btn" onclick="installApp()">📲 Install</button>
+  <button class="install-btn" onclick="installApp()">Install</button>
 </div>
 
 <div style="text-align:center;">
@@ -172,33 +173,33 @@ input {
 <table>
 <tr>
 <td style="background:#00cfd1;">Order Date</td>
-<td><input id="orderDate"></td>
+<td><input></td>
 <td style="background:#00cfd1;">Due Date</td>
-<td><input id="dueDate"></td>
+<td><input></td>
 </tr>
 
 <tr>
 <td>Distributor Name</td>
-<td><input id="name"></td>
+<td><input></td>
 <td style="background:#00cfd1;">Season</td>
-<td><input id="season"></td>
+<td><input></td>
 </tr>
 
 <tr>
 <td>Address</td>
-<td><input id="address"></td>
+<td><input></td>
 <td style="background:#00cfd1;">Order Type</td>
-<td><input id="type"></td>
+<td><input></td>
 </tr>
 
 <tr>
 <td colspan="2">Slab (Y/N)</td>
-<td colspan="2"><input id="slab"></td>
+<td colspan="2"><input></td>
 </tr>
 
 <tr>
 <td colspan="2">S. Approval</td>
-<td colspan="2"><input id="approval"></td>
+<td colspan="2"><input></td>
 </tr>
 </table>
 
@@ -243,9 +244,9 @@ input {
 </div>
 
 <div class="officer">
-  Officer Name <input id="officer">
-  Mobile <input id="mobile">
-  Territory <input id="territory">
+  Officer Name <input>
+  Mobile <input>
+  Territory <input>
 </div>
 
 <div class="bottom no-print">
@@ -285,99 +286,61 @@ function calculate() {
   let totalValue = 0;
 
   for (let i = 1; i < table.rows.length; i++) {
-    let qty = table.rows[i].cells[3].children[0].value || 0;
-    let price = table.rows[i].cells[4].children[0].value || 0;
+    let qty = parseFloat(table.rows[i].cells[3].children[0].value) || 0;
+    let price = parseFloat(table.rows[i].cells[4].children[0].value) || 0;
 
     let total = qty * price;
-    table.rows[i].cells[5].children[0].value = total;
 
-    totalCarton += Number(qty);
+    table.rows[i].cells[5].children[0].value = total.toFixed(2);
+
+    totalCarton += qty;
     totalValue += total;
   }
 
   document.getElementById("totalCarton").value = totalCarton;
-  document.getElementById("totalValue").value = totalValue;
+  document.getElementById("totalValue").value = totalValue.toFixed(2);
 }
 
-// 🔥 PDF WITHOUT BUTTONS
+// PDF
 async function generatePDF() {
   const { jsPDF } = window.jspdf;
+  const canvas = await html2canvas(document.getElementById("formArea"));
+  const img = canvas.toDataURL("image/png");
 
-  let buttons = document.querySelectorAll(".no-print");
-  buttons.forEach(el => el.style.display = "none");
-
-  let canvas = await html2canvas(document.getElementById("formArea"), {scale:2});
-
-  buttons.forEach(el => el.style.display = "");
-
-  let imgData = canvas.toDataURL("image/png");
-
-  let pdf = new jsPDF('p','mm','a4');
-
-  let imgWidth = 210;
-  let pageHeight = 297;
-  let imgHeight = canvas.height * imgWidth / canvas.width;
-
-  let heightLeft = imgHeight;
-  let position = 0;
-
-  pdf.addImage(imgData,'PNG',0,position,imgWidth,imgHeight);
-  heightLeft -= pageHeight;
-
-  while(heightLeft > 0){
-    position = heightLeft - imgHeight;
-    pdf.addPage();
-    pdf.addImage(imgData,'PNG',0,position,imgWidth,imgHeight);
-    heightLeft -= pageHeight;
-  }
-
+  const pdf = new jsPDF();
+  pdf.addImage(img, 'PNG', 0, 0, 210, 297);
   pdf.save("order.pdf");
 }
 
-// 🔥 SHARE WITHOUT BUTTONS
-async function share(){
-  const { jsPDF } = window.jspdf;
-
-  let buttons = document.querySelectorAll(".no-print");
-  buttons.forEach(el => el.style.display = "none");
-
-  let canvas = await html2canvas(document.getElementById("formArea"), {scale:2});
-
-  buttons.forEach(el => el.style.display = "");
-
-  let imgData = canvas.toDataURL("image/png");
-
-  let pdf = new jsPDF('p','mm','a4');
-  let imgWidth = 210;
-  let imgHeight = canvas.height * imgWidth / canvas.width;
-
-  pdf.addImage(imgData,'PNG',0,0,imgWidth,imgHeight);
-
-  let blob = pdf.output("blob");
-  let file = new File([blob],"order.pdf",{type:"application/pdf"});
-
-  if(navigator.share && navigator.canShare({files:[file]})){
-    await navigator.share({files:[file],title:"Order PDF"});
+// Share
+function share() {
+  if (navigator.share) {
+    navigator.share({
+      title: "Order",
+      text: "Order Form",
+      url: location.href
+    });
   } else {
-    alert("Use Chrome mobile");
+    alert("Not supported");
   }
 }
 
 // Clear
-function clearForm(){
-  localStorage.clear();
+function clearForm() {
+  document.querySelectorAll("input").forEach(i => i.value = "");
   location.reload();
 }
 
 // Install
 let deferredPrompt;
+
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
 });
 
-function installApp(){
-  if(deferredPrompt){
+function installApp() {
+  if (deferredPrompt) {
     deferredPrompt.prompt();
   } else {
     alert("Install not available");
