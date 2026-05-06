@@ -11,114 +11,144 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-body { font-family: Arial; margin:0; background:#ddd; }
+
+body {
+  font-family: Arial;
+  margin: 0;
+  background: #ddd;
+}
 
 #formArea {
-  max-width:420px;
-  margin:auto;
-  background:#eee;
-  padding:15px;
-  border-radius:30px;
-  border:6px solid black;
+  max-width: 420px;
+  margin: auto;
+  background: #eee;
+  padding: 15px;
+  border-radius: 30px;
+  border: 6px solid black;
 }
 
-h2,h3 { text-align:center; margin:5px 0; }
+h2, h3 {
+  text-align: center;
+  margin: 5px 0;
+}
 
 table {
-  width:100%;
-  border-collapse:collapse;
-  margin-top:10px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
 }
 
-td,th {
-  border:1px solid #444;
-  padding:6px;
-  font-size:13px;
+td, th {
+  border: 1px solid #444;
+  padding: 6px;
+  font-size: 13px;
 }
 
-th { background:#00cfd1; }
+th { background: #00cfd1; }
 
 input, select {
-  width:100%;
-  border:none;
-  background:transparent;
-  outline:none;
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
 }
 
-/* product column bigger */
+/* Product column bigger */
 #productTable th:nth-child(2),
-#productTable td:nth-child(2){ width:220px; }
+#productTable td:nth-child(2) { width: 220px; }
 
 .green-box {
-  background:#8bc34a;
-  border-radius:20px;
-  padding:8px;
-  margin-top:5px;
+  background: #8bc34a;
+  border-radius: 20px;
+  padding: 8px;
+  margin-top: 5px;
 }
 
-.flex { display:flex; gap:10px; margin-top:10px; }
-.flex div { flex:1; }
+.flex {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.flex div { flex: 1; }
 
 .add-btn {
-  background:#8bc34a;
-  padding:6px;
-  border-radius:10px;
-  border:none;
-  margin-top:10px;
-  font-size:12px;
+  background: #8bc34a;
+  padding: 6px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+  font-size: 12px;
 }
 
 .total {
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin-top:10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .total input {
-  width:100px;
-  background:#8bc34a;
-  border-radius:8px;
-  text-align:center;
+  width: 100px;
+  background: #8bc34a;
+  border-radius: 8px;
+  text-align: center;
 }
 
-.officer { margin-top:20px; }
+.officer {
+  margin-top: 20px;
+}
 
 .officer input {
-  border:1px solid #999;
-  border-radius:20px;
-  padding:6px;
-  margin-top:5px;
+  border: 1px solid #999;
+  border-radius: 20px;
+  padding: 6px;
+  margin-top: 5px;
 }
 
-.bottom { display:flex; gap:10px; margin-top:20px; }
+.bottom {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
 
 .btn {
-  flex:1;
-  padding:8px;
-  border-radius:20px;
-  border:none;
-  font-size:13px;
-  color:#fff;
+  flex: 1;
+  padding: 8px;
+  border-radius: 20px;
+  border: none;
+  font-size: 13px;
+  color: #fff;
 }
 
-.pdf-btn { background:#4CAF50; }
-.share-btn { background:#009688; }
+.pdf-btn { background: #4CAF50; }
+.share-btn { background: #009688; }
 
 .clear-btn {
-  background:#f44336;
+  background: #f44336;
   color:#fff;
-  font-size:12px;
-  padding:6px;
+  font-size: 12px;
+  padding: 6px;
 }
 
 .install-btn {
-  background:#2196f3;
-  color:#fff;
-  font-size:10px;
-  padding:3px 8px;
-  border-radius:10px;
+  background: #2196f3;
+  color: #fff;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 10px;
 }
+
+/* 🔥 Hide in PDF */
+.no-print {}
+
+/* print hide */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
 </style>
 </head>
 
@@ -126,12 +156,12 @@ input, select {
 
 <div id="formArea">
 
-<div style="text-align:right;">
-<button class="install-btn" onclick="installApp()">Install</button>
+<div class="no-print" style="text-align:right;">
+  <button class="install-btn" onclick="installApp()">Install</button>
 </div>
 
 <div style="text-align:center;">
-<img src="mosco-logo.png" style="width:80px;">
+  <img src="mosco-logo.png" style="width:80px;">
 </div>
 
 <h2>Mosco Marketing limited</h2>
@@ -185,17 +215,19 @@ input, select {
 </tr>
 </table>
 
+<!-- Depot + Transport -->
 <div class="flex">
-<div>
-<div class="green-box">Depot</div>
-<input class="green-box">
-</div>
-<div>
-<div class="green-box">Transport</div>
-<input class="green-box">
-</div>
+  <div>
+    <div class="green-box">Depot</div>
+    <input class="green-box">
+  </div>
+  <div>
+    <div class="green-box">Transport</div>
+    <input class="green-box">
+  </div>
 </div>
 
+<!-- Product Table -->
 <table id="productTable">
 <tr>
 <th>#</th>
@@ -216,7 +248,7 @@ input, select {
 </tr>
 </table>
 
-<button class="add-btn" onclick="addRow()">+ Add Product</button>
+<button class="add-btn no-print" onclick="addRow()">+ Add Product</button>
 
 <div class="total">
 Total Ctn = <input id="totalCarton" readonly>
@@ -229,12 +261,12 @@ Mobile <input>
 Territory <input>
 </div>
 
-<div class="bottom">
+<div class="bottom no-print">
 <button class="btn pdf-btn" onclick="generatePDF()">PDF</button>
 <button class="btn share-btn" onclick="sharePDF()">Share</button>
 </div>
 
-<div style="text-align:center;">
+<div style="text-align:center;" class="no-print">
 <button class="clear-btn" onclick="location.reload()">Clear</button>
 </div>
 
@@ -242,106 +274,120 @@ Territory <input>
 
 <script>
 
-const products=["Agritop 100gm","Agritop 50gm","Agrivit 200gm","Agrivit 100gm","Agrosave 20 Lit.","Agrosave 100ml","Arika (Blue) 500gm","Beater 400ml","Biozim 1 Lit.","Builder 500gm","Cyper 1 Lit.","Dare 1 Lit.","Divine 1 Lit.","Firotin 400ml","Marine 1Lit","Massive 500gm","Medisate 1 Lit.","Megazole 1 Lit.","Mosco Boron 500gm","Paramos 1 Lit.","Power Plus 1 Lit.","Radial 100ml","Real 100ml","Remote 100ml","Repel 100gm","Ronza 10gm","Supervit 1kg","Technovit 100gm","Tiefen 100ml","Winner 1 Lit."];
+// product list
+const products = ["Agritop 100gm","Agritop 50gm","Agrivit 200gm","Agrivit 100gm","Agrosave 20 Lit.","Agrosave 100ml","Arika (Blue) 500gm","Beater 400ml","Biozim 1 Lit.","Builder 500gm","Cyper 1 Lit.","Dare 1 Lit.","Divine 1 Lit.","Firotin 400ml","Marine 1Lit","Massive 500gm","Medisate 1 Lit.","Megazole 1 Lit.","Mosco Boron 500gm","Paramos 1 Lit.","Power Plus 1 Lit.","Radial 100ml","Real 100ml","Remote 100ml","Repel 100gm","Ronza 10gm","Supervit 1kg","Technovit 100gm","Tiefen 100ml","Winner 1 Lit."];
 
+// dropdown fill
 function fillDropdown(select){
- products.forEach(p=>{
-  let o=document.createElement("option");
-  o.textContent=p;
-  select.appendChild(o);
- });
+  products.forEach(p=>{
+    let opt=document.createElement("option");
+    opt.textContent=p;
+    select.appendChild(opt);
+  });
 }
-
 fillDropdown(document.querySelector(".productList"));
 
+// add row
 function addRow(){
- let t=document.getElementById("productTable");
- let r=t.insertRow();
- let i=t.rows.length-1;
+  let table=document.getElementById("productTable");
+  let row=table.insertRow();
+  let i=table.rows.length-1;
 
- r.innerHTML=`
- <td>${i}</td>
- <td><select class="productList"></select></td>
- <td><input oninput="calculate()"></td>
- <td><input oninput="calculate()"></td>
- <td><input readonly></td>
- <td><input></td>
- `;
- fillDropdown(r.querySelector("select"));
+  row.innerHTML=`
+  <td>${i}</td>
+  <td><select class="productList"></select></td>
+  <td><input oninput="calculate()"></td>
+  <td><input oninput="calculate()"></td>
+  <td><input readonly></td>
+  <td><input></td>
+  `;
+  fillDropdown(row.querySelector("select"));
 }
 
+// calculate
 function calculate(){
- let t=document.getElementById("productTable");
- let tc=0,tv=0;
+  let table=document.getElementById("productTable");
+  let tc=0,tv=0;
 
- for(let i=1;i<t.rows.length;i++){
-  let q=parseFloat(t.rows[i].cells[2].children[0].value)||0;
-  let p=parseFloat(t.rows[i].cells[3].children[0].value)||0;
+  for(let i=1;i<table.rows.length;i++){
+    let q=parseFloat(table.rows[i].cells[2].children[0].value)||0;
+    let p=parseFloat(table.rows[i].cells[3].children[0].value)||0;
 
-  let total=q*p;
-  t.rows[i].cells[4].children[0].value=total.toFixed(2);
+    let total=q*p;
+    table.rows[i].cells[4].children[0].value=total.toFixed(2);
 
-  tc+=q;
-  tv+=total;
- }
+    tc+=q;
+    tv+=total;
+  }
 
- document.getElementById("totalCarton").value=tc;
- document.getElementById("totalValue").value=tv.toFixed(2);
+  document.getElementById("totalCarton").value=tc;
+  document.getElementById("totalValue").value=tv.toFixed(2);
 }
 
-// 🔥 FIXED PDF (perfect A4)
+// 🔥 PERFECT MULTI PAGE PDF
 async function createPDFBlob(){
- const { jsPDF } = window.jspdf;
+  const { jsPDF } = window.jspdf;
+  const element = document.getElementById("formArea");
 
- const canvas = await html2canvas(document.getElementById("formArea"), {scale:2});
- const img = canvas.toDataURL("image/jpeg",1.0);
+  document.querySelectorAll(".no-print").forEach(el=>el.style.display="none");
 
- const pdf = new jsPDF('p','mm','a4');
- const pageWidth = 210;
- const pageHeight = 297;
+  const canvas = await html2canvas(element,{scale:2});
+  const imgData = canvas.toDataURL("image/png");
 
- const imgWidth = pageWidth;
- const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  document.querySelectorAll(".no-print").forEach(el=>el.style.display="");
 
- pdf.addImage(img,'JPEG',0,0,imgWidth,imgHeight);
+  const pdf = new jsPDF('p','mm','a4');
 
- return pdf.output('blob');
+  const imgWidth = 210;
+  const pageHeight = 297;
+  const imgHeight = canvas.height * imgWidth / canvas.width;
+
+  let heightLeft = imgHeight;
+  let position = 0;
+
+  pdf.addImage(imgData,'PNG',0,position,imgWidth,imgHeight);
+  heightLeft -= pageHeight;
+
+  while(heightLeft > 0){
+    position = heightLeft - imgHeight;
+    pdf.addPage();
+    pdf.addImage(imgData,'PNG',0,position,imgWidth,imgHeight);
+    heightLeft -= pageHeight;
+  }
+
+  return pdf.output('blob');
 }
 
+// download pdf
 async function generatePDF(){
- const blob = await createPDFBlob();
- const url = URL.createObjectURL(blob);
+  const blob = await createPDFBlob();
+  const url = URL.createObjectURL(blob);
 
- const a = document.createElement("a");
- a.href = url;
- a.download = "order.pdf";
- a.click();
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="order.pdf";
+  a.click();
 }
 
-// 🔥 SHARE PDF (NOT LINK)
+// share pdf
 async function sharePDF(){
- const blob = await createPDFBlob();
- const file = new File([blob], "order.pdf", { type: "application/pdf" });
+  const blob = await createPDFBlob();
+  const file = new File([blob],"order.pdf",{type:"application/pdf"});
 
- if(navigator.share){
-   navigator.share({
-     files: [file],
-     title: "Order PDF"
-   });
- } else {
-   alert("Sharing not supported");
- }
+  if(navigator.share){
+    navigator.share({files:[file],title:"Order PDF"});
+  } else alert("Sharing not supported");
 }
 
 // install
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt',(e)=>{
- e.preventDefault();
- deferredPrompt=e;
+  e.preventDefault();
+  deferredPrompt=e;
 });
 function installApp(){
- if(deferredPrompt) deferredPrompt.prompt();
- else alert("Install not available");
+  if(deferredPrompt) deferredPrompt.prompt();
+  else alert("Install not available");
 }
 
 </script>
