@@ -5,10 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order App</title>
 
-<!-- Logo (tab icon) -->
 <link rel="icon" href="mosco-logo.png">
 
-<!-- PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -125,7 +123,6 @@ input {
 
 <div id="formArea">
 
-<!-- Logo -->
 <div style="text-align:center;">
   <img src="mosco-logo.png" style="width:80px;">
 </div>
@@ -229,7 +226,6 @@ function saveData() {
   localStorage.setItem("orderData", JSON.stringify(data));
 }
 
-// Load Data
 function loadData() {
   let data = JSON.parse(localStorage.getItem("orderData"));
   if (!data) return;
@@ -294,37 +290,39 @@ async function generatePDF() {
   let imgData = canvas.toDataURL("image/png");
 
   let imgWidth = 210;
-  let pageHeight = 297;
   let imgHeight = canvas.height * imgWidth / canvas.width;
 
-  let heightLeft = imgHeight;
-  let position = 0;
-
-  pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-  heightLeft -= pageHeight;
-
-  while (heightLeft > 0) {
-    position = heightLeft - imgHeight;
-    pdf.addPage();
-    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-  }
+  pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
   pdf.save("order.pdf");
 }
 
 
-// Share
-function share() {
-  let name = document.getElementById("name").value;
-  let total = document.getElementById("totalValue").value;
+// 🔥 UPDATED SHARE (PDF send)
+async function share() {
+  const { jsPDF } = window.jspdf;
 
-  let text =
-    "📦 Order Summary\n" +
-    "Distributor: " + name + "\n" +
-    "Total Value: " + total;
+  let canvas = await html2canvas(document.getElementById("formArea"), { scale: 2 });
+  let imgData = canvas.toDataURL("image/png");
 
-  window.open("https://wa.me/?text=" + encodeURIComponent(text));
+  let pdf = new jsPDF("p", "mm", "a4");
+
+  let imgWidth = 210;
+  let imgHeight = canvas.height * imgWidth / canvas.width;
+
+  pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+
+  let blob = pdf.output("blob");
+  let file = new File([blob], "order.pdf", { type: "application/pdf" });
+
+  if (navigator.share && navigator.canShare({ files: [file] })) {
+    await navigator.share({
+      files: [file],
+      title: "Order PDF"
+    });
+  } else {
+    alert("Mobile Chrome use করো (share support নাই)");
+  }
 }
 
 </script>
