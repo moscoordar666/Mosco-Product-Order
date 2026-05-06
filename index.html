@@ -3,27 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <title>Order App</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-
-body{
-  font-family:Arial;
+body {
+  font-family: Arial;
   background:#eee;
-  margin:0;
+  padding:10px;
 }
 
 .container{
   background:#fff;
-  padding:12px;
-  width:100%;
+  padding:15px;
+  border-radius:10px;
+  max-width:500px;
+  margin:auto;
 }
 
 h2,h3{
   text-align:center;
-  margin:5px;
 }
 
 input{
@@ -31,30 +32,29 @@ input{
   border:none;
   border-bottom:1px solid #999;
   padding:8px;
+  margin:5px 0;
   font-size:14px;
 }
 
 .row{
   display:flex;
-  gap:8px;
+  gap:10px;
 }
 
 .row input{
   flex:1;
 }
 
-/* ===== TABLE DESIGN ===== */
-
 table{
   width:100%;
   border-collapse:collapse;
   margin-top:10px;
-  table-layout:fixed;
 }
 
 th,td{
-  border:1px solid #aaa;
+  border:1px solid #999;
   padding:5px;
+  text-align:center;
   font-size:12px;
 }
 
@@ -62,36 +62,19 @@ th{
   background:#eee;
 }
 
-/* column width */
-th:nth-child(1), td:nth-child(1){width:35%;}
-th:nth-child(2), td:nth-child(2){width:12%;}
-th:nth-child(3), td:nth-child(3){width:10%;}
-th:nth-child(4), td:nth-child(4){width:13%;}
-th:nth-child(5), td:nth-child(5){width:15%;}
-th:nth-child(6), td:nth-child(6){width:10%;}
-
-td input{
-  width:100%;
-  border:none;
-  font-size:12px;
-  text-align:center;
-}
-
-td:first-child input{
-  text-align:left;
-}
-
-/* ===== BUTTON ===== */
-
 button{
   width:100%;
-  padding:14px;
+  padding:12px;
   margin-top:10px;
   border:none;
-  background:#007bff;
+  background:black;
   color:white;
   font-size:16px;
   border-radius:8px;
+}
+
+.small{
+  width:60px;
 }
 
 </style>
@@ -109,13 +92,11 @@ button{
 <input id="dueDate" placeholder="Due Date">
 </div>
 
-<div class="row">
 <input id="distributor" placeholder="Distributor Name">
-<input id="season" placeholder="Season">
-</div>
+<input id="address" placeholder="Address">
 
 <div class="row">
-<input id="address" placeholder="Address">
+<input id="season" placeholder="Season">
 <input id="orderType" placeholder="Order Type">
 </div>
 
@@ -124,16 +105,14 @@ button{
 <input id="approval" placeholder="S. Approval">
 </div>
 
-<!-- ===== PRODUCT TABLE ===== -->
-
 <table id="productTable">
 <tr>
-<th>Product</th>
+<th style="width:30%">Product</th>
 <th>P Size</th>
 <th>Qty</th>
 <th>Price</th>
 <th>Total</th>
-<th>Bonus</th>
+<th style="width:10%">Bonus</th>
 </tr>
 
 <tr>
@@ -163,100 +142,101 @@ button{
 
 <script>
 
-/* ===== ADD PRODUCT ===== */
+// add product
 function addRow(){
-  let table=document.getElementById("productTable");
+  let table = document.getElementById("productTable");
 
-  let row=table.insertRow();
+  let row = table.insertRow();
 
-  row.innerHTML=`
-  <td><input></td>
-  <td><input></td>
-  <td><input oninput="calc()"></td>
-  <td><input oninput="calc()"></td>
-  <td>0</td>
-  <td><input></td>
+  row.innerHTML = `
+    <td><input></td>
+    <td><input></td>
+    <td><input oninput="calc()"></td>
+    <td><input oninput="calc()"></td>
+    <td>0</td>
+    <td><input></td>
   `;
 }
 
-/* ===== CALC ===== */
+// calculate
 function calc(){
-  let table=document.getElementById("productTable");
-  let totalCarton=0;
-  let totalValue=0;
+  let table = document.getElementById("productTable");
+  let totalCarton = 0;
+  let totalValue = 0;
 
   for(let i=1;i<table.rows.length;i++){
-    let c=table.rows[i].cells;
+    let cells = table.rows[i].cells;
 
-    let qty=Number(c[2].children[0].value)||0;
-    let price=Number(c[3].children[0].value)||0;
+    let qty = Number(cells[2].children[0].value) || 0;
+    let price = Number(cells[3].children[0].value) || 0;
 
-    let total=qty*price;
+    let total = qty * price;
 
-    c[4].innerText=total;
+    cells[4].innerText = total;
 
-    totalCarton+=qty;
-    totalValue+=total;
+    totalCarton += qty;
+    totalValue += total;
   }
 
-  document.getElementById("totalCarton").innerText=totalCarton;
-  document.getElementById("totalValue").innerText=totalValue;
+  document.getElementById("totalCarton").innerText = totalCarton;
+  document.getElementById("totalValue").innerText = totalValue;
 }
 
-/* ===== PDF ===== */
+// PDF
 function generatePDF(){
 
   const { jsPDF } = window.jspdf;
-  const pdf=new jsPDF();
+  const pdf = new jsPDF();
 
-  let y=10;
+  let y = 10;
 
-  function line(t){
-    pdf.text(t,10,y);
+  function line(text){
+    pdf.text(text,10,y);
     y+=6;
   }
 
   line("mosco Marketing limited");
   line("Order Submission Format");
 
-  line("Date: "+orderDate.value);
-  line("Due Date: "+dueDate.value);
-  line("Distributor: "+distributor.value);
-  line("Address: "+address.value);
-  line("Season: "+season.value);
-  line("Order Type: "+orderType.value);
-  line("Slab: "+slab.value);
-  line("Approval: "+approval.value);
+  line("Date: " + orderDate.value);
+  line("Due Date: " + dueDate.value);
+  line("Distributor: " + distributor.value);
+  line("Address: " + address.value);
+  line("Season: " + season.value);
+  line("Order Type: " + orderType.value);
+  line("Slab: " + slab.value);
+  line("Approval: " + approval.value);
 
   y+=5;
   line("Products:");
 
-  let table=document.getElementById("productTable");
+  let table = document.getElementById("productTable");
 
   for(let i=1;i<table.rows.length;i++){
-    let c=table.rows[i].cells;
+    let c = table.rows[i].cells;
 
-    let name=c[0].children[0].value;
-    let qty=c[2].children[0].value;
-    let price=c[3].children[0].value;
-    let total=c[4].innerText;
+    let name = c[0].children[0].value;
+    let size = c[1].children[0].value;
+    let qty = c[2].children[0].value;
+    let price = c[3].children[0].value;
+    let total = c[4].innerText;
 
     line(name+" | "+qty+" x "+price+" = "+total);
   }
 
   y+=5;
-  line("Total Carton: "+totalCarton.innerText);
-  line("Total Value: "+totalValue.innerText);
+  line("Total Carton: " + totalCarton.innerText);
+  line("Total Value: " + totalValue.innerText);
 
   y+=5;
-  line("Officer: "+officer.value);
-  line("Mobile: "+mobile.value);
-  line("Territory: "+territory.value);
+  line("Officer: " + officer.value);
+  line("Mobile: " + mobile.value);
+  line("Territory: " + territory.value);
 
   pdf.save("order.pdf");
 }
 
-/* ===== SHARE ===== */
+// Share
 function sharePDF(){
   alert("PDF generate করে তারপর share করো");
 }
