@@ -1,292 +1,177 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order App</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
 <style>
-
 body {
-  font-family: Arial;
-  margin: 0;
-  padding: 10px;
-  background: #f4f6f9;
+    font-family: Arial;
+    margin: 0;
+    padding: 10px;
+    background: #f2f2f2;
 }
 
-#formArea {
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 5px;
+/* Title */
+h2, h3 {
+    text-align: center;
+    margin: 5px;
 }
 
-h3 {
-  text-align: center;
-  margin-top: 0;
-  color: gray;
-}
-
-/* Table responsive */
-.table-wrapper {
-  overflow-x: auto;
-}
-
+/* Table */
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-  min-width: 600px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
 }
 
 td, th {
-  border: 1px solid #ccc;
-  padding: 6px;
-  font-size: 14px;
+    border: 1px solid #ccc;
+    padding: 6px;
 }
 
+/* Input */
 input {
-  width: 100%;
-  border: none;
-  outline: none;
-  font-size: 14px;
-}
-
-/* Mobile stacking for top form */
-@media(max-width:600px) {
-  table {
-    min-width: 100%;
-  }
-
-  td {
-    display: block;
     width: 100%;
-  }
-
-  tr {
-    margin-bottom: 10px;
-    display: block;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-  }
-
-  th {
-    display: none;
-  }
+    border: none;
+    outline: none;
+    font-size: 14px;
 }
 
-/* Buttons */
+/* BIG FIELD (name, address) */
+.full-input {
+    width: 100%;
+}
+
+/* Button */
 button {
-  padding: 12px;
-  margin: 8px 5px;
-  border: none;
-  border-radius: 6px;
-  background: #007bff;
-  color: white;
-  font-size: 14px;
-  width: 100%;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 6px;
 }
 
-button:hover {
-  background: #0056b3;
-}
+/* Mobile Fix */
+@media(max-width:500px){
 
-.center {
-  text-align: center;
-}
+    table, tr, td {
+        display: block;
+        width: 100%;
+    }
 
-/* Totals */
-.total-box {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
+    td {
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
 
-.total-box input {
-  width: 120px;
-  border: 1px solid #ccc;
-  padding: 5px;
-}
+    th {
+        display: none;
+    }
 
+}
 </style>
-
 </head>
 
 <body>
 
-<div id="formArea">
+<div class="container">
 
 <h2>mosco Marketing limited</h2>
 <h3>Order Submission Format</h3>
 
-<div class="table-wrapper">
 <table>
 <tr>
 <td>Order Date</td>
-<td><input id="orderDate"></td>
+<td><input></td>
 <td>Due Date</td>
-<td><input id="dueDate"></td>
+<td><input></td>
 </tr>
 
 <tr>
 <td>Distributor Name</td>
-<td><input id="name"></td>
-<td>Season</td>
-<td><input id="season"></td>
+<td colspan="3"><input class="full-input"></td>
 </tr>
 
 <tr>
 <td>Address</td>
-<td><input id="address"></td>
+<td colspan="3"><input class="full-input"></td>
+</tr>
+
+<tr>
+<td>Season</td>
+<td><input></td>
 <td>Order Type</td>
-<td><input id="type"></td>
+<td><input></td>
 </tr>
 
 <tr>
-<td colspan="2">Slab (Y/N)</td>
-<td colspan="2"><input id="slab"></td>
-</tr>
-
-<tr>
-<td colspan="2">S. Approval</td>
-<td colspan="2"><input id="approval"></td>
+<td>Slab (Y/N)</td>
+<td><input></td>
+<td>S. Approval</td>
+<td><input></td>
 </tr>
 </table>
-</div>
 
-<br>
-
-<div class="table-wrapper">
-<table id="productTable">
+<!-- Product Table -->
+<table>
 <tr>
 <th>Product Name</th>
 <th>P Size</th>
 <th>Qty</th>
-<th>car price</th>
-<th>Total Price</th>
+<th>Car Price</th>
+<th>Total</th>
 <th>Bonus %</th>
 </tr>
 
 <tr>
 <td><input></td>
 <td><input></td>
-<td><input oninput="calculate()"></td>
-<td><input oninput="calculate()"></td>
-<td><input readonly></td>
+<td><input></td>
+<td><input></td>
+<td><input></td>
 <td><input></td>
 </tr>
 </table>
-</div>
 
-<button onclick="addRow()">+ Add Product</button>
+<button>+ Add Product</button>
 
-<div class="total-box">
-  Total carton = <input id="totalCarton" readonly>
-  Total V = <input id="totalValue" readonly>
-</div>
+<p>Total carton: <input style="width:100px;"></p>
+<p>Total V: <input style="width:150px;"></p>
 
-<br>
-
-<div class="table-wrapper">
+<!-- Officer Info -->
 <table>
 <tr>
 <td>Officer Name</td>
-<td><input id="officer"></td>
+<td><input></td>
 </tr>
+
 <tr>
 <td>Mobile</td>
-<td><input id="mobile"></td>
+<td><input></td>
 </tr>
+
 <tr>
 <td>Territory</td>
-<td><input id="territory"></td>
+<td><input></td>
 </tr>
 </table>
-</div>
+
+<button>Generate PDF</button>
+<button>Share</button>
 
 </div>
-
-<div class="center">
-<button onclick="generatePDF()">📄 Generate PDF</button>
-<button onclick="share()">📤 Share</button>
-</div>
-
-<script>
-
-// Add product row
-function addRow() {
-  let table = document.getElementById("productTable");
-  let row = table.insertRow();
-
-  row.innerHTML = `
-  <td><input></td>
-  <td><input></td>
-  <td><input oninput="calculate()"></td>
-  <td><input oninput="calculate()"></td>
-  <td><input readonly></td>
-  <td><input></td>
-  `;
-}
-
-// Calculate totals
-function calculate() {
-  let table = document.getElementById("productTable");
-  let totalCarton = 0;
-  let totalValue = 0;
-
-  for (let i = 1; i < table.rows.length; i++) {
-    let qty = table.rows[i].cells[2].children[0].value || 0;
-    let price = table.rows[i].cells[3].children[0].value || 0;
-
-    let total = qty * price;
-
-    table.rows[i].cells[4].children[0].value = total;
-
-    totalCarton += Number(qty);
-    totalValue += total;
-  }
-
-  document.getElementById("totalCarton").value = totalCarton;
-  document.getElementById("totalValue").value = totalValue;
-}
-
-// Generate PDF
-function generatePDF() {
-  let form = document.getElementById("formArea");
-
-  html2canvas(form).then(canvas => {
-    let imgData = canvas.toDataURL("image/png");
-
-    const { jsPDF } = window.jspdf;
-    let pdf = new jsPDF("p", "mm", "a4");
-
-    let imgWidth = 210;
-    let imgHeight = canvas.height * imgWidth / canvas.width;
-
-    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-
-    pdf.save("order.pdf");
-  });
-}
-
-// Share WhatsApp
-function share() {
-  let name = document.getElementById("name").value;
-  let text = "Order from " + name;
-
-  window.open("https://wa.me/?text=" + encodeURIComponent(text));
-}
-
-</script>
 
 </body>
 </html>
