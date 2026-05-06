@@ -1,214 +1,92 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Order App</title>
+<div id="pdf-format" style="display:none; padding:20px; font-size:14px;">
+  <h2>mosco Marketing limited</h2>
+  <h4>Order Submission Format</h4>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <p><b>Order Date:</b> <span id="pdfOrderDate"></span></p>
+  <p><b>Due Date:</b> <span id="pdfDueDate"></span></p>
+  <p><b>Distributor Name:</b> <span id="pdfDistributor"></span></p>
+  <p><b>Address:</b> <span id="pdfAddress"></span></p>
+  <p><b>Season:</b> <span id="pdfSeason"></span></p>
+  <p><b>Order Type:</b> <span id="pdfType"></span></p>
+  <p><b>Slab:</b> <span id="pdfSlab"></span></p>
+  <p><b>S. Approval:</b> <span id="pdfApproval"></span></p>
 
-<style>
-body {
-  font-family: Arial;
-  background: #eee;
-  padding: 10px;
-}
+  <br>
 
-.container {
-  background: #fff;
-  padding: 12px;
-  border-radius: 12px;
-}
+  <table border="1" width="100%" cellspacing="0" cellpadding="5">
+    <tr>
+      <th>Product</th>
+      <th>Size</th>
+      <th>Qty</th>
+      <th>Price</th>
+      <th>Total</th>
+    </tr>
+    <tbody id="pdfProducts"></tbody>
+  </table>
 
-h2, h3 {
-  text-align: center;
-}
+  <br>
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
+  <p><b>Total Carton:</b> <span id="pdfTotalQty"></span></p>
+  <p><b>Total Value:</b> <span id="pdfTotalValue"></span></p>
 
-td, th {
-  border: 1px solid #ccc;
-  padding: 6px;
-  font-size: 13px;
-}
-
-input {
-  width: 100%;
-  border: none;
-  outline: none;
-  font-size: 13px;
-  background: transparent;
-}
-
-th {
-  background: #f5f5f5;
-}
-
-.product {
-  width: 140px;
-}
-
-.bonus {
-  width: 60px;
-}
-
-.btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  background: black;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-}
-
-.summary {
-  margin-top: 10px;
-  font-size: 16px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container" id="app">
-
-<h2>mosco Marketing limited</h2>
-<h3>Order Submission Format</h3>
-
-<table>
-<tr>
-<td><input placeholder="Order Date"></td>
-<td><input placeholder="Due Date"></td>
-</tr>
-
-<tr>
-<td colspan="2"><input placeholder="Distributor Name"></td>
-</tr>
-
-<tr>
-<td colspan="2"><input placeholder="Address"></td>
-</tr>
-
-<tr>
-<td><input placeholder="Season"></td>
-<td><input placeholder="Order Type"></td>
-</tr>
-
-<tr>
-<td><input placeholder="Slab (Y/N)"></td>
-<td><input placeholder="S. Approval"></td>
-</tr>
-</table>
-
-<table id="productTable">
-<tr>
-<th class="product">Product Name</th>
-<th>P Size</th>
-<th>Qty</th>
-<th>Car Price</th>
-<th>Total</th>
-<th class="bonus">Bonus %</th>
-</tr>
-</table>
-
-<button class="btn" onclick="addRow()">+ Add Product</button>
-
-<div class="summary">
-<b>Total carton:</b> <span id="totalQty">0</span><br>
-<b>Total V:</b> <span id="totalValue">0</span>
+  <p><b>Officer Name:</b> <span id="pdfOfficer"></span></p>
+  <p><b>Mobile:</b> <span id="pdfMobile"></span></p>
+  <p><b>Territory:</b> <span id="pdfTerritory"></span></p>
 </div>
 
-<table>
-<tr>
-<td><input placeholder="Officer Name"></td>
-</tr>
-<tr>
-<td><input placeholder="Mobile"></td>
-</tr>
-<tr>
-<td><input placeholder="Territory"></td>
-</tr>
-</table>
+function generatePDF() {
 
-<button class="btn" onclick="generatePDF()">Generate PDF</button>
-<button class="btn" onclick="shareData()">Share</button>
+  // UI থেকে data নেওয়া
+  document.getElementById("pdfOrderDate").innerText = document.getElementById("orderDate").value;
+  document.getElementById("pdfDueDate").innerText = document.getElementById("dueDate").value;
 
-</div>
+  document.getElementById("pdfDistributor").innerText = document.querySelectorAll("input")[2].value;
+  document.getElementById("pdfAddress").innerText = document.querySelectorAll("input")[3].value;
+  document.getElementById("pdfSeason").innerText = document.querySelectorAll("input")[4].value;
+  document.getElementById("pdfType").innerText = document.querySelectorAll("input")[5].value;
+  document.getElementById("pdfSlab").innerText = document.querySelectorAll("input")[6].value;
+  document.getElementById("pdfApproval").innerText = document.querySelectorAll("input")[7].value;
 
-<script>
+  document.getElementById("pdfOfficer").innerText = document.querySelectorAll("input")[8].value;
+  document.getElementById("pdfMobile").innerText = document.querySelectorAll("input")[9].value;
+  document.getElementById("pdfTerritory").innerText = document.querySelectorAll("input")[10].value;
 
-function addRow() {
+  // product data
   let table = document.getElementById("productTable");
-  let row = table.insertRow();
+  let pdfProducts = document.getElementById("pdfProducts");
+  pdfProducts.innerHTML = "";
 
-  row.innerHTML = `
-    <td><input></td>
-    <td><input></td>
-    <td><input type="number" oninput="calculate()"></td>
-    <td><input type="number" oninput="calculate()"></td>
-    <td class="total">0</td>
-    <td><input></td>
-  `;
-}
+  for (let i = 1; i < table.rows.length; i++) {
+    let cells = table.rows[i].cells;
 
-function calculate() {
-  let rows = document.querySelectorAll("#productTable tr");
-  let totalQty = 0;
-  let totalValue = 0;
+    let row = `
+      <tr>
+        <td>${cells[0].children[0].value}</td>
+        <td>${cells[1].children[0].value}</td>
+        <td>${cells[2].children[0].value}</td>
+        <td>${cells[3].children[0].value}</td>
+        <td>${cells[4].innerText}</td>
+      </tr>
+    `;
+    pdfProducts.innerHTML += row;
+  }
 
-  rows.forEach((row, index) => {
-    if (index === 0) return;
+  document.getElementById("pdfTotalQty").innerText = document.getElementById("totalQty").innerText;
+  document.getElementById("pdfTotalValue").innerText = document.getElementById("totalValue").innerText;
 
-    let qty = row.cells[2].children[0].value || 0;
-    let price = row.cells[3].children[0].value || 0;
+  // PDF render
+  let pdfArea = document.getElementById("pdf-format");
+  pdfArea.style.display = "block";
 
-    let total = qty * price;
-    row.cells[4].innerText = total;
+  html2canvas(pdfArea).then(canvas => {
+    const imgData = canvas.toDataURL("image/png");
 
-    totalQty += Number(qty);
-    totalValue += total;
-  });
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
 
-  document.getElementById("totalQty").innerText = totalQty;
-  document.getElementById("totalValue").innerText = totalValue;
-}
+    pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
+    pdf.save("order.pdf");
 
-async function generatePDF() {
-  const { jsPDF } = window.jspdf;
-
-  let canvas = await html2canvas(document.getElementById("app"));
-  let img = canvas.toDataURL("image/png");
-
-  let pdf = new jsPDF();
-  pdf.addImage(img, 'PNG', 10, 10, 180, 0);
-  pdf.save("order.pdf");
-}
-
-async function shareData() {
-  let canvas = await html2canvas(document.getElementById("app"));
-  canvas.toBlob(async function(blob) {
-
-    let file = new File([blob], "order.png", { type: "image/png" });
-
-    if (navigator.share) {
-      await navigator.share({
-        title: "Order",
-        files: [file]
-      });
-    } else {
-      alert("Sharing not supported");
-    }
-
+    pdfArea.style.display = "none";
   });
 }
-
-</script>
-
-</body>
-</html>
