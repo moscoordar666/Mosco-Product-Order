@@ -43,7 +43,9 @@ td, th {
   font-size: 13px;
 }
 
-th { background: #00cfd1; }
+th {
+  background: #00cfd1;
+}
 
 input {
   width: 100%;
@@ -52,11 +54,16 @@ input {
   outline: none;
 }
 
+/* Column Fix */
 #productTable th:nth-child(6),
-#productTable td:nth-child(6) { width: 90px; }
+#productTable td:nth-child(6) {
+  width: 90px;
+}
 
 #productTable th:nth-child(7),
-#productTable td:nth-child(7) { width: 50px; }
+#productTable td:nth-child(7) {
+  width: 50px;
+}
 
 .green-box {
   background: #8bc34a;
@@ -65,7 +72,12 @@ input {
   margin-top: 5px;
 }
 
-.flex { display: flex; gap: 10px; margin-top: 10px; }
+.flex {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
 .flex div { flex: 1; }
 
 .add-btn {
@@ -89,7 +101,9 @@ input {
   border-radius: 8px;
 }
 
-.officer { margin-top: 20px; }
+.officer {
+  margin-top: 20px;
+}
 
 .officer input {
   border: 1px solid #999;
@@ -113,9 +127,17 @@ input {
 
 .pdf-btn { background: #8bc34a; }
 .share-btn { background: #cddc39; }
-.clear-btn { background: #f44336; color:#fff; }
-.install-btn { background: #2196f3; color:#fff; }
+.clear-btn { background: #ff5252; color:white; }
 
+.install-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  background: #2196f3;
+  color: white;
+}
 </style>
 </head>
 
@@ -130,10 +152,7 @@ input {
 <h2>Mosco Marketing limited</h2>
 <h3>Order Submission Format</h3>
 
-<!-- Install Button -->
-<div style="text-align:center; margin-bottom:10px;">
-  <button class="install-btn" onclick="installApp()">📲 Install App</button>
-</div>
+<button id="installBtn" class="install-btn" style="display:none;">📲 Install App</button>
 
 <table>
 <tr>
@@ -216,37 +235,16 @@ input {
 
 <div class="bottom">
   <button class="pdf-btn" onclick="generatePDF()">Generate PDF</button>
-  <button class="share-btn" onclick="share()">Share</button>
+  <button class="share-btn" onclick="sharePDF()">Share</button>
 </div>
 
-<div class="bottom">
-  <button class="clear-btn" onclick="clearForm()">Clear All</button>
-</div>
+<button class="clear-btn" onclick="clearForm()">❌ Clear All</button>
 
 </div>
 
 <script>
 
-// Auto Save
-document.addEventListener("input", () => {
-  let inputs = document.querySelectorAll("input");
-  let data = [];
-  inputs.forEach(i => data.push(i.value));
-  localStorage.setItem("orderData", JSON.stringify(data));
-});
-
-// Load
-window.onload = () => {
-  let data = JSON.parse(localStorage.getItem("orderData"));
-  if (!data) return;
-  let inputs = document.querySelectorAll("input");
-  inputs.forEach((i, index) => {
-    if (data[index]) i.value = data[index];
-  });
-  calculate();
-};
-
-// Add Row
+// ADD ROW
 function addRow() {
   let table = document.getElementById("productTable");
   let row = table.insertRow();
@@ -263,7 +261,7 @@ function addRow() {
   `;
 }
 
-// Calculate
+// CALCULATE
 function calculate() {
   let table = document.getElementById("productTable");
   let totalCarton = 0;
@@ -284,12 +282,14 @@ function calculate() {
   document.getElementById("totalValue").value = totalValue;
 }
 
-// PDF (Multi Page)
-async function generatePDF() {
+// PDF FIX (UNLIMITED PAGE)
+async function createPDFBlob() {
   const { jsPDF } = window.jspdf;
-  let pdf = new jsPDF('p','mm','a4');
 
-  let canvas = await html2canvas(document.getElementById("formArea"), {scale:2});
+  let pdf = new jsPDF("p", "mm", "a4");
+
+  let canvas = await html2canvas(document.getElementById("formArea"), { scale: 2 });
+
   let imgData = canvas.toDataURL("image/png");
 
   let imgWidth = 210;
@@ -299,64 +299,62 @@ async function generatePDF() {
   let heightLeft = imgHeight;
   let position = 0;
 
-  pdf.addImage(imgData,'PNG',0,position,imgWidth,imgHeight);
+  pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
   heightLeft -= pageHeight;
 
-  while(heightLeft > 0){
+  while (heightLeft > 0) {
     position = heightLeft - imgHeight;
     pdf.addPage();
-    pdf.addImage(imgData,'PNG',0,position,imgWidth,imgHeight);
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
   }
 
-  pdf.save("order.pdf");
+  return pdf.output("blob");
 }
 
-// Share PDF
-async function share(){
-  const { jsPDF } = window.jspdf;
-  let canvas = await html2canvas(document.getElementById("formArea"), {scale:2});
-  let imgData = canvas.toDataURL("image/png");
+// DOWNLOAD
+async function generatePDF() {
+  let blob = await createPDFBlob();
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement("a");
+  a.href = url;
+  a.download = "order.pdf";
+  a.click();
+}
 
-  let pdf = new jsPDF('p','mm','a4');
-  let imgWidth = 210;
-  let imgHeight = canvas.height * imgWidth / canvas.width;
+// SHARE TO WHATSAPP
+async function sharePDF() {
+  let blob = await createPDFBlob();
+  let file = new File([blob], "order.pdf", { type: "application/pdf" });
 
-  pdf.addImage(imgData,'PNG',0,0,imgWidth,imgHeight);
-
-  let blob = pdf.output("blob");
-  let file = new File([blob],"order.pdf",{type:"application/pdf"});
-
-  if(navigator.share && navigator.canShare({files:[file]})){
-    await navigator.share({files:[file],title:"Order PDF"});
+  if (navigator.share && navigator.canShare({ files: [file] })) {
+    await navigator.share({
+      files: [file],
+      title: "Order PDF"
+    });
   } else {
-    alert("Use mobile Chrome");
+    alert("Use Chrome mobile for share");
   }
 }
 
-// Clear Form
-function clearForm(){
-  localStorage.removeItem("orderData");
-  location.reload();
+// CLEAR FORM
+function clearForm() {
+  if(confirm("সব ডাটা মুছতে চান?")) {
+    location.reload();
+  }
 }
 
-// Install App
+// INSTALL APP (PWA)
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
+  document.getElementById('installBtn').style.display = 'block';
 });
 
-function installApp(){
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(() => {
-      deferredPrompt = null;
-    });
-  } else {
-    alert("Install option not available yet");
-  }
-}
+document.getElementById('installBtn').addEventListener('click', () => {
+  deferredPrompt.prompt();
+});
 
 </script>
 
