@@ -1,92 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 <title>Order App</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 body {
-    font-family: Arial;
-    margin: 0;
-    padding: 10px;
-    background: #f2f2f2;
+  font-family: Arial;
+  padding: 20px;
 }
 
-.container {
-    max-width: 600px;
-    margin: auto;
-    background: #fff;
-    padding: 15px;
-    border-radius: 12px;
-}
-
-/* Title */
 h2, h3 {
-    text-align: center;
-    margin: 5px;
+  text-align: center;
 }
 
-/* Table */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    font-size: 14px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
 }
 
 td, th {
-    border: 1px solid #ccc;
-    padding: 6px;
+  border: 1px solid black;
+  padding: 5px;
 }
 
-/* Input */
 input {
-    width: 100%;
-    border: none;
-    outline: none;
-    font-size: 14px;
+  width: 100%;
+  border: none;
 }
 
-/* BIG FIELD (name, address) */
-.full-input {
-    width: 100%;
-}
-
-/* Button */
 button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background: black;
-    color: white;
-    border: none;
-    border-radius: 6px;
+  padding: 10px;
+  margin: 10px 5px;
 }
 
-/* Mobile Fix */
-@media(max-width:500px){
-
-    table, tr, td {
-        display: block;
-        width: 100%;
-    }
-
-    td {
-        border: none;
-        border-bottom: 1px solid #ddd;
-    }
-
-    th {
-        display: none;
-    }
-
+.center {
+  text-align: center;
 }
 </style>
+
 </head>
 
 <body>
-
-<div class="container">
 
 <h2>mosco Marketing limited</h2>
 <h3>Order Submission Format</h3>
@@ -94,84 +52,156 @@ button {
 <table>
 <tr>
 <td>Order Date</td>
-<td><input></td>
+<td><input id="orderDate"></td>
 <td>Due Date</td>
-<td><input></td>
+<td><input id="dueDate"></td>
 </tr>
 
 <tr>
 <td>Distributor Name</td>
-<td colspan="3"><input class="full-input"></td>
+<td><input id="name"></td>
+<td>Season</td>
+<td><input id="season"></td>
 </tr>
 
 <tr>
 <td>Address</td>
-<td colspan="3"><input class="full-input"></td>
-</tr>
-
-<tr>
-<td>Season</td>
-<td><input></td>
+<td><input id="address"></td>
 <td>Order Type</td>
-<td><input></td>
+<td><input id="type"></td>
 </tr>
 
 <tr>
-<td>Slab (Y/N)</td>
-<td><input></td>
-<td>S. Approval</td>
-<td><input></td>
+<td colspan="2">Slab (Y/N)</td>
+<td colspan="2"><input id="slab"></td>
+</tr>
+
+<tr>
+<td colspan="2">S. Approval</td>
+<td colspan="2"><input id="approval"></td>
 </tr>
 </table>
 
-<!-- Product Table -->
-<table>
+<br>
+
+<table id="productTable">
 <tr>
 <th>Product Name</th>
 <th>P Size</th>
 <th>Qty</th>
-<th>Car Price</th>
-<th>Total</th>
+<th>car price</th>
+<th>Total Price</th>
 <th>Bonus %</th>
 </tr>
 
 <tr>
 <td><input></td>
 <td><input></td>
-<td><input></td>
-<td><input></td>
-<td><input></td>
+<td><input oninput="calculate()"></td>
+<td><input oninput="calculate()"></td>
+<td><input readonly></td>
 <td><input></td>
 </tr>
 </table>
 
-<button>+ Add Product</button>
+<button onclick="addRow()">+ Add Product</button>
 
-<p>Total carton: <input style="width:100px;"></p>
-<p>Total V: <input style="width:150px;"></p>
+<br><br>
 
-<!-- Officer Info -->
+Total carton = <input id="totalCarton" readonly style="width:100px;">
+Total V = <input id="totalValue" readonly style="width:150px;">
+
+<br><br>
+
 <table>
 <tr>
 <td>Officer Name</td>
-<td><input></td>
+<td><input id="officer"></td>
 </tr>
-
 <tr>
 <td>Mobile</td>
-<td><input></td>
+<td><input id="mobile"></td>
 </tr>
-
 <tr>
 <td>Territory</td>
-<td><input></td>
+<td><input id="territory"></td>
 </tr>
 </table>
 
-<button>Generate PDF</button>
-<button>Share</button>
-
+<div class="center">
+<button onclick="generatePDF()">📄 Generate PDF</button>
+<button onclick="share()">📤 Share</button>
 </div>
+
+<script>
+
+function addRow() {
+  let table = document.getElementById("productTable");
+  let row = table.insertRow();
+
+  row.innerHTML = `
+  <td><input></td>
+  <td><input></td>
+  <td><input oninput="calculate()"></td>
+  <td><input oninput="calculate()"></td>
+  <td><input readonly></td>
+  <td><input></td>
+  `;
+}
+
+function calculate() {
+  let table = document.getElementById("productTable");
+  let totalCarton = 0;
+  let totalValue = 0;
+
+  for (let i = 1; i < table.rows.length; i++) {
+    let qty = table.rows[i].cells[2].children[0].value || 0;
+    let price = table.rows[i].cells[3].children[0].value || 0;
+
+    let total = qty * price;
+
+    table.rows[i].cells[4].children[0].value = total;
+
+    totalCarton += Number(qty);
+    totalValue += total;
+  }
+
+  document.getElementById("totalCarton").value = totalCarton;
+  document.getElementById("totalValue").value = totalValue;
+}
+
+function generatePDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.text("MOSCO Marketing Limited", 10, 10);
+  doc.text("Order Submission Format", 10, 20);
+
+  doc.text("Name: " + document.getElementById("name").value, 10, 30);
+  doc.text("Address: " + document.getElementById("address").value, 10, 40);
+
+  let y = 50;
+
+  let table = document.getElementById("productTable");
+
+  for (let i = 1; i < table.rows.length; i++) {
+    let product = table.rows[i].cells[0].children[0].value;
+    let qty = table.rows[i].cells[2].children[0].value;
+    let total = table.rows[i].cells[4].children[0].value;
+
+    doc.text(product + " Qty:" + qty + " Total:" + total, 10, y);
+    y += 10;
+  }
+
+  doc.save("order.pdf");
+}
+
+function share() {
+  let text = "Order from " + document.getElementById("name").value;
+  window.open("https://wa.me/?text=" + encodeURIComponent(text));
+}
+
+</script>
 
 </body>
 </html>
