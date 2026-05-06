@@ -9,50 +9,50 @@ body {
     font-family: Arial;
     margin: 0;
     padding: 10px;
-    background: #f2f2f2;
+    background: #f5f5f5;
 }
 
 .container {
-    max-width: 600px;
+    max-width: 650px;
     margin: auto;
     background: #fff;
     padding: 15px;
-    border-radius: 12px;
+    border-radius: 10px;
 }
 
-/* Title */
+/* title */
 h2, h3 {
     text-align: center;
     margin: 5px;
 }
 
-/* Table */
+/* table */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
-    font-size: 14px;
 }
 
 td, th {
     border: 1px solid #ccc;
     padding: 6px;
+    font-size: 13px;
 }
 
-/* Input */
+/* input */
 input {
     width: 100%;
     border: none;
     outline: none;
-    font-size: 14px;
+    font-size: 13px;
 }
 
-/* BIG FIELD (name, address) */
-.full-input {
+/* full width field */
+.full {
     width: 100%;
 }
 
-/* Button */
+/* button */
 button {
     width: 100%;
     padding: 10px;
@@ -63,21 +63,28 @@ button {
     border-radius: 6px;
 }
 
-/* Mobile Fix */
-@media(max-width:500px){
+/* MOBILE FIX (without breaking table) */
+@media(max-width:600px){
 
-    table, tr, td {
-        display: block;
-        width: 100%;
+    body {
+        padding: 5px;
     }
 
-    td {
-        border: none;
-        border-bottom: 1px solid #ddd;
+    .container {
+        padding: 10px;
     }
 
-    th {
-        display: none;
+    td, th {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    h3 {
+        font-size: 14px;
     }
 
 }
@@ -101,12 +108,12 @@ button {
 
 <tr>
 <td>Distributor Name</td>
-<td colspan="3"><input class="full-input"></td>
+<td colspan="3"><input class="full"></td>
 </tr>
 
 <tr>
 <td>Address</td>
-<td colspan="3"><input class="full-input"></td>
+<td colspan="3"><input class="full"></td>
 </tr>
 
 <tr>
@@ -124,7 +131,6 @@ button {
 </tr>
 </table>
 
-<!-- Product Table -->
 <table>
 <tr>
 <th>Product Name</th>
@@ -150,7 +156,6 @@ button {
 <p>Total carton: <input style="width:100px;"></p>
 <p>Total V: <input style="width:150px;"></p>
 
-<!-- Officer Info -->
 <table>
 <tr>
 <td>Officer Name</td>
