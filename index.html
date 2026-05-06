@@ -13,23 +13,25 @@ body {
 }
 
 .container {
-    max-width: 480px;
+    max-width: 600px;
     margin: auto;
     background: #fff;
     padding: 15px;
     border-radius: 12px;
 }
 
+/* Title */
 h2, h3 {
     text-align: center;
     margin: 5px;
 }
 
+/* Table */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 td, th {
@@ -37,12 +39,20 @@ td, th {
     padding: 6px;
 }
 
+/* Input */
 input {
     width: 100%;
     border: none;
     outline: none;
+    font-size: 14px;
 }
 
+/* BIG FIELD (name, address) */
+.full-input {
+    width: 100%;
+}
+
+/* Button */
 button {
     width: 100%;
     padding: 10px;
@@ -51,6 +61,25 @@ button {
     color: white;
     border: none;
     border-radius: 6px;
+}
+
+/* Mobile Fix */
+@media(max-width:500px){
+
+    table, tr, td {
+        display: block;
+        width: 100%;
+    }
+
+    td {
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        display: none;
+    }
+
 }
 </style>
 </head>
@@ -72,25 +101,38 @@ button {
 
 <tr>
 <td>Distributor Name</td>
-<td><input></td>
-<td>Season</td>
-<td><input></td>
+<td colspan="3"><input class="full-input"></td>
 </tr>
 
 <tr>
 <td>Address</td>
+<td colspan="3"><input class="full-input"></td>
+</tr>
+
+<tr>
+<td>Season</td>
 <td><input></td>
 <td>Order Type</td>
 <td><input></td>
 </tr>
+
+<tr>
+<td>Slab (Y/N)</td>
+<td><input></td>
+<td>S. Approval</td>
+<td><input></td>
+</tr>
 </table>
 
+<!-- Product Table -->
 <table>
 <tr>
-<th>Product</th>
+<th>Product Name</th>
+<th>P Size</th>
 <th>Qty</th>
-<th>Price</th>
+<th>Car Price</th>
 <th>Total</th>
+<th>Bonus %</th>
 </tr>
 
 <tr>
@@ -98,21 +140,30 @@ button {
 <td><input></td>
 <td><input></td>
 <td><input></td>
+<td><input></td>
+<td><input></td>
 </tr>
 </table>
 
-<button>Add Product</button>
+<button>+ Add Product</button>
 
-<p>Total carton: <input style="width:80px;"></p>
-<p>Total V: <input style="width:120px;"></p>
+<p>Total carton: <input style="width:100px;"></p>
+<p>Total V: <input style="width:150px;"></p>
 
+<!-- Officer Info -->
 <table>
 <tr>
 <td>Officer Name</td>
 <td><input></td>
 </tr>
+
 <tr>
 <td>Mobile</td>
+<td><input></td>
+</tr>
+
+<tr>
+<td>Territory</td>
 <td><input></td>
 </tr>
 </table>
