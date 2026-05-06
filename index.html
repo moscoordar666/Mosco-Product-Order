@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order App</title>
+<link rel="manifest" href="manifest.json">
 
 <link rel="icon" href="mosco-logo.png">
 
@@ -390,6 +391,11 @@ function installApp(){
   else alert("Install not available");
 }
 
+// 🔥 SERVICE WORKER REGISTER ADD
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+  
 </script>
 
 </body>
