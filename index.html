@@ -110,16 +110,43 @@ input, select {
 .bottom {
   display: flex;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 25px;
+  flex-wrap: wrap;
 }
 
 .btn {
   flex: 1;
-  padding: 8px;
-  border-radius: 20px;
+  padding: 10px;
+  border-radius: 25px;
   border: none;
   font-size: 13px;
   color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Colorful buttons */
+.pdf-btn {
+  background: linear-gradient(45deg, #4CAF50, #2e7d32);
+}
+
+.share-btn {
+  background: linear-gradient(45deg, #009688, #00695c);
+}
+
+.save-btn {
+  background: linear-gradient(45deg, #ff9800, #ef6c00);
+}
+
+.clear-btn {
+  background: linear-gradient(45deg, #f44336, #c62828);
+}
+
+/* Hover effect */
+.btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
 }
 
 .pdf-btn { background: #4CAF50; }
@@ -393,6 +420,20 @@ async function generatePDF() {
   pdf.save("order.pdf");
 }
 
+// 🖼️ SAVE IMAGE FUNCTION (👉 এখানে বসবে)
+async function saveImage() {
+  let element = document.getElementById("formArea");
+
+  let canvas = await html2canvas(element, { scale: 2 });
+
+  let imgData = canvas.toDataURL("image/png");
+
+  let a = document.createElement("a");
+  a.href = imgData;
+  a.download = "order.png";
+  a.click();
+} 
+  
 // share pdf
 async function sharePDF(){
   const blob = await createPDFBlob();
