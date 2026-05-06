@@ -16,7 +16,6 @@ body {
   background: #ddd;
 }
 
-/* Phone Frame Feel */
 #formArea {
   max-width: 420px;
   margin: auto;
@@ -27,13 +26,9 @@ body {
 }
 
 /* Header */
-h2 {
+h2, h3 {
   text-align: center;
   margin: 5px 0;
-}
-h3 {
-  text-align: center;
-  margin: 0;
 }
 
 /* Table */
@@ -61,7 +56,7 @@ input {
   outline: none;
 }
 
-/* Green Inputs */
+/* Green boxes */
 .green-box {
   background: #8bc34a;
   border-radius: 20px;
@@ -69,7 +64,7 @@ input {
   margin-top: 5px;
 }
 
-/* Row Flex */
+/* Flex */
 .flex {
   display: flex;
   gap: 10px;
@@ -80,7 +75,7 @@ input {
   flex: 1;
 }
 
-/* Product column size */
+/* Product column */
 #productTable th:nth-child(1),
 #productTable td:nth-child(1) { width: 30%; }
 
@@ -99,12 +94,11 @@ input {
 #productTable th:nth-child(6),
 #productTable td:nth-child(6) { width: 10%; }
 
-/* Add button */
+/* Button */
 .add-btn {
   background: #8bc34a;
   padding: 8px;
   border-radius: 10px;
-  width: 160px;
   border: none;
   margin-top: 10px;
 }
@@ -123,7 +117,7 @@ input {
   border-radius: 8px;
 }
 
-/* Officer section */
+/* Officer */
 .officer {
   margin-top: 20px;
 }
@@ -135,28 +129,22 @@ input {
   margin-top: 5px;
 }
 
-/* Bottom buttons */
+/* Bottom */
 .bottom {
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
   margin-top: 20px;
 }
 
 .bottom button {
   flex: 1;
-  margin: 5px;
   padding: 10px;
   border-radius: 20px;
   border: none;
 }
 
-.pdf-btn {
-  background: #8bc34a;
-}
-
-.share-btn {
-  background: #cddc39;
-}
+.pdf-btn { background: #8bc34a; }
+.share-btn { background: #cddc39; }
 
 </style>
 </head>
@@ -201,7 +189,6 @@ input {
 </tr>
 </table>
 
-<!-- Green boxes -->
 <div class="flex">
   <div>
     <div class="green-box">Mention Depot Name</div>
@@ -213,7 +200,6 @@ input {
   </div>
 </div>
 
-<!-- Product Table -->
 <table id="productTable">
 <tr>
 <th>Product Name</th>
@@ -236,20 +222,17 @@ input {
 
 <button class="add-btn" onclick="addRow()">+ Add Product</button>
 
-<!-- Total -->
 <div class="total">
   Total carton = <input id="totalCarton" readonly>
   Total V = <input id="totalValue" readonly>
 </div>
 
-<!-- Officer -->
 <div class="officer">
   Officer Name <input id="officer">
   Mobile <input id="mobile">
   Territory <input id="territory">
 </div>
 
-<!-- Bottom -->
 <div class="bottom">
   <button class="pdf-btn" onclick="generatePDF()">Generate PDF</button>
   <button class="share-btn" onclick="share()">Share</button>
@@ -259,9 +242,7 @@ input {
 
 <script>
 
-// SAME JS (UNCHANGED)
-
-// Add product row
+// Add row
 function addRow() {
   let table = document.getElementById("productTable");
   let row = table.insertRow();
@@ -276,7 +257,7 @@ function addRow() {
   `;
 }
 
-// Calculate totals
+// Calculate
 function calculate() {
   let table = document.getElementById("productTable");
   let totalCarton = 0;
@@ -298,39 +279,41 @@ function calculate() {
   document.getElementById("totalValue").value = totalValue;
 }
 
-// PDF
-function generatePDF() {
+// 🔥 Smart PDF (auto page split)
+async function generatePDF() {
+  const { jsPDF } = window.jspdf;
+
+  let pdf = new jsPDF("p", "mm", "a4");
   let form = document.getElementById("formArea");
 
-  html2canvas(form, { scale: 2 }).then(canvas => {
+  let canvas = await html2canvas(form, { scale: 2 });
+  let imgData = canvas.toDataURL("image/png");
 
-    const { jsPDF } = window.jspdf;
-    let pdf = new jsPDF("p", "mm", "a4");
+  let imgWidth = 210;
+  let pageHeight = 297;
 
-    let imgWidth = 210;
-    let pageHeight = 297;
+  let imgHeight = canvas.height * imgWidth / canvas.width;
+  let heightLeft = imgHeight;
 
-    let imgHeight = canvas.height * imgWidth / canvas.width;
-    let heightLeft = imgHeight;
+  let position = 0;
 
-    let position = 0;
+  pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+  heightLeft -= pageHeight;
 
-    let imgData = canvas.toDataURL("image/png");
-
+  while (heightLeft > 0) {
+    position = heightLeft - imgHeight;
+    pdf.addPage();
     pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
+  }
 
-    // 👉 multiple page loop
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-    }
-
-    pdf.save("order.pdf");
-  });
+  pdf.save("order.pdf");
 }
+
+// Share
+function share() {
+  let name = document.getElementById("name").value;
+  let text = "Order from " + name;
 
   window.open("https://wa.me/?text=" + encodeURIComponent(text));
 }
