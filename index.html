@@ -9,7 +9,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-
 body {
   font-family: Arial;
   margin: 0;
@@ -25,13 +24,11 @@ body {
   border: 6px solid black;
 }
 
-/* Header */
 h2, h3 {
   text-align: center;
   margin: 5px 0;
 }
 
-/* Table */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -48,7 +45,6 @@ th {
   background: #00cfd1;
 }
 
-/* Input */
 input {
   width: 100%;
   border: none;
@@ -56,7 +52,6 @@ input {
   outline: none;
 }
 
-/* Green boxes */
 .green-box {
   background: #8bc34a;
   border-radius: 20px;
@@ -64,37 +59,14 @@ input {
   margin-top: 5px;
 }
 
-/* Flex */
 .flex {
   display: flex;
   gap: 10px;
   margin-top: 10px;
 }
 
-.flex div {
-  flex: 1;
-}
+.flex div { flex: 1; }
 
-/* Product column */
-#productTable th:nth-child(1),
-#productTable td:nth-child(1) { width: 30%; }
-
-#productTable th:nth-child(2),
-#productTable td:nth-child(2) { width: 12%; }
-
-#productTable th:nth-child(3),
-#productTable td:nth-child(3) { width: 10%; }
-
-#productTable th:nth-child(4),
-#productTable td:nth-child(4) { width: 16%; }
-
-#productTable th:nth-child(5),
-#productTable td:nth-child(5) { width: 16%; }
-
-#productTable th:nth-child(6),
-#productTable td:nth-child(6) { width: 10%; }
-
-/* Button */
 .add-btn {
   background: #8bc34a;
   padding: 8px;
@@ -103,7 +75,6 @@ input {
   margin-top: 10px;
 }
 
-/* Total */
 .total {
   display: flex;
   justify-content: center;
@@ -117,7 +88,6 @@ input {
   border-radius: 8px;
 }
 
-/* Officer */
 .officer {
   margin-top: 20px;
 }
@@ -129,7 +99,6 @@ input {
   margin-top: 5px;
 }
 
-/* Bottom */
 .bottom {
   display: flex;
   gap: 10px;
@@ -145,7 +114,6 @@ input {
 
 .pdf-btn { background: #8bc34a; }
 .share-btn { background: #cddc39; }
-
 </style>
 </head>
 
@@ -202,15 +170,17 @@ input {
 
 <table id="productTable">
 <tr>
+<th>#</th>
 <th>Product Name</th>
 <th>P Size</th>
 <th>Qty</th>
-<th>Per ctn price</th>
-<th>Total Price</th>
-<th>Bonus %</th>
+<th>Price</th>
+<th>Total</th>
+<th>Bonus</th>
 </tr>
 
 <tr>
+<td>1</td>
 <td><input></td>
 <td><input></td>
 <td><input oninput="calculate()"></td>
@@ -242,12 +212,36 @@ input {
 
 <script>
 
+// 🔥 SAVE + LOAD
+function saveData() {
+  let inputs = document.querySelectorAll("input");
+  let data = [];
+  inputs.forEach(i => data.push(i.value));
+  localStorage.setItem("orderData", JSON.stringify(data));
+}
+
+function loadData() {
+  let data = JSON.parse(localStorage.getItem("orderData"));
+  if (!data) return;
+  let inputs = document.querySelectorAll("input");
+  inputs.forEach((i, index) => {
+    if (data[index] !== undefined) i.value = data[index];
+  });
+  calculate();
+}
+
+document.addEventListener("input", saveData);
+window.onload = loadData;
+
+
 // Add row
 function addRow() {
   let table = document.getElementById("productTable");
   let row = table.insertRow();
+  let index = table.rows.length - 1;
 
   row.innerHTML = `
+  <td>${index}</td>
   <td><input></td>
   <td><input></td>
   <td><input oninput="calculate()"></td>
@@ -257,6 +251,7 @@ function addRow() {
   `;
 }
 
+
 // Calculate
 function calculate() {
   let table = document.getElementById("productTable");
@@ -264,12 +259,12 @@ function calculate() {
   let totalValue = 0;
 
   for (let i = 1; i < table.rows.length; i++) {
-    let qty = table.rows[i].cells[2].children[0].value || 0;
-    let price = table.rows[i].cells[3].children[0].value || 0;
+    let qty = table.rows[i].cells[3].children[0].value || 0;
+    let price = table.rows[i].cells[4].children[0].value || 0;
 
     let total = qty * price;
 
-    table.rows[i].cells[4].children[0].value = total;
+    table.rows[i].cells[5].children[0].value = total;
 
     totalCarton += Number(qty);
     totalValue += total;
@@ -279,22 +274,22 @@ function calculate() {
   document.getElementById("totalValue").value = totalValue;
 }
 
-// 🔥 Smart PDF (auto page split)
+
+// PDF
 async function generatePDF() {
   const { jsPDF } = window.jspdf;
-
   let pdf = new jsPDF("p", "mm", "a4");
-  let form = document.getElementById("formArea");
 
+  let form = document.getElementById("formArea");
   let canvas = await html2canvas(form, { scale: 2 });
+
   let imgData = canvas.toDataURL("image/png");
 
   let imgWidth = 210;
   let pageHeight = 297;
-
   let imgHeight = canvas.height * imgWidth / canvas.width;
-  let heightLeft = imgHeight;
 
+  let heightLeft = imgHeight;
   let position = 0;
 
   pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
@@ -303,17 +298,24 @@ async function generatePDF() {
   while (heightLeft > 0) {
     position = heightLeft - imgHeight;
     pdf.addPage();
-    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    pdf.text("Mosco Marketing limited", 10, 10);
+    pdf.addImage(imgData, 'PNG', 0, position + 10, imgWidth, imgHeight);
     heightLeft -= pageHeight;
   }
 
   pdf.save("order.pdf");
 }
 
+
 // Share
 function share() {
   let name = document.getElementById("name").value;
-  let text = "Order from " + name;
+  let total = document.getElementById("totalValue").value;
+
+  let text =
+    "📦 Order Summary\n" +
+    "Distributor: " + name + "\n" +
+    "Total Value: " + total;
 
   window.open("https://wa.me/?text=" + encodeURIComponent(text));
 }
