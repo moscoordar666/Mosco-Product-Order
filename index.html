@@ -11,56 +11,37 @@
 body {
   font-family: Arial;
   background: #eee;
-  margin: 0;
   padding: 10px;
 }
 
 .container {
-  background: white;
-  padding: 15px;
+  background: #fff;
+  padding: 12px;
   border-radius: 12px;
-  max-width: 420px;
-  margin: auto;
 }
 
-h2 {
+h2, h3 {
   text-align: center;
-  margin-bottom: 5px;
 }
 
-h3 {
-  text-align: center;
-  margin-top: 0;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
 }
 
-.grid2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+td, th {
+  border: 1px solid #ccc;
+  padding: 6px;
+  font-size: 13px;
 }
 
 input {
   width: 100%;
   border: none;
-  border-bottom: 1px solid #999;
-  padding: 8px 5px;
-  font-size: 14px;
-}
-
-.full {
-  grid-column: 1 / 3;
-}
-
-table {
-  width: 100%;
-  margin-top: 10px;
-  border-collapse: collapse;
-}
-
-th, td {
-  border: 1px solid #ccc;
-  padding: 5px;
+  outline: none;
   font-size: 13px;
+  background: transparent;
 }
 
 th {
@@ -68,11 +49,11 @@ th {
 }
 
 .product {
-  width: 120px;
+  width: 140px;
 }
 
 .bonus {
-  width: 50px;
+  width: 60px;
 }
 
 .btn {
@@ -90,7 +71,6 @@ th {
   margin-top: 10px;
   font-size: 16px;
 }
-
 </style>
 </head>
 
@@ -101,28 +81,39 @@ th {
 <h2>mosco Marketing limited</h2>
 <h3>Order Submission Format</h3>
 
-<div class="grid2">
-<input placeholder="Order Date">
-<input placeholder="Due Date">
+<table>
+<tr>
+<td><input placeholder="Order Date"></td>
+<td><input placeholder="Due Date"></td>
+</tr>
 
-<input class="full" placeholder="Distributor Name">
-<input class="full" placeholder="Address">
+<tr>
+<td colspan="2"><input placeholder="Distributor Name"></td>
+</tr>
 
-<input placeholder="Season">
-<input placeholder="Order Type">
+<tr>
+<td colspan="2"><input placeholder="Address"></td>
+</tr>
 
-<input placeholder="Slab (Y/N)">
-<input placeholder="S. Approval">
-</div>
+<tr>
+<td><input placeholder="Season"></td>
+<td><input placeholder="Order Type"></td>
+</tr>
+
+<tr>
+<td><input placeholder="Slab (Y/N)"></td>
+<td><input placeholder="S. Approval"></td>
+</tr>
+</table>
 
 <table id="productTable">
 <tr>
-<th class="product">Product</th>
+<th class="product">Product Name</th>
 <th>P Size</th>
 <th>Qty</th>
-<th>Price</th>
+<th>Car Price</th>
 <th>Total</th>
-<th class="bonus">B%</th>
+<th class="bonus">Bonus %</th>
 </tr>
 </table>
 
@@ -133,11 +124,17 @@ th {
 <b>Total V:</b> <span id="totalValue">0</span>
 </div>
 
-<br>
-
-<input placeholder="Officer Name">
-<input placeholder="Mobile">
-<input placeholder="Territory">
+<table>
+<tr>
+<td><input placeholder="Officer Name"></td>
+</tr>
+<tr>
+<td><input placeholder="Mobile"></td>
+</tr>
+<tr>
+<td><input placeholder="Territory"></td>
+</tr>
+</table>
 
 <button class="btn" onclick="generatePDF()">Generate PDF</button>
 <button class="btn" onclick="shareData()">Share</button>
