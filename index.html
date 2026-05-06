@@ -54,6 +54,17 @@ input {
   outline: none;
 }
 
+/* 🔥 Column size fix */
+#productTable th:nth-child(6),
+#productTable td:nth-child(6) {
+  width: 90px; /* Total বড় */
+}
+
+#productTable th:nth-child(7),
+#productTable td:nth-child(7) {
+  width: 50px; /* Bonus ছোট */
+}
+
 .green-box {
   background: #8bc34a;
   border-radius: 20px;
@@ -85,7 +96,7 @@ input {
 }
 
 .total input {
-  width: 60px;
+  width: 70px;
   background: #8bc34a;
   border-radius: 8px;
 }
@@ -218,28 +229,6 @@ input {
 
 <script>
 
-// Auto Save
-function saveData() {
-  let inputs = document.querySelectorAll("input");
-  let data = [];
-  inputs.forEach(i => data.push(i.value));
-  localStorage.setItem("orderData", JSON.stringify(data));
-}
-
-function loadData() {
-  let data = JSON.parse(localStorage.getItem("orderData"));
-  if (!data) return;
-  let inputs = document.querySelectorAll("input");
-  inputs.forEach((i, index) => {
-    if (data[index] !== undefined) i.value = data[index];
-  });
-  calculate();
-}
-
-document.addEventListener("input", saveData);
-window.onload = loadData;
-
-
 // Add Row
 function addRow() {
   let table = document.getElementById("productTable");
@@ -257,7 +246,6 @@ function addRow() {
   `;
 }
 
-
 // Calculate
 function calculate() {
   let table = document.getElementById("productTable");
@@ -269,7 +257,6 @@ function calculate() {
     let price = table.rows[i].cells[4].children[0].value || 0;
 
     let total = qty * price;
-
     table.rows[i].cells[5].children[0].value = total;
 
     totalCarton += Number(qty);
@@ -280,25 +267,38 @@ function calculate() {
   document.getElementById("totalValue").value = totalValue;
 }
 
-
-// PDF
+// 🔥 PERFECT MULTI PAGE PDF
 async function generatePDF() {
   const { jsPDF } = window.jspdf;
-  let pdf = new jsPDF("p", "mm", "a4");
+
+  let pdf = new jsPDF('p', 'mm', 'a4');
 
   let canvas = await html2canvas(document.getElementById("formArea"), { scale: 2 });
-  let imgData = canvas.toDataURL("image/png");
+
+  let imgData = canvas.toDataURL('image/png');
 
   let imgWidth = 210;
-  let imgHeight = canvas.height * imgWidth / canvas.width;
+  let pageHeight = 297;
 
-  pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+  let imgHeight = canvas.height * imgWidth / canvas.width;
+  let heightLeft = imgHeight;
+
+  let position = 0;
+
+  pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+  heightLeft -= pageHeight;
+
+  while (heightLeft > 0) {
+    position = heightLeft - imgHeight;
+    pdf.addPage();
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+  }
 
   pdf.save("order.pdf");
 }
 
-
-// 🔥 UPDATED SHARE (PDF send)
+// Share
 async function share() {
   const { jsPDF } = window.jspdf;
 
@@ -321,7 +321,7 @@ async function share() {
       title: "Order PDF"
     });
   } else {
-    alert("Mobile Chrome use করো (share support নাই)");
+    alert("Mobile Chrome use করো");
   }
 }
 
