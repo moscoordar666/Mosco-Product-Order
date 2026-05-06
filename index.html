@@ -389,6 +389,27 @@ async function createPDFBlob(){
   return pdf.output('blob');
 }
 
+async function sharePDF() {
+  try {
+    const blob = await createPDFBlob();
+    const file = new File([blob], "order.pdf", { type: "application/pdf" });
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        title: "Order PDF",
+        text: "Order file attached",
+        files: [file]
+      });
+    } else {
+      alert("❌ Device not supported");
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert("❌ Sharing failed");
+  }
+}
+  
 // download pdf
 async function generatePDF() {
   const { jsPDF } = window.jspdf;
