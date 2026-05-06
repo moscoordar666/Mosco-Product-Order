@@ -358,12 +358,14 @@ async function createPDFBlob(){
   const { jsPDF } = window.jspdf;
   const element = document.getElementById("formArea");
 
-  document.querySelectorAll(".no-print").forEach(el=>el.style.display="none");
+  // 🔥 HIDE BUTTONS
+  document.querySelectorAll(".no-print").forEach(el => el.style.display = "none");
 
   const canvas = await html2canvas(element,{scale:2});
   const imgData = canvas.toDataURL("image/png");
 
-  document.querySelectorAll(".no-print").forEach(el=>el.style.display="");
+  // 🔥 SHOW BACK BUTTONS
+  document.querySelectorAll(".no-print").forEach(el => el.style.display = "");
 
   const pdf = new jsPDF('p','mm','a4');
 
@@ -374,10 +376,11 @@ async function createPDFBlob(){
   let heightLeft = imgHeight;
   let position = 0;
 
-  pdf.addImage(imgData, "PNG", 5, position, imgWidth - 10, imgHeight);
+  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+  heightLeft -= pageHeight;
 
   while(heightLeft > 0){
-    position = heightLeft - imgHeight;
+    position -= pageHeight;
     pdf.addPage();
     pdf.addImage(imgData,'PNG',0,position,imgWidth,imgHeight);
     heightLeft -= pageHeight;
