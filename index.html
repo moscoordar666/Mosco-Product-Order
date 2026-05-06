@@ -2,23 +2,41 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order App</title>
 
-<!-- PDF + Screenshot -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
+
 body {
   font-family: Arial;
-  padding: 20px;
-  background: #fff;
+  margin: 0;
+  background: #ddd;
 }
 
-h2, h3 {
+/* Phone Frame Feel */
+#formArea {
+  max-width: 420px;
+  margin: auto;
+  background: #eee;
+  padding: 15px;
+  border-radius: 30px;
+  border: 6px solid black;
+}
+
+/* Header */
+h2 {
   text-align: center;
+  margin: 5px 0;
+}
+h3 {
+  text-align: center;
+  margin: 0;
 }
 
+/* Table */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -26,26 +44,121 @@ table {
 }
 
 td, th {
-  border: 1px solid black;
+  border: 1px solid #444;
   padding: 6px;
+  font-size: 13px;
 }
 
+th {
+  background: #00cfd1;
+}
+
+/* Input */
 input {
   width: 100%;
   border: none;
+  background: transparent;
+  outline: none;
 }
 
-button {
-  padding: 10px 15px;
-  margin: 10px 5px;
-  cursor: pointer;
+/* Green Inputs */
+.green-box {
+  background: #8bc34a;
+  border-radius: 20px;
+  padding: 8px;
+  margin-top: 5px;
 }
 
-.center {
-  text-align: center;
+/* Row Flex */
+.flex {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
 }
+
+.flex div {
+  flex: 1;
+}
+
+/* Product column size */
+#productTable th:nth-child(1),
+#productTable td:nth-child(1) { width: 30%; }
+
+#productTable th:nth-child(2),
+#productTable td:nth-child(2) { width: 12%; }
+
+#productTable th:nth-child(3),
+#productTable td:nth-child(3) { width: 10%; }
+
+#productTable th:nth-child(4),
+#productTable td:nth-child(4) { width: 16%; }
+
+#productTable th:nth-child(5),
+#productTable td:nth-child(5) { width: 16%; }
+
+#productTable th:nth-child(6),
+#productTable td:nth-child(6) { width: 10%; }
+
+/* Add button */
+.add-btn {
+  background: #8bc34a;
+  padding: 8px;
+  border-radius: 10px;
+  width: 160px;
+  border: none;
+  margin-top: 10px;
+}
+
+/* Total */
+.total {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.total input {
+  width: 60px;
+  background: #8bc34a;
+  border-radius: 8px;
+}
+
+/* Officer section */
+.officer {
+  margin-top: 20px;
+}
+
+.officer input {
+  border: 1px solid #999;
+  border-radius: 20px;
+  padding: 6px;
+  margin-top: 5px;
+}
+
+/* Bottom buttons */
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.bottom button {
+  flex: 1;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+}
+
+.pdf-btn {
+  background: #8bc34a;
+}
+
+.share-btn {
+  background: #cddc39;
+}
+
 </style>
-
 </head>
 
 <body>
@@ -57,23 +170,23 @@ button {
 
 <table>
 <tr>
-<td>Order Date</td>
+<td style="background:#00cfd1;">Order Date</td>
 <td><input id="orderDate"></td>
-<td>Due Date</td>
+<td style="background:#00cfd1;">Due Date</td>
 <td><input id="dueDate"></td>
 </tr>
 
 <tr>
 <td>Distributor Name</td>
 <td><input id="name"></td>
-<td>Season</td>
+<td style="background:#00cfd1;">Season</td>
 <td><input id="season"></td>
 </tr>
 
 <tr>
 <td>Address</td>
 <td><input id="address"></td>
-<td>Order Type</td>
+<td style="background:#00cfd1;">Order Type</td>
 <td><input id="type"></td>
 </tr>
 
@@ -88,8 +201,19 @@ button {
 </tr>
 </table>
 
-<br>
+<!-- Green boxes -->
+<div class="flex">
+  <div>
+    <div class="green-box">Mention Depot Name</div>
+    <input class="green-box">
+  </div>
+  <div>
+    <div class="green-box">Booking Transport Name</div>
+    <input class="green-box">
+  </div>
+</div>
 
+<!-- Product Table -->
 <table id="productTable">
 <tr>
 <th>Product Name</th>
@@ -110,38 +234,32 @@ button {
 </tr>
 </table>
 
-<button onclick="addRow()">+ Add Product</button>
+<button class="add-btn" onclick="addRow()">+ Add Product</button>
 
-<br><br>
-
-Total carton = <input id="totalCarton" readonly style="width:100px;">
-Total V = <input id="totalValue" readonly style="width:150px;">
-
-<br><br>
-
-<table>
-<tr>
-<td>Officer Name</td>
-<td><input id="officer"></td>
-</tr>
-<tr>
-<td>Mobile</td>
-<td><input id="mobile"></td>
-</tr>
-<tr>
-<td>Territory</td>
-<td><input id="territory"></td>
-</tr>
-</table>
-
+<!-- Total -->
+<div class="total">
+  Total carton = <input id="totalCarton" readonly>
+  Total V = <input id="totalValue" readonly>
 </div>
 
-<div class="center">
-<button onclick="generatePDF()">📄 Generate PDF</button>
-<button onclick="share()">📤 Share</button>
+<!-- Officer -->
+<div class="officer">
+  Officer Name <input id="officer">
+  Mobile <input id="mobile">
+  Territory <input id="territory">
+</div>
+
+<!-- Bottom -->
+<div class="bottom">
+  <button class="pdf-btn" onclick="generatePDF()">Generate PDF</button>
+  <button class="share-btn" onclick="share()">Share</button>
+</div>
+
 </div>
 
 <script>
+
+// SAME JS (UNCHANGED)
 
 // Add product row
 function addRow() {
@@ -180,7 +298,7 @@ function calculate() {
   document.getElementById("totalValue").value = totalValue;
 }
 
-// Generate PDF (FULL DESIGN)
+// PDF
 function generatePDF() {
   let form = document.getElementById("formArea");
 
@@ -199,7 +317,7 @@ function generatePDF() {
   });
 }
 
-// Share WhatsApp
+// Share
 function share() {
   let name = document.getElementById("name").value;
   let text = "Order from " + name;
