@@ -185,7 +185,7 @@ input, select {
 <div id="formArea">
 
 <div class="no-print" style="text-align:right;">
-  <button class="install-btn" onclick="installApp()">Install</button>
+  <button class="install-btn no-print" onclick="installApp()">Install</button>
 </div>
 
 <div style="text-align:center;">
@@ -389,22 +389,24 @@ async function createPDFBlob(){
 // download pdf
 async function generatePDF() {
   const { jsPDF } = window.jspdf;
-
   let element = document.getElementById("formArea");
 
-  let canvas = await html2canvas(element, { scale: 2 });
+  // 🔥 HIDE BUTTONS
+  document.querySelectorAll(".no-print").forEach(el => el.style.display = "none");
 
+  let canvas = await html2canvas(element, { scale: 2 });
   let imgData = canvas.toDataURL("image/png");
+
+  // 🔥 SHOW BACK BUTTONS
+  document.querySelectorAll(".no-print").forEach(el => el.style.display = "");
 
   let pdf = new jsPDF("p", "mm", "a4");
 
   let imgWidth = 210;
   let pageHeight = 297;
-
   let imgHeight = canvas.height * imgWidth / canvas.width;
 
   let heightLeft = imgHeight;
-
   let position = 0;
 
   pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
@@ -424,24 +426,20 @@ async function generatePDF() {
 async function saveImage() {
   let element = document.getElementById("formArea");
 
+  // 🔥 hide buttons
+  document.querySelectorAll(".no-print").forEach(el => el.style.display = "none");
+
   let canvas = await html2canvas(element, { scale: 2 });
 
   let imgData = canvas.toDataURL("image/png");
+
+  // 🔥 show again
+  document.querySelectorAll(".no-print").forEach(el => el.style.display = "");
 
   let a = document.createElement("a");
   a.href = imgData;
   a.download = "order.png";
   a.click();
-} 
-  
-// share pdf
-async function sharePDF(){
-  const blob = await createPDFBlob();
-  const file = new File([blob],"order.pdf",{type:"application/pdf"});
-
-  if(navigator.share){
-    navigator.share({files:[file],title:"Order PDF"});
-  } else alert("Sharing not supported");
 }
 
 // install
