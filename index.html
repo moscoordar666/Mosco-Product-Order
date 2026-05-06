@@ -27,30 +27,21 @@ h2, h3 {
 input {
   width: 100%;
   padding: 10px;
-  margin: 5px 0;
+  margin: 6px 0;
   border: none;
   border-bottom: 1px solid #ccc;
   font-size: 14px;
 }
 
-/* Product Row */
 .row {
   display: flex;
   gap: 5px;
   margin-top: 10px;
 }
 
-.product {
-  flex: 2;
-}
-
-.small {
-  flex: 1;
-}
-
-.bonus {
-  flex: 0.6;
-}
+.product { flex: 2; }
+.small { flex: 1; }
+.bonus { flex: 0.6; }
 
 button {
   width: 100%;
@@ -94,42 +85,48 @@ button {
 <input placeholder="Mobile">
 <input placeholder="Territory">
 
-<button>Generate PDF</button>
-<button>Share</button>
-
 </div>
 
 <script>
 
 function addProduct() {
-  let div = document.createElement("div");
-  div.className = "row";
+  const container = document.getElementById("products");
 
-  div.innerHTML = `
-    <input class="product" placeholder="Product Name">
-    <input class="small qty" placeholder="Qty" type="number" oninput="calculate()">
-    <input class="small price" placeholder="Price" type="number" oninput="calculate()">
+  const row = document.createElement("div");
+  row.className = "row";
+
+  row.innerHTML = `
+    <input class="product" placeholder="Product">
+    <input class="small qty" type="number" placeholder="Qty">
+    <input class="small price" type="number" placeholder="Price">
     <input class="small value" placeholder="Value" readonly>
-    <input class="bonus" placeholder="Bonus">
+    <input class="bonus" placeholder="B">
   `;
 
-  document.getElementById("products").appendChild(div);
+  container.appendChild(row);
+
+  // Add event listeners AFTER adding
+  const qty = row.querySelector(".qty");
+  const price = row.querySelector(".price");
+
+  qty.addEventListener("input", calculate);
+  price.addEventListener("input", calculate);
 }
 
 function calculate() {
-  let qty = document.querySelectorAll(".qty");
-  let price = document.querySelectorAll(".price");
-  let value = document.querySelectorAll(".value");
+  const qtys = document.querySelectorAll(".qty");
+  const prices = document.querySelectorAll(".price");
+  const values = document.querySelectorAll(".value");
 
   let totalValue = 0;
   let totalCarton = 0;
 
-  for (let i = 0; i < qty.length; i++) {
-    let q = Number(qty[i].value) || 0;
-    let p = Number(price[i].value) || 0;
+  for (let i = 0; i < qtys.length; i++) {
+    const q = parseFloat(qtys[i].value) || 0;
+    const p = parseFloat(prices[i].value) || 0;
 
-    let v = q * p;
-    value[i].value = v;
+    const v = q * p;
+    values[i].value = v;
 
     totalValue += v;
     totalCarton += q;
