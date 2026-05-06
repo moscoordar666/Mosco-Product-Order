@@ -11,126 +11,95 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-body {
-  font-family: Arial;
-  margin: 0;
-  background: #ddd;
-}
+body { font-family: Arial; margin:0; background:#ddd; }
 
 #formArea {
-  max-width: 420px;
-  margin: auto;
-  background: #eee;
-  padding: 15px;
-  border-radius: 30px;
-  border: 6px solid black;
-  position: relative;
+  max-width:420px;
+  margin:auto;
+  background:#eee;
+  padding:15px;
+  border-radius:30px;
+  border:6px solid black;
+  position:relative;
 }
 
-h2, h3 {
-  text-align: center;
-  margin: 5px 0;
+.install-btn{
+  position:absolute;
+  top:10px;
+  right:10px;
+  font-size:10px;
+  padding:4px 8px;
+  border:none;
+  border-radius:10px;
+  background:black;
+  color:#fff;
 }
 
-/* 🔥 Install button top corner */
-.install-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: black;
-  color: white;
-  font-size: 10px;
-  padding: 4px 8px;
-  border-radius: 10px;
-  border: none;
+h2,h3{text-align:center;margin:5px;}
+
+table{width:100%;border-collapse:collapse;margin-top:10px;}
+td,th{border:1px solid #444;padding:6px;font-size:13px;}
+th{background:#00cfd1;}
+
+input,select{
+  width:100%;
+  border:none;
+  background:transparent;
+  outline:none;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-td, th {
-  border: 1px solid #444;
-  padding: 6px;
-  font-size: 13px;
-}
-
-th { background: #00cfd1; }
-
-input {
-  width: 100%;
-  border: none;
-  background: transparent;
-  outline: none;
-}
-
-/* column fix */
+/* Column size */
 #productTable th:nth-child(2){width:120px;}
-#productTable th:nth-child(3){width:60px;}
 #productTable th:nth-child(6){width:80px;}
 #productTable th:nth-child(7){width:50px;}
 
-.green-box {
-  background: #8bc34a;
-  border-radius: 20px;
-  padding: 8px;
-  margin-top: 5px;
+.add-btn{
+  background:#8bc34a;
+  padding:8px;
+  border:none;
+  border-radius:10px;
+  margin-top:10px;
 }
 
-.flex { display: flex; gap: 10px; margin-top: 10px; }
-.flex div { flex: 1; }
-
-.add-btn {
-  background: #8bc34a;
-  padding: 8px;
-  border-radius: 10px;
-  border: none;
-  margin-top: 10px;
+.total{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:10px;
 }
 
-.total {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
+.total input{
+  width:100px;
+  background:#8bc34a;
+  border-radius:8px;
 }
 
-.total input {
-  width: 100px;
-  background: #8bc34a;
-  border-radius: 8px;
+.officer input{
+  border:1px solid #999;
+  border-radius:20px;
+  padding:6px;
+  margin-top:5px;
 }
 
-.officer { margin-top: 20px; }
-
-.officer input {
-  border: 1px solid #999;
-  border-radius: 20px;
-  padding: 6px;
-  margin-top: 5px;
+.bottom{
+  display:flex;
+  gap:8px;
+  margin-top:15px;
 }
 
-.bottom {
-  display: flex;
-  gap: 8px;
-  margin-top: 15px;
+.bottom button{
+  flex:1;
+  padding:8px;
+  border:none;
+  border-radius:15px;
+  font-size:12px;
 }
 
-.bottom button {
-  flex: 1;
-  padding: 8px;
-  border-radius: 15px;
-  border: none;
-  font-size: 12px;
-}
+.pdf-btn{background:#4CAF50;color:#fff;}
+.share-btn{background:#2196F3;color:#fff;}
+.clear-btn{background:#f44336;color:#fff;}
 
-.pdf-btn { background: #4CAF50; color:#fff;}
-.share-btn { background: #2196F3; color:#fff;}
-.clear-btn { background: #f44336; color:#fff;}
-
-.no-print { display:block; }
+.no-print{display:block;}
 </style>
 </head>
 
@@ -140,57 +109,33 @@ input {
 
 <button class="install-btn no-print" onclick="installApp()">📲</button>
 
-<div style="text-align:center;">
-  <img src="mosco-logo.png" style="width:80px;">
-</div>
-
 <h2>Mosco Marketing limited</h2>
 <h3>Order Submission Format</h3>
 
 <table>
 <tr>
-<td style="background:#00cfd1;">Order Date</td>
+<td>Order Date</td>
 <td><input id="orderDate"></td>
-<td style="background:#00cfd1;">Due Date</td>
+<td>Due Date</td>
 <td><input id="dueDate"></td>
 </tr>
 
 <tr>
-<td>Distributor Name</td>
+<td>Distributor</td>
 <td><input id="name"></td>
-<td style="background:#00cfd1;">Season</td>
+<td>Season</td>
 <td><input id="season"></td>
 </tr>
 
 <tr>
 <td>Address</td>
 <td><input id="address"></td>
-<td style="background:#00cfd1;">Order Type</td>
+<td>Type</td>
 <td><input id="type"></td>
-</tr>
-
-<tr>
-<td colspan="2">Slab</td>
-<td colspan="2"><input id="slab"></td>
-</tr>
-
-<tr>
-<td colspan="2">Approval</td>
-<td colspan="2"><input id="approval"></td>
 </tr>
 </table>
 
-<div class="flex">
-  <div>
-    <div class="green-box">Depot</div>
-    <input class="green-box">
-  </div>
-  <div>
-    <div class="green-box">Transport</div>
-    <input class="green-box">
-  </div>
-</div>
-
+<!-- Product Table -->
 <table id="productTable">
 <tr>
 <th>#</th>
@@ -204,7 +149,37 @@ input {
 
 <tr>
 <td>1</td>
-<td><input class="product"></td>
+<td>
+<select class="product">
+<option value="">Select</option>
+<option>Agritop 100gm</option>
+<option>Agritop 50gm</option>
+<option>Agrivit 200gm</option>
+<option>Agrivit 100gm</option>
+<option>Agrivit 50gm</option>
+<option>Agrosave 20 Lit.</option>
+<option>Agrosave 100ml</option>
+<option>Agrosave 50ml</option>
+<option>Biozim 1 Lit.</option>
+<option>Biozim 500ml</option>
+<option>Biozim 100ml</option>
+<option>Cyper 1 Lit.</option>
+<option>Cyper 100ml</option>
+<option>Dare 1 Lit.</option>
+<option>Dare 100ml</option>
+<option>Divine 1 Lit.</option>
+<option>Divine 100ml</option>
+<option>Halotouch 1 Lit.</option>
+<option>Halotouch 100ml</option>
+<option>Marine 1 Lit.</option>
+<option>Marine 100ml</option>
+<option>Paramos 1 Lit.</option>
+<option>Paramos 100ml</option>
+<option>Power Plus 1 Lit.</option>
+<option>Power Plus 100ml</option>
+<option>Winner 1 Lit.</option>
+</select>
+</td>
 <td><input></td>
 <td><input oninput="calculate()"></td>
 <td><input oninput="calculate()"></td>
@@ -216,100 +191,130 @@ input {
 <button class="add-btn no-print" onclick="addRow()">+ Add Product</button>
 
 <div class="total">
-  Carton = <input id="totalCarton" readonly>
-  Value = <input id="totalValue" readonly>
+Carton <input id="totalCarton">
+Value <input id="totalValue">
 </div>
 
 <div class="officer">
-  Officer <input id="officer">
-  Mobile <input id="mobile">
-  Territory <input id="territory">
+Officer <input id="officer">
+Mobile <input id="mobile">
+Territory <input id="territory">
 </div>
 
 <div class="bottom no-print">
-  <button class="pdf-btn" onclick="generatePDF()">PDF</button>
-  <button class="share-btn" onclick="share()">Share</button>
-  <button class="clear-btn" onclick="clearForm()">Clear</button>
+<button class="pdf-btn" onclick="generatePDF()">PDF</button>
+<button class="share-btn" onclick="sharePDF()">Share</button>
+<button class="clear-btn" onclick="clearForm()">Clear</button>
 </div>
 
 </div>
 
 <script>
 
-// (same JS — unchanged, everything working)
-
+// Add row
 function addRow(){
-  let table=document.getElementById("productTable");
-  let row=table.insertRow();
-  let index=table.rows.length-1;
+let table=document.getElementById("productTable");
+let row=table.insertRow();
+let index=table.rows.length-1;
 
-  row.innerHTML=`
-  <td>${index}</td>
-  <td><input class="product"></td>
-  <td><input></td>
-  <td><input oninput="calculate()"></td>
-  <td><input oninput="calculate()"></td>
-  <td><input readonly></td>
-  <td><input></td>`;
+row.innerHTML=`
+<td>${index}</td>
+<td>
+<select>
+<option>Select</option>
+<option>Agritop 100gm</option>
+<option>Biozim 100ml</option>
+<option>Cyper 100ml</option>
+<option>Dare 100ml</option>
+<option>Divine 100ml</option>
+</select>
+</td>
+<td><input></td>
+<td><input oninput="calculate()"></td>
+<td><input oninput="calculate()"></td>
+<td><input readonly></td>
+<td><input></td>`;
 }
 
+// Calculate
 function calculate(){
-  let table=document.getElementById("productTable");
-  let totalCarton=0,totalValue=0;
+let table=document.getElementById("productTable");
+let totalCarton=0,totalValue=0;
 
-  for(let i=1;i<table.rows.length;i++){
-    let qty=table.rows[i].cells[3].children[0].value||0;
-    let price=table.rows[i].cells[4].children[0].value||0;
-    let total=qty*price;
+for(let i=1;i<table.rows.length;i++){
+let qty=table.rows[i].cells[3].children[0].value||0;
+let price=table.rows[i].cells[4].children[0].value||0;
+let total=qty*price;
 
-    table.rows[i].cells[5].children[0].value=total;
-    totalCarton+=Number(qty);
-    totalValue+=total;
-  }
-
-  document.getElementById("totalCarton").value=totalCarton;
-  document.getElementById("totalValue").value=totalValue;
+table.rows[i].cells[5].children[0].value=total;
+totalCarton+=Number(qty);
+totalValue+=total;
 }
 
+document.getElementById("totalCarton").value=totalCarton;
+document.getElementById("totalValue").value=totalValue;
+}
+
+// PDF generator
+async function makePDF(){
+document.querySelectorAll(".no-print").forEach(e=>e.style.display="none");
+
+const { jsPDF } = window.jspdf;
+let canvas=await html2canvas(document.getElementById("formArea"),{scale:2});
+let img=canvas.toDataURL("image/png");
+
+let pdf=new jsPDF('p','mm','a4');
+let h=canvas.height*210/canvas.width;
+let y=0;
+
+while(y<h){
+pdf.addImage(img,'PNG',0,-y,210,h);
+y+=297;
+if(y<h) pdf.addPage();
+}
+
+document.querySelectorAll(".no-print").forEach(e=>e.style.display="block");
+return pdf;
+}
+
+// Save PDF
 async function generatePDF(){
-  document.querySelectorAll(".no-print").forEach(e=>e.style.display="none");
-
-  const { jsPDF } = window.jspdf;
-  let canvas=await html2canvas(document.getElementById("formArea"),{scale:2});
-  let img=canvas.toDataURL("image/png");
-
-  let pdf=new jsPDF('p','mm','a4');
-  let h=canvas.height*210/canvas.width;
-  let y=0;
-
-  while(y<h){
-    pdf.addImage(img,'PNG',0,-y,210,h);
-    y+=297;
-    if(y<h) pdf.addPage();
-  }
-
-  pdf.save("order.pdf");
-
-  document.querySelectorAll(".no-print").forEach(e=>e.style.display="block");
+let pdf=await makePDF();
+pdf.save("order.pdf");
 }
 
-function share(){ alert("Use mobile share"); }
+// Share PDF (WhatsApp ready)
+async function sharePDF(){
+let pdf=await makePDF();
 
+let blob=pdf.output("blob");
+let file=new File([blob],"order.pdf",{type:"application/pdf"});
+
+if(navigator.share){
+await navigator.share({
+files:[file],
+title:"Order PDF"
+});
+}else{
+alert("Use Chrome mobile");
+}
+}
+
+// Clear
 function clearForm(){
-  if(confirm("Clear all?")){
-    location.reload();
-  }
+if(confirm("Clear all?")) location.reload();
 }
 
+// Install
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt',(e)=>{
-  e.preventDefault();
-  deferredPrompt=e;
+e.preventDefault();
+deferredPrompt=e;
 });
 function installApp(){
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-  }
+if(deferredPrompt){
+deferredPrompt.prompt();
+}
 }
 
 </script>
