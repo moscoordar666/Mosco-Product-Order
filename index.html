@@ -302,25 +302,35 @@ function calculate() {
 function generatePDF() {
   let form = document.getElementById("formArea");
 
-  html2canvas(form).then(canvas => {
-    let imgData = canvas.toDataURL("image/png");
+  html2canvas(form, { scale: 2 }).then(canvas => {
 
     const { jsPDF } = window.jspdf;
     let pdf = new jsPDF("p", "mm", "a4");
 
     let imgWidth = 210;
-    let imgHeight = canvas.height * imgWidth / canvas.width;
+    let pageHeight = 297;
 
-    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+    let imgHeight = canvas.height * imgWidth / canvas.width;
+    let heightLeft = imgHeight;
+
+    let position = 0;
+
+    let imgData = canvas.toDataURL("image/png");
+
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    // 👉 multiple page loop
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
 
     pdf.save("order.pdf");
   });
 }
-
-// Share
-function share() {
-  let name = document.getElementById("name").value;
-  let text = "Order from " + name;
 
   window.open("https://wa.me/?text=" + encodeURIComponent(text));
 }
