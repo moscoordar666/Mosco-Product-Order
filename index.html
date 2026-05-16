@@ -49,40 +49,43 @@ th{
   background:#00cfd1;
 }
 
-input,select{
+input,select,textarea{
   width:100%;
   border:none;
   background:transparent;
   outline:none;
+  box-sizing:border-box;
 }
 
-/* Product Width */
-
+/* Product column bigger */
 #productTable th:nth-child(2),
 #productTable td:nth-child(2){
-  width:180px;
+  width:140px;
 }
 
-/* Bigger Price Columns */
+/* Qty bigger */
+#productTable th:nth-child(3),
+#productTable td:nth-child(3){
+  width:70px;
+  text-align:center;
+}
 
+/* Price columns bigger */
 #productTable th:nth-child(4),
-#productTable td:nth-child(4){
-  width:120px;
-  font-size:12px;
-}
-
+#productTable td:nth-child(4),
 #productTable th:nth-child(5),
 #productTable td:nth-child(5){
-  width:120px;
-  font-size:12px;
+  width:95px;
+  font-size:11px;
+  text-align:center;
 }
 
 /* Bonus smaller */
-
 #productTable th:nth-child(6),
 #productTable td:nth-child(6){
-  width:70px;
-  font-size:11px;
+  width:40px;
+  font-size:10px;
+  text-align:center;
 }
 
 .green-box{
@@ -136,6 +139,20 @@ input,select{
   margin-top:5px;
 }
 
+/* Comment Box */
+.comment-box{
+  width:100%;
+  height:80px;
+  border:1px solid #999;
+  border-radius:15px;
+  padding:10px;
+  margin-top:5px;
+  margin-bottom:10px;
+  resize:none;
+  font-family:Arial;
+  background:#fff;
+}
+
 .bottom{
   display:flex;
   gap:10px;
@@ -185,17 +202,6 @@ input,select{
 }
 
 .no-print{}
-
-textarea{
-  width:100%;
-  height:90px;
-  border-radius:15px;
-  padding:10px;
-  font-size:14px;
-  border:1px solid #999;
-  resize:none;
-  box-sizing:border-box;
-}
 
 @media print{
   .no-print{
@@ -306,7 +312,7 @@ textarea{
 <td><input oninput="calculate()"></td>
 <td><input oninput="calculate()"></td>
 <td><input readonly></td>
-<td><input></td>
+<td><input maxlength="3"></td>
 </tr>
 
 </table>
@@ -323,39 +329,18 @@ Total V =
 <input id="totalValue" readonly>
 </div>
 
-<!-- COMMENT BOX -->
-
-<div style="margin-top:20px;">
-
-<div style="
-background:#00cfd1;
-padding:8px;
-border-radius:10px;
-font-weight:bold;
-margin-bottom:8px;
-">
-Comment
-</div>
-
-<textarea
-maxlength="100"
-placeholder="Write Comment (Max 100 Characters)">
-</textarea>
-
-</div>
-
-<!-- OFFICER -->
-
 <div class="officer">
 
-Officer Name
-<input>
+Comment
+<textarea
+class="comment-box"
+maxlength="100"
+placeholder="Write comment here..."
+></textarea>
 
-Mobile
-<input>
-
-Territory
-<input>
+Officer Name <input>
+Mobile <input>
+Territory <input>
 
 </div>
 
@@ -381,8 +366,7 @@ Territory
 
 <script>
 
-// ADD ROW
-
+// add row
 function addRow(){
 
   let table=document.getElementById("productTable");
@@ -397,12 +381,11 @@ function addRow(){
     <td><input oninput="calculate()"></td>
     <td><input oninput="calculate()"></td>
     <td><input readonly></td>
-    <td><input></td>
+    <td><input maxlength="3"></td>
   `;
 }
 
-// CALCULATE
-
+// calculate
 function calculate(){
 
   let table=document.getElementById("productTable");
@@ -435,7 +418,6 @@ function calculate(){
 }
 
 // SHARE IMAGE
-
 async function shareContent(){
 
   const element=document.getElementById("formArea");
@@ -480,7 +462,6 @@ async function shareContent(){
 }
 
 // DOWNLOAD PDF
-
 async function generatePDF(){
 
   const { jsPDF } = window.jspdf;
@@ -544,7 +525,6 @@ async function generatePDF(){
 }
 
 // SAVE IMAGE
-
 async function saveImage(){
 
   let element=document.getElementById("formArea");
