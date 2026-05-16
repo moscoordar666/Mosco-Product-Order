@@ -304,33 +304,24 @@ Territory <input>
 <script>
 
 // product list
-const products = ["Agritop 100gm","Agritop 50gm","Agrivit 200gm","Agrivit 100gm","Agrosave 20 Lit.","Agrosave 100ml","Arika (Blue) 500gm","Beater 400ml","Biozim 1 Lit.","Builder 500gm","Cyper 1 Lit.","Dare 1 Lit.","Divine 1 Lit.","Firotin 400ml","Marine 1Lit","Massive 500gm","Medisate 1 Lit.","Megazole 1 Lit.","Mosco Boron 500gm","Paramos 1 Lit.","Power Plus 1 Lit.","Radial 100ml","Real 100ml","Remote 100ml","Repel 100gm","Ronza 10gm","Supervit 1kg","Technovit 100gm","Tiefen 100ml","Winner 1 Lit."];
-
-// dropdown fill
-function fillDropdown(select){
-  products.forEach(p=>{
-    let opt=document.createElement("option");
-    opt.textContent=p;
-    select.appendChild(opt);
-  });
-}
-fillDropdown(document.querySelector(".productList"));
 
 // add row
 function addRow(){
+
   let table=document.getElementById("productTable");
+
   let row=table.insertRow();
   let i=table.rows.length-1;
 
   row.innerHTML=`
-  <td>${i}</td>
-  <td><select class="productList"></select></td>
-  <td><input oninput="calculate()"></td>
-  <td><input oninput="calculate()"></td>
-  <td><input readonly></td>
-  <td><input></td>
+    <td>${i}</td>
+    <td><input type="text" placeholder="Product Name"></td>
+    <td><input oninput="calculate()"></td>
+    <td><input oninput="calculate()"></td>
+    <td><input readonly></td>
+    <td><input></td>
   `;
-  fillDropdown(row.querySelector("select"));
+
 }
 
 // calculate
