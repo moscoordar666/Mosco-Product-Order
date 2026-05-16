@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order App</title>
-<link rel="manifest" href="manifest.json">
 
+<link rel="manifest" href="manifest.json">
 <link rel="icon" href="mosco-logo.png">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -13,167 +13,158 @@
 
 <style>
 
-body {
-  font-family: Arial;
-  margin: 0;
-  background: #ddd;
+body{
+  font-family:Arial;
+  margin:0;
+  background:#ddd;
 }
 
-#formArea {
-  max-width: 420px;
-  margin: auto;
-  background: #eee;
-  padding: 15px;
-  border-radius: 30px;
-  border: 6px solid black;
+#formArea{
+  max-width:420px;
+  margin:auto;
+  background:#eee;
+  padding:15px;
+  border-radius:30px;
+  border:6px solid black;
 }
 
-h2, h3 {
-  text-align: center;
-  margin: 5px 0;
+h2,h3{
+  text-align:center;
+  margin:5px 0;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
 }
 
-td, th {
-  border: 1px solid #444;
-  padding: 6px;
-  font-size: 13px;
+td,th{
+  border:1px solid #444;
+  padding:6px;
+  font-size:13px;
 }
 
-th { background: #00cfd1; }
-
-input, select {
-  width: 100%;
-  border: none;
-  background: transparent;
-  outline: none;
+th{
+  background:#00cfd1;
 }
 
-/* Product column bigger */
+input,select{
+  width:100%;
+  border:none;
+  background:transparent;
+  outline:none;
+}
+
 #productTable th:nth-child(2),
-#productTable td:nth-child(2) { width: 220px; }
-
-.green-box {
-  background: #8bc34a;
-  border-radius: 20px;
-  padding: 8px;
-  margin-top: 5px;
+#productTable td:nth-child(2){
+  width:220px;
 }
 
-.flex {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
+.green-box{
+  background:#8bc34a;
+  border-radius:20px;
+  padding:8px;
+  margin-top:5px;
 }
 
-.flex div { flex: 1; }
-
-.add-btn {
-  background: #8bc34a;
-  padding: 6px;
-  border-radius: 10px;
-  border: none;
-  margin-top: 10px;
-  font-size: 12px;
+.flex{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
 }
 
-.total {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
+.flex div{
+  flex:1;
 }
 
-.total input {
-  width: 100px;
-  background: #8bc34a;
-  border-radius: 8px;
-  text-align: center;
+.add-btn{
+  background:#8bc34a;
+  padding:6px;
+  border-radius:10px;
+  border:none;
+  margin-top:10px;
+  font-size:12px;
 }
 
-.officer {
-  margin-top: 20px;
+.total{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:10px;
 }
 
-.officer input {
-  border: 1px solid #999;
-  border-radius: 20px;
-  padding: 6px;
-  margin-top: 5px;
+.total input{
+  width:100px;
+  background:#8bc34a;
+  border-radius:8px;
+  text-align:center;
 }
 
-.bottom {
-  display: flex;
-  gap: 10px;
-  margin-top: 25px;
-  flex-wrap: wrap;
+.officer{
+  margin-top:20px;
 }
 
-.btn {
-  flex: 1;
-  padding: 10px;
-  border-radius: 25px;
-  border: none;
-  font-size: 13px;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
+.officer input{
+  border:1px solid #999;
+  border-radius:20px;
+  padding:6px;
+  margin-top:5px;
 }
 
-/* Colorful buttons */
-.pdf-btn {
-  background: linear-gradient(45deg, #4CAF50, #2e7d32);
+.bottom{
+  display:flex;
+  gap:10px;
+  margin-top:25px;
+  flex-wrap:wrap;
 }
 
-.share-btn {
-  background: linear-gradient(45deg, #009688, #00695c);
-}
-
-.save-btn {
-  background: linear-gradient(45deg, #ff9800, #ef6c00);
-}
-
-.clear-btn {
-  background: linear-gradient(45deg, #f44336, #c62828);
-}
-
-/* Hover effect */
-.btn:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
-}
-
-.pdf-btn { background: #4CAF50; }
-.share-btn { background: #009688; }
-
-.clear-btn {
-  background: #f44336;
+.btn{
+  flex:1;
+  padding:10px;
+  border-radius:25px;
+  border:none;
+  font-size:13px;
   color:#fff;
-  font-size: 12px;
-  padding: 6px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
 }
 
-.install-btn {
-  background: #2196f3;
-  color: #fff;
-  font-size: 10px;
-  padding: 3px 8px;
-  border-radius: 10px;
+.pdf-btn{
+  background:linear-gradient(45deg,#4CAF50,#2e7d32);
 }
 
-/* 🔥 Hide in PDF */
-.no-print {}
+.share-btn{
+  background:linear-gradient(45deg,#009688,#00695c);
+}
 
-/* print hide */
-@media print {
-  .no-print {
-    display: none !important;
+.save-btn{
+  background:linear-gradient(45deg,#ff9800,#ef6c00);
+}
+
+.clear-btn{
+  background:linear-gradient(45deg,#f44336,#c62828);
+}
+
+.btn:hover{
+  transform:scale(1.05);
+  opacity:0.9;
+}
+
+.install-btn{
+  background:#2196f3;
+  color:#fff;
+  font-size:10px;
+  padding:3px 8px;
+  border-radius:10px;
+}
+
+.no-print{}
+
+@media print{
+  .no-print{
+    display:none !important;
   }
 }
 
@@ -185,7 +176,7 @@ input, select {
 <div id="formArea">
 
 <div class="no-print" style="text-align:right;">
-  <button class="install-btn no-print" onclick="installApp()">Install</button>
+  <button class="install-btn" onclick="installApp()">Install</button>
 </div>
 
 <div style="text-align:center;">
@@ -196,6 +187,7 @@ input, select {
 <h3>Order Submission watermark Adomi</h3>
 
 <table>
+
 <tr>
 <td style="background:#00cfd1;">Order Date</td>
 <td><input></td>
@@ -241,22 +233,29 @@ input, select {
 </select>
 </td>
 </tr>
+
 </table>
 
 <!-- Depot + Transport -->
+
 <div class="flex">
-  <div>
-    <div class="green-box">Depot</div>
-    <input class="green-box">
-  </div>
-  <div>
-    <div class="green-box">Transport</div>
-    <input class="green-box">
-  </div>
+
+<div>
+<div class="green-box">Depot</div>
+<input class="green-box">
+</div>
+
+<div>
+<div class="green-box">Transport</div>
+<input class="green-box">
+</div>
+
 </div>
 
 <!-- Product Table -->
+
 <table id="productTable">
+
 <tr>
 <th>#</th>
 <th>Product</th>
@@ -268,19 +267,25 @@ input, select {
 
 <tr>
 <td>1</td>
-<td><select class="productList"></select></td>
+<td><input type="text" placeholder="Product Name"></td>
 <td><input oninput="calculate()"></td>
 <td><input oninput="calculate()"></td>
 <td><input readonly></td>
 <td><input></td>
 </tr>
+
 </table>
 
-<button class="add-btn no-print" onclick="addRow()">+ Add Product</button>
+<button class="add-btn no-print" onclick="addRow()">
++ Add Product
+</button>
 
 <div class="total">
-Total Ctn = <input id="totalCarton" readonly>
-Total V = <input id="totalValue" readonly>
+Total Ctn =
+<input id="totalCarton" readonly>
+
+Total V =
+<input id="totalValue" readonly>
 </div>
 
 <div class="officer">
@@ -291,19 +296,25 @@ Territory <input>
 
 <div class="bottom no-print">
 
-  <button class="btn pdf-btn" onclick="generatePDF()">📄 PDF</button>
+<button class="btn pdf-btn" onclick="generatePDF()">
+📄 PDF
+</button>
 
-  <button class="btn share-btn" onclick="sharePDF()">🔗 Share</button>
+<button class="btn share-btn" onclick="shareContent()">
+🔗 Share
+</button>
 
-  <button class="btn save-btn" onclick="saveImage()">🖼️ Image</button>
+<button class="btn save-btn" onclick="saveImage()">
+🖼️ Image
+</button>
 
-  <button class="btn clear-btn" onclick="location.reload()">❌ Clear</button>
+<button class="btn clear-btn" onclick="location.reload()">
+❌ Clear
+</button>
 
 </div>
 
 <script>
-
-// product list
 
 // add row
 function addRow(){
@@ -311,6 +322,7 @@ function addRow(){
   let table=document.getElementById("productTable");
 
   let row=table.insertRow();
+
   let i=table.rows.length-1;
 
   row.innerHTML=`
@@ -321,158 +333,208 @@ function addRow(){
     <td><input readonly></td>
     <td><input></td>
   `;
-
 }
 
 // calculate
 function calculate(){
+
   let table=document.getElementById("productTable");
+
   let tc=0,tv=0;
 
   for(let i=1;i<table.rows.length;i++){
-    let q=parseFloat(table.rows[i].cells[2].children[0].value)||0;
-    let p=parseFloat(table.rows[i].cells[3].children[0].value)||0;
+
+    let q=parseFloat(
+      table.rows[i].cells[2].children[0].value
+    ) || 0;
+
+    let p=parseFloat(
+      table.rows[i].cells[3].children[0].value
+    ) || 0;
 
     let total=q*p;
-    table.rows[i].cells[4].children[0].value=total.toFixed(2);
+
+    table.rows[i].cells[4].children[0].value=
+    total.toFixed(2);
 
     tc+=q;
     tv+=total;
   }
 
   document.getElementById("totalCarton").value=tc;
-  document.getElementById("totalValue").value=tv.toFixed(2);
+
+  document.getElementById("totalValue").value=
+  tv.toFixed(2);
 }
 
-// 🔥 PERFECT MULTI PAGE PDF
-async function createPDFBlob(){
-  const { jsPDF } = window.jspdf;
-  const element = document.getElementById("formArea");
+// SHARE IMAGE
+async function shareContent(){
 
-  // 🔥 HIDE BUTTONS
-  document.querySelectorAll(".no-print").forEach(el => el.style.display = "none");
+  const element=document.getElementById("formArea");
 
-  const canvas = await html2canvas(element,{scale:2});
-  const imgData = canvas.toDataURL("image/png");
+  // hide buttons
+  document.querySelectorAll(".no-print")
+  .forEach(el=>el.style.display="none");
 
-  // 🔥 SHOW BACK BUTTONS
-  document.querySelectorAll(".no-print").forEach(el => el.style.display = "");
+  const canvas=await html2canvas(element,{
+    scale:2
+  });
 
-  const pdf = new jsPDF('p','mm','a4');
+  // show again
+  document.querySelectorAll(".no-print")
+  .forEach(el=>el.style.display="");
 
-  const imgWidth = 210;
-  const pageHeight = 297;
-  const imgHeight = canvas.height * imgWidth / canvas.width;
+  canvas.toBlob(async(blob)=>{
 
-  let heightLeft = imgHeight;
-  let position = 0;
+    const file=new File(
+      [blob],
+      "order-form.png",
+      {type:"image/png"}
+    );
 
-  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-  heightLeft -= pageHeight;
+    if(
+      navigator.canShare &&
+      navigator.canShare({files:[file]})
+    ){
 
-  while(heightLeft > 0){
-    position -= pageHeight;
-    pdf.addPage();
-    pdf.addImage(imgData,'PNG',0,position,imgWidth,imgHeight);
-    heightLeft -= pageHeight;
-  }
-
-  return pdf.output('blob');
-}
-
-async function sharePDF() {
-  try {
-    const blob = await createPDFBlob();
-    const file = new File([blob], "order.pdf", { type: "application/pdf" });
-
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
-        title: "Order PDF",
-        text: "Order file attached",
-        files: [file]
+        title:"Order Form",
+        text:"Order Screenshot",
+        files:[file]
       });
-    } else {
-      alert("❌ Device not supported");
+
+    }else{
+
+      alert("Sharing not supported");
+
     }
 
-  } catch (error) {
-    console.error(error);
-    alert("❌ Sharing failed");
-  }
+  });
+
 }
-  
-// download pdf
-async function generatePDF() {
+
+// DOWNLOAD PDF
+async function generatePDF(){
+
   const { jsPDF } = window.jspdf;
-  let element = document.getElementById("formArea");
 
-  // 🔥 HIDE BUTTONS
-  document.querySelectorAll(".no-print").forEach(el => el.style.display = "none");
+  let element=document.getElementById("formArea");
 
-  let canvas = await html2canvas(element, { scale: 2 });
-  let imgData = canvas.toDataURL("image/png");
+  document.querySelectorAll(".no-print")
+  .forEach(el=>el.style.display="none");
 
-  // 🔥 SHOW BACK BUTTONS
-  document.querySelectorAll(".no-print").forEach(el => el.style.display = "");
+  let canvas=await html2canvas(element,{
+    scale:2
+  });
 
-  let pdf = new jsPDF("p", "mm", "a4");
+  let imgData=canvas.toDataURL("image/png");
 
-  let imgWidth = 210;
-  let pageHeight = 297;
-  let imgHeight = canvas.height * imgWidth / canvas.width;
+  document.querySelectorAll(".no-print")
+  .forEach(el=>el.style.display="");
 
-  let heightLeft = imgHeight;
-  let position = 0;
+  let pdf=new jsPDF("p","mm","a4");
 
-  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-  heightLeft -= pageHeight;
+  let imgWidth=210;
+  let pageHeight=297;
 
-  while (heightLeft > 0) {
-    position -= pageHeight;
+  let imgHeight=
+  canvas.height * imgWidth / canvas.width;
+
+  let heightLeft=imgHeight;
+
+  let position=0;
+
+  pdf.addImage(
+    imgData,
+    "PNG",
+    0,
+    position,
+    imgWidth,
+    imgHeight
+  );
+
+  heightLeft-=pageHeight;
+
+  while(heightLeft > 0){
+
+    position-=pageHeight;
+
     pdf.addPage();
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+
+    pdf.addImage(
+      imgData,
+      "PNG",
+      0,
+      position,
+      imgWidth,
+      imgHeight
+    );
+
+    heightLeft-=pageHeight;
   }
 
   pdf.save("order.pdf");
 }
 
-// 🖼️ SAVE IMAGE FUNCTION (👉 এখানে বসবে)
-async function saveImage() {
-  let element = document.getElementById("formArea");
+// SAVE IMAGE
+async function saveImage(){
 
-  // 🔥 hide buttons
-  document.querySelectorAll(".no-print").forEach(el => el.style.display = "none");
+  let element=document.getElementById("formArea");
 
-  let canvas = await html2canvas(element, { scale: 2 });
+  document.querySelectorAll(".no-print")
+  .forEach(el=>el.style.display="none");
 
-  let imgData = canvas.toDataURL("image/png");
+  let canvas=await html2canvas(element,{
+    scale:2
+  });
 
-  // 🔥 show again
-  document.querySelectorAll(".no-print").forEach(el => el.style.display = "");
+  let imgData=canvas.toDataURL("image/png");
 
-  let a = document.createElement("a");
-  a.href = imgData;
-  a.download = "order.png";
+  document.querySelectorAll(".no-print")
+  .forEach(el=>el.style.display="");
+
+  let a=document.createElement("a");
+
+  a.href=imgData;
+
+  a.download="order.png";
+
   a.click();
 }
 
-// install
+// INSTALL APP
+
 let deferredPrompt;
-window.addEventListener('beforeinstallprompt',(e)=>{
-  e.preventDefault();
-  deferredPrompt=e;
-});
+
+window.addEventListener(
+  'beforeinstallprompt',
+  (e)=>{
+    e.preventDefault();
+    deferredPrompt=e;
+  }
+);
+
 function installApp(){
-  if(deferredPrompt) deferredPrompt.prompt();
-  else alert("Install not available");
+
+  if(deferredPrompt){
+
+    deferredPrompt.prompt();
+
+  }else{
+
+    alert("Install not available");
+
+  }
 }
 
-// 🔥 SERVICE WORKER REGISTER ADD
-if ('serviceWorker' in navigator) {
+// SERVICE WORKER
+
+if('serviceWorker' in navigator){
+
   navigator.serviceWorker.register('sw.js');
+
 }
-  
+
 </script>
 
 </body>
