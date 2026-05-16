@@ -56,9 +56,33 @@ input,select{
   outline:none;
 }
 
+/* Product Width */
+
 #productTable th:nth-child(2),
 #productTable td:nth-child(2){
-  width:220px;
+  width:180px;
+}
+
+/* Bigger Price Columns */
+
+#productTable th:nth-child(4),
+#productTable td:nth-child(4){
+  width:120px;
+  font-size:12px;
+}
+
+#productTable th:nth-child(5),
+#productTable td:nth-child(5){
+  width:120px;
+  font-size:12px;
+}
+
+/* Bonus smaller */
+
+#productTable th:nth-child(6),
+#productTable td:nth-child(6){
+  width:70px;
+  font-size:11px;
 }
 
 .green-box{
@@ -161,6 +185,17 @@ input,select{
 }
 
 .no-print{}
+
+textarea{
+  width:100%;
+  height:90px;
+  border-radius:15px;
+  padding:10px;
+  font-size:14px;
+  border:1px solid #999;
+  resize:none;
+  box-sizing:border-box;
+}
 
 @media print{
   .no-print{
@@ -288,10 +323,40 @@ Total V =
 <input id="totalValue" readonly>
 </div>
 
+<!-- COMMENT BOX -->
+
+<div style="margin-top:20px;">
+
+<div style="
+background:#00cfd1;
+padding:8px;
+border-radius:10px;
+font-weight:bold;
+margin-bottom:8px;
+">
+Comment
+</div>
+
+<textarea
+maxlength="100"
+placeholder="Write Comment (Max 100 Characters)">
+</textarea>
+
+</div>
+
+<!-- OFFICER -->
+
 <div class="officer">
-Officer Name <input>
-Mobile <input>
-Territory <input>
+
+Officer Name
+<input>
+
+Mobile
+<input>
+
+Territory
+<input>
+
 </div>
 
 <div class="bottom no-print">
@@ -316,7 +381,8 @@ Territory <input>
 
 <script>
 
-// add row
+// ADD ROW
+
 function addRow(){
 
   let table=document.getElementById("productTable");
@@ -335,7 +401,8 @@ function addRow(){
   `;
 }
 
-// calculate
+// CALCULATE
+
 function calculate(){
 
   let table=document.getElementById("productTable");
@@ -368,11 +435,11 @@ function calculate(){
 }
 
 // SHARE IMAGE
+
 async function shareContent(){
 
   const element=document.getElementById("formArea");
 
-  // hide buttons
   document.querySelectorAll(".no-print")
   .forEach(el=>el.style.display="none");
 
@@ -380,7 +447,6 @@ async function shareContent(){
     scale:2
   });
 
-  // show again
   document.querySelectorAll(".no-print")
   .forEach(el=>el.style.display="");
 
@@ -399,7 +465,7 @@ async function shareContent(){
 
       await navigator.share({
         title:"Order Form",
-        text:"MML Order Submit",
+        text:"Order Screenshot",
         files:[file]
       });
 
@@ -414,6 +480,7 @@ async function shareContent(){
 }
 
 // DOWNLOAD PDF
+
 async function generatePDF(){
 
   const { jsPDF } = window.jspdf;
@@ -477,6 +544,7 @@ async function generatePDF(){
 }
 
 // SAVE IMAGE
+
 async function saveImage(){
 
   let element=document.getElementById("formArea");
