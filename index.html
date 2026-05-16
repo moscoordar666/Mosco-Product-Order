@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,15 +14,18 @@
 <style>
 
 *{
+  margin:0;
+  padding:0;
   box-sizing:border-box;
 }
 
 body{
-  font-family:Arial;
-  margin:0;
   background:#dcdcdc;
+  font-family:Arial, sans-serif;
   padding:10px;
 }
+
+/* MAIN FORM */
 
 #formArea{
   width:100%;
@@ -31,23 +34,32 @@ body{
   background:#efefef;
   padding:14px;
   border-radius:35px;
-  border:5px solid #000;
+  border:4px solid #000;
   overflow:hidden;
 }
 
-/* HEAD */
+/* LOGO */
 
-h2,h3{
+.logo{
   text-align:center;
-  margin:4px 0;
 }
 
+.logo img{
+  width:80px;
+}
+
+/* TITLE */
+
 h2{
-  font-size:18px;
+  text-align:center;
+  margin-top:6px;
+  font-size:20px;
 }
 
 h3{
-  font-size:13px;
+  text-align:center;
+  margin-top:5px;
+  font-size:14px;
   font-weight:600;
 }
 
@@ -56,20 +68,24 @@ h3{
 table{
   width:100%;
   border-collapse:collapse;
-  margin-top:10px;
+  margin-top:12px;
   table-layout:fixed;
 }
 
-td,th{
+th,td{
   border:1px solid #555;
-  padding:3px;
-  font-size:10px;
+  padding:4px;
+  font-size:11px;
   overflow:hidden;
-  word-break:break-word;
 }
 
 th{
-  background:#16c7cf;
+  background:#1fc8cf;
+  font-weight:bold;
+}
+
+.label{
+  background:#1fc8cf;
   font-weight:bold;
 }
 
@@ -82,18 +98,39 @@ textarea{
   border:none;
   outline:none;
   background:transparent;
-  font-size:10px;
+  font-size:11px;
   padding:3px;
 }
 
-/* TOP TABLE */
+/* FLEX */
 
-.top-label{
-  background:#16c7cf;
-  font-weight:bold;
+.flex{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
 }
 
-/* PRODUCT TABLE SIZE */
+.flex div{
+  flex:1;
+}
+
+/* GREEN BOX */
+
+.green-title{
+  background:#8bc34a;
+  border-radius:25px;
+  padding:10px;
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+.green-input{
+  background:#8bc34a;
+  border-radius:25px;
+  padding:10px;
+}
+
+/* PRODUCT TABLE */
 
 #productTable th:nth-child(1),
 #productTable td:nth-child(1){
@@ -130,47 +167,28 @@ textarea{
   text-align:center;
 }
 
-/* PRODUCT INPUT */
+/* PRODUCT FIELD */
 
 .product-input{
-  font-size:9px;
+  font-size:10px;
 }
 
 /* BONUS */
 
 .bonus-input{
-  font-size:9px;
+  font-size:10px;
   text-align:center;
-}
-
-/* GREEN BOX */
-
-.green-box{
-  background:#8bc34a;
-  border-radius:25px;
-  padding:8px;
-  margin-top:5px;
-}
-
-.flex{
-  display:flex;
-  gap:10px;
-  margin-top:10px;
-}
-
-.flex div{
-  flex:1;
 }
 
 /* BUTTON */
 
 .add-btn{
-  background:#8bc34a;
-  padding:6px 10px;
-  border:none;
-  border-radius:12px;
   margin-top:10px;
-  font-size:11px;
+  background:#8bc34a;
+  border:none;
+  padding:8px 12px;
+  border-radius:12px;
+  font-size:12px;
 }
 
 /* TOTAL */
@@ -179,27 +197,27 @@ textarea{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  margin-top:14px;
   gap:8px;
-  margin-top:12px;
-  font-size:11px;
+  font-size:12px;
 }
 
 .total-box{
-  width:90px;
+  width:100px;
   background:#8bc34a;
   border-radius:20px;
-  padding:6px;
+  padding:7px;
   text-align:center;
 }
 
 /* COMMENT */
 
 .comment-title{
-  background:#16c7cf;
-  padding:8px;
-  border-radius:12px;
-  margin-top:15px;
-  font-size:12px;
+  background:#1fc8cf;
+  padding:10px;
+  border-radius:15px;
+  margin-top:18px;
+  font-size:13px;
   font-weight:bold;
 }
 
@@ -208,23 +226,23 @@ textarea{
   height:110px;
   background:#fff;
   border:2px solid #bbb;
-  border-radius:20px;
+  border-radius:25px;
+  margin-top:10px;
   padding:10px;
-  margin-top:8px;
   resize:none;
-  font-size:10px;
+  font-size:11px;
 }
 
 /* OFFICER */
 
 .officer{
-  margin-top:15px;
+  margin-top:18px;
 }
 
 .officer label{
   display:block;
-  margin-top:8px;
-  font-size:11px;
+  margin-top:10px;
+  margin-bottom:4px;
   font-weight:bold;
 }
 
@@ -232,8 +250,7 @@ textarea{
   background:#fff;
   border:2px solid #bbb;
   border-radius:25px;
-  padding:8px;
-  margin-top:4px;
+  padding:10px;
 }
 
 /* BOTTOM BUTTON */
@@ -241,16 +258,16 @@ textarea{
 .bottom{
   display:flex;
   gap:8px;
-  margin-top:20px;
+  margin-top:22px;
 }
 
 .btn{
   flex:1;
-  padding:10px;
   border:none;
-  border-radius:20px;
   color:#fff;
-  font-size:11px;
+  padding:10px;
+  border-radius:22px;
+  font-size:12px;
   font-weight:bold;
 }
 
@@ -270,6 +287,8 @@ textarea{
   background:#f44336;
 }
 
+/* INSTALL */
+
 .install-btn{
   background:#2196f3;
   color:#fff;
@@ -279,7 +298,10 @@ textarea{
   font-size:10px;
 }
 
-.no-print{}
+/* HIDE */
+
+.no-print{
+}
 
 @media print{
   .no-print{
@@ -294,15 +316,21 @@ textarea{
 
 <div id="formArea">
 
+<!-- INSTALL -->
+
 <div class="no-print" style="text-align:right;">
 <button class="install-btn" onclick="installApp()">
 Install
 </button>
 </div>
 
-<div style="text-align:center;">
-<img src="mosco-logo.png" style="width:75px;">
+<!-- LOGO -->
+
+<div class="logo">
+<img src="mosco-logo.png">
 </div>
+
+<!-- TITLE -->
 
 <h2>Mosco Marketing limited</h2>
 <h3>Order Submission watermark Adomi</h3>
@@ -312,10 +340,10 @@ Install
 <table>
 
 <tr>
-<td class="top-label">Order Date</td>
+<td class="label">Order Date</td>
 <td><input></td>
 
-<td class="top-label">Due Date</td>
+<td class="label">Due Date</td>
 <td><input></td>
 </tr>
 
@@ -323,7 +351,7 @@ Install
 <td>Distributor Name</td>
 <td><input></td>
 
-<td class="top-label">Season</td>
+<td class="label">Season</td>
 <td><input></td>
 </tr>
 
@@ -331,7 +359,7 @@ Install
 <td>Address</td>
 <td><input></td>
 
-<td class="top-label">Order Type</td>
+<td class="label">Order Type</td>
 
 <td>
 <select>
@@ -370,13 +398,13 @@ Install
 <div class="flex">
 
 <div>
-<div class="green-box">Depot</div>
-<input class="green-box">
+<div class="green-title">Depot</div>
+<input class="green-input">
 </div>
 
 <div>
-<div class="green-box">Transport</div>
-<input class="green-box">
+<div class="green-title">Transport</div>
+<input class="green-input">
 </div>
 
 </div>
@@ -424,6 +452,8 @@ placeholder="Product Name">
 </tr>
 
 </table>
+
+<!-- ADD BUTTON -->
 
 <button class="add-btn no-print" onclick="addRow()">
 + Add Product
@@ -506,7 +536,7 @@ Clear
 
 <script>
 
-// ADD ROW
+/* ADD ROW */
 
 function addRow(){
 
@@ -547,7 +577,7 @@ placeholder="Product Name">
 
 }
 
-// CALCULATE
+/* CALCULATE */
 
 function calculate(){
 
@@ -583,9 +613,9 @@ tv.toFixed(2);
 
 }
 
-// SHARE
+/* IMAGE CANVAS */
 
-async function shareContent(){
+async function createCanvas(){
 
 const element=document.getElementById("formArea");
 
@@ -594,12 +624,28 @@ document.querySelectorAll(".no-print")
 
 const canvas=await html2canvas(element,{
 scale:2,
+useCORS:true,
+backgroundColor:"#efefef",
+scrollX:0,
 scrollY:0,
-windowWidth:document.body.scrollWidth
+windowWidth:element.scrollWidth,
+windowHeight:element.scrollHeight
 });
 
 document.querySelectorAll(".no-print")
 .forEach(el=>el.style.display="");
+
+return canvas;
+
+}
+
+/* SHARE */
+
+async function shareContent(){
+
+try{
+
+const canvas=await createCanvas();
 
 canvas.toBlob(async(blob)=>{
 
@@ -627,86 +673,66 @@ alert("Sharing not supported");
 
 });
 
+}catch(err){
+
+alert("Share Failed");
+
 }
 
-// PDF
+}
+
+/* SAVE IMAGE */
+
+async function saveImage(){
+
+const canvas=await createCanvas();
+
+const link=document.createElement("a");
+
+link.download="order.png";
+
+link.href=canvas.toDataURL("image/png");
+
+link.click();
+
+}
+
+/* PDF */
 
 async function generatePDF(){
 
 const { jsPDF } = window.jspdf;
 
-let element=document.getElementById("formArea");
+const canvas=await createCanvas();
 
-document.querySelectorAll(".no-print")
-.forEach(el=>el.style.display="none");
+const imgData=canvas.toDataURL("image/png");
 
-let canvas=await html2canvas(element,{
-scale:2,
-scrollY:0,
-windowWidth:document.body.scrollWidth
-});
+const pdf=new jsPDF("p","mm","a4");
 
-let imgData=canvas.toDataURL("image/png");
+const pdfWidth=190;
 
-document.querySelectorAll(".no-print")
-.forEach(el=>el.style.display="");
-
-let pdf=new jsPDF("p","mm","a4");
-
-let imgWidth=190;
-
-let imgHeight=
-canvas.height * imgWidth / canvas.width;
+const pdfHeight=
+(canvas.height * pdfWidth) / canvas.width;
 
 pdf.addImage(
 imgData,
 "PNG",
 10,
 10,
-imgWidth,
-imgHeight
+pdfWidth,
+pdfHeight
 );
 
 pdf.save("order.pdf");
 
 }
 
-// SAVE IMAGE
-
-async function saveImage(){
-
-let element=document.getElementById("formArea");
-
-document.querySelectorAll(".no-print")
-.forEach(el=>el.style.display="none");
-
-let canvas=await html2canvas(element,{
-scale:2,
-scrollY:0,
-windowWidth:document.body.scrollWidth
-});
-
-let imgData=canvas.toDataURL("image/png");
-
-document.querySelectorAll(".no-print")
-.forEach(el=>el.style.display="");
-
-let a=document.createElement("a");
-
-a.href=imgData;
-
-a.download="order.png";
-
-a.click();
-
-}
-
-// INSTALL
+/* INSTALL */
 
 let deferredPrompt;
 
 window.addEventListener(
-'beforeinstallprompt',
+"beforeinstallprompt",
 (e)=>{
 e.preventDefault();
 deferredPrompt=e;
@@ -727,11 +753,11 @@ alert("Install not available");
 
 }
 
-// SERVICE WORKER
+/* SERVICE WORKER */
 
-if('serviceWorker' in navigator){
+if("serviceWorker" in navigator){
 
-navigator.serviceWorker.register('sw.js');
+navigator.serviceWorker.register("sw.js");
 
 }
 
