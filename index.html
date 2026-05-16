@@ -13,19 +13,26 @@
 
 <style>
 
+*{
+  box-sizing:border-box;
+}
+
 body{
   font-family:Arial;
   margin:0;
   background:#ddd;
+  padding:10px;
 }
 
 #formArea{
-  max-width:430px;
+  width:100%;
+  max-width:520px;
   margin:auto;
   background:#eee;
   padding:12px;
-  border-radius:25px;
-  border:5px solid black;
+  border-radius:30px;
+  border:4px solid black;
+  overflow:hidden;
 }
 
 h2,h3{
@@ -34,11 +41,11 @@ h2,h3{
 }
 
 h2{
-  font-size:20px;
+  font-size:18px;
 }
 
 h3{
-  font-size:14px;
+  font-size:13px;
 }
 
 table{
@@ -52,7 +59,7 @@ td,th{
   border:1px solid #444;
   padding:4px;
   font-size:11px;
-  overflow:hidden;
+  word-wrap:break-word;
 }
 
 th{
@@ -67,63 +74,54 @@ textarea{
   background:transparent;
   outline:none;
   font-size:11px;
-  box-sizing:border-box;
 }
 
-/* TABLE COLUMN SIZE */
+/* PRODUCT TABLE */
 
 #productTable th:nth-child(1),
 #productTable td:nth-child(1){
-  width:22px;
+  width:6%;
   text-align:center;
 }
 
 #productTable th:nth-child(2),
 #productTable td:nth-child(2){
-  width:120px;
+  width:38%;
 }
 
 #productTable th:nth-child(3),
 #productTable td:nth-child(3){
-  width:55px;
-  text-align:center;
+  width:14%;
 }
 
 #productTable th:nth-child(4),
 #productTable td:nth-child(4){
-  width:75px;
-  text-align:center;
+  width:18%;
 }
 
 #productTable th:nth-child(5),
 #productTable td:nth-child(5){
-  width:75px;
-  text-align:center;
+  width:18%;
 }
 
 #productTable th:nth-child(6),
 #productTable td:nth-child(6){
-  width:35px;
-  text-align:center;
+  width:6%;
 }
-
-/* PRODUCT INPUT */
 
 .product-input{
   font-size:10px;
 }
 
-/* BONUS INPUT */
-
 .bonus-input{
-  font-size:10px;
   text-align:center;
+  font-size:10px;
 }
 
 .green-box{
   background:#8bc34a;
   border-radius:20px;
-  padding:7px;
+  padding:8px;
   margin-top:5px;
 }
 
@@ -139,39 +137,49 @@ textarea{
 
 .add-btn{
   background:#8bc34a;
-  padding:6px;
+  padding:8px;
   border-radius:10px;
   border:none;
   margin-top:10px;
-  font-size:11px;
+  font-size:12px;
 }
 
 .total{
   display:flex;
-  justify-content:center;
-  gap:10px;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
   margin-top:10px;
   font-size:12px;
+  flex-wrap:wrap;
 }
 
 .total input{
   width:90px;
   background:#8bc34a;
-  border-radius:8px;
+  border-radius:10px;
   text-align:center;
-  padding:4px;
+  padding:5px;
+}
+
+.comment-title{
+  background:#00cfd1;
+  padding:7px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:bold;
+  margin-top:15px;
 }
 
 .comment-box{
   width:100%;
-  height:80px;
+  height:90px;
   border:1px solid #999;
   border-radius:15px;
-  padding:8px;
-  margin-top:5px;
+  padding:10px;
   resize:none;
   background:#fff;
-  font-size:11px;
+  margin-top:5px;
 }
 
 .officer{
@@ -181,8 +189,9 @@ textarea{
 .officer input{
   border:1px solid #999;
   border-radius:20px;
-  padding:6px;
+  padding:8px;
   margin-top:5px;
+  background:#fff;
 }
 
 .bottom{
@@ -194,7 +203,7 @@ textarea{
 
 .btn{
   flex:1;
-  padding:8px;
+  padding:10px;
   border-radius:20px;
   border:none;
   font-size:11px;
@@ -223,7 +232,7 @@ textarea{
   background:#2196f3;
   color:#fff;
   font-size:10px;
-  padding:3px 8px;
+  padding:4px 10px;
   border-radius:10px;
   border:none;
 }
@@ -312,8 +321,6 @@ Install
 
 </table>
 
-<!-- DEPOT + TRANSPORT -->
-
 <div class="flex">
 
 <div>
@@ -328,8 +335,6 @@ Install
 
 </div>
 
-<!-- PRODUCT TABLE -->
-
 <table id="productTable">
 
 <tr>
@@ -342,6 +347,7 @@ Install
 </tr>
 
 <tr>
+
 <td>1</td>
 
 <td>
@@ -375,29 +381,21 @@ placeholder="Product Name">
 + Add Product
 </button>
 
-<!-- TOTAL -->
-
 <div class="total">
 
+<div>
 Total Ctn
 <input id="totalCarton" readonly>
+</div>
 
+<div>
 Total V
 <input id="totalValue" readonly>
+</div>
 
 </div>
 
-<!-- COMMENT -->
-
-<div style="margin-top:15px;">
-
-<div style="
-background:#00cfd1;
-padding:6px;
-border-radius:10px;
-font-size:12px;
-font-weight:bold;
-">
+<div class="comment-title">
 Comment
 </div>
 
@@ -406,10 +404,6 @@ class="comment-box"
 maxlength="100"
 placeholder="Write Comment Here...">
 </textarea>
-
-</div>
-
-<!-- OFFICER -->
 
 <div class="officer">
 
@@ -423,8 +417,6 @@ Territory
 <input>
 
 </div>
-
-<!-- BUTTONS -->
 
 <div class="bottom no-print">
 
@@ -449,8 +441,6 @@ Clear
 </div>
 
 <script>
-
-// ADD ROW
 
 function addRow(){
 
@@ -491,8 +481,6 @@ placeholder="Product Name">
 
 }
 
-// CALCULATE
-
 function calculate(){
 
 let table=document.getElementById("productTable");
@@ -526,8 +514,6 @@ document.getElementById("totalValue").value=
 tv.toFixed(2);
 
 }
-
-// SHARE IMAGE
 
 async function shareContent(){
 
@@ -572,8 +558,6 @@ alert("Sharing not supported");
 
 }
 
-// PDF
-
 async function generatePDF(){
 
 const { jsPDF } = window.jspdf;
@@ -612,8 +596,6 @@ pdf.save("order.pdf");
 
 }
 
-// SAVE IMAGE
-
 async function saveImage(){
 
 let element=document.getElementById("formArea");
@@ -640,8 +622,6 @@ a.click();
 
 }
 
-// INSTALL
-
 let deferredPrompt;
 
 window.addEventListener(
@@ -665,8 +645,6 @@ alert("Install not available");
 }
 
 }
-
-// SERVICE WORKER
 
 if('serviceWorker' in navigator){
 
